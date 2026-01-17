@@ -21,9 +21,11 @@
 #define ACCEL_I2C_SCL 9
 
 #define RECEIVER_UART_ID uart1
-#define RECEIVER_BAUD_RATE 115200
-#define RECEIVER_UART_TX_PIN 4
-#define RECEIVER_UART_RX_PIN 5
+// RECEIVER_BAUD_RATE is 420000 and set in the crsf.c file
+#define RECEIVER_UART_TX_PIN 6
+#define RECEIVER_UART_RX_PIN 7
+#define CRSF_LINK_QUALITY_THRESHOLD 70
+#define CRSF_RSSI_THRESHOLD 105
 
 #define HEADING_LIGHT_STRIP_PIN	2                     
 

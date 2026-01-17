@@ -18,11 +18,12 @@
 #include <hardware/gpio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-#define BAUD_RATE 420000
+#define BAUD_RATE 420000 //This is where the baud_rate is set lol
 #define CRSF_MAX_CHANNELS 16
 #define CRSF_MAX_FRAME_SIZE 64
-#define CRSF_DEBUG 0
+#define CRSF_DEBUG 1 //0 is off, 1 is on
 #if CRSF_DEBUG
 #include <stdio.h>
 #define DEBUG_WARN(...) fprintf(stderr, __VA_ARGS__)
@@ -390,6 +391,10 @@ bool crsf_telem_update()
 
 bool crsf_process_frame(uint8_t *frameIndex, uint8_t *frameLength, uint8_t *crcIndex, uint8_t currentByte)
 {
+  printf("PLEASE FOR THE LOVE OF PROGRAMMING PRINT THIS \n");
+
+
+
   // Frame format:
   // [sync] [len] [type] [payload] [crc8]
   if (*frameIndex == 0)
