@@ -28,33 +28,33 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(DONUT_MELT C CXX ASM)
+project(donutmelt C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(DONUT_MELT main/DONUT_MELT.c main/receiver.c main/crsf.c)
+add_executable(donutmelt src/donutmelt.c)
 
-pico_set_program_name(DONUT_MELT "DONUT_MELT")
-pico_set_program_version(DONUT_MELT "0.1")
+pico_set_program_name(donutmelt "donutmelt")
+pico_set_program_version(donutmelt "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB
-pico_enable_stdio_uart(DONUT_MELT 0)
-pico_enable_stdio_usb(DONUT_MELT 1)
+pico_enable_stdio_uart(donutmelt 0)
+pico_enable_stdio_usb(donutmelt 1)
 
 # Add the standard library to the build
-target_link_libraries(DONUT_MELT
+target_link_libraries(donutmelt
         pico_stdlib)
 
 # Add the standard include files to the build
-target_include_directories(DONUT_MELT PRIVATE
+target_include_directories(donutmelt PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}
 )
 
 # Add any user requested libraries
-target_link_libraries(DONUT_MELT 
+target_link_libraries(donutmelt 
         hardware_i2c
         hardware_uart
         hardware_timer
@@ -62,4 +62,4 @@ target_link_libraries(DONUT_MELT
         hardware_clocks
         )
 
-pico_add_extra_outputs(DONUT_MELT)
+pico_add_extra_outputs(donutmelt)
