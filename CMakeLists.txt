@@ -36,6 +36,10 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(donutmelt src/donutmelt.c)
+set(PARENT_TARGET_NAME "donutmelt")
+#Add these after you git clone the submodules into this repository into the lib folder, pico_dshot library might need a bit more tweaking to bring it in 
+#add_subdirectory(lib/pico_H3LIS331DL) 
+#add_subdirectory(lib/pico_crsf) 
 
 pico_set_program_name(donutmelt "donutmelt")
 pico_set_program_version(donutmelt "0.1")
