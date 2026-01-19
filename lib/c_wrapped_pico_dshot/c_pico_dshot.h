@@ -1,0 +1,1 @@
+void c_pico_dshot_is_library_accesible();

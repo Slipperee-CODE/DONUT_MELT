@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/DONUT_MELT")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/donutmelt")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -41,6 +41,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/cmake_install.cmake")
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/cmake_install.cmake")
+  include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/cmake_install.cmake")
 
 endif()
 

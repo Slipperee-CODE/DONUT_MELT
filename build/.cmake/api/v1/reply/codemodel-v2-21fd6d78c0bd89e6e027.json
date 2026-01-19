@@ -9,7 +9,8 @@
 					"childIndexes" : 
 					[
 						1,
-						103
+						103,
+						105
 					],
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
@@ -20,7 +21,7 @@
 					"source" : ".",
 					"targetIndexes" : 
 					[
-						4
+						5
 					]
 				},
 				{
@@ -1051,7 +1052,7 @@
 					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/src/rp2_common/pico_cyw43_driver",
 					"targetIndexes" : 
 					[
-						3
+						4
 					]
 				},
 				{
@@ -1217,7 +1218,7 @@
 					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/src/rp2_common/pico_status_led",
 					"targetIndexes" : 
 					[
-						6
+						10
 					]
 				},
 				{
@@ -1291,7 +1292,7 @@
 					"source" : "lib/pico_H3LIS331DL",
 					"targetIndexes" : 
 					[
-						5
+						6
 					]
 				},
 				{
@@ -1304,6 +1305,87 @@
 					"parentIndex" : 103,
 					"projectIndex" : 2,
 					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0"
+				},
+				{
+					"build" : "lib/c_wrapped_pico_dshot",
+					"childIndexes" : 
+					[
+						106
+					],
+					"jsonFile" : "directory-lib.c_wrapped_pico_dshot-Debug-10c6dbcafee259ee4e51.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "lib/c_wrapped_pico_dshot",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "lib/c_wrapped_pico_dshot/pico_dshot",
+					"childIndexes" : 
+					[
+						107,
+						109
+					],
+					"jsonFile" : "directory-lib.c_wrapped_pico_dshot.pico_dshot-Debug-2e4853c0645c60f86713.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 105,
+					"projectIndex" : 3,
+					"source" : "lib/c_wrapped_pico_dshot/pico_dshot",
+					"targetIndexes" : 
+					[
+						7,
+						8
+					]
+				},
+				{
+					"build" : "lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader",
+					"childIndexes" : 
+					[
+						108
+					],
+					"jsonFile" : "directory-lib.c_wrapped_pico_dshot.pico_dshot.pico-pio-loader-Debug-45a181eda0ccc89e036f.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 106,
+					"projectIndex" : 4,
+					"source" : "lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader",
+					"targetIndexes" : 
+					[
+						9
+					]
+				},
+				{
+					"build" : "lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader/pico-sdk",
+					"jsonFile" : "directory-lib.c_wrapped_pico_dshot.pico_dshot.pico-pio-loader.pico-sdk-Debug-7c94e406f3077a181229.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 107,
+					"projectIndex" : 4,
+					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0"
+				},
+				{
+					"build" : "lib/c_wrapped_pico_dshot/pico_dshot/pico-sdk",
+					"jsonFile" : "directory-lib.c_wrapped_pico_dshot.pico_dshot.pico-sdk-Debug-ceec4d53bee3faae11e2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 106,
+					"projectIndex" : 3,
+					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0"
 				}
 			],
 			"name" : "Debug",
@@ -1313,16 +1395,19 @@
 					"childIndexes" : 
 					[
 						1,
-						2
+						2,
+						3
 					],
 					"directoryIndexes" : 
 					[
-						0
+						0,
+						105
 					],
 					"name" : "donutmelt",
 					"targetIndexes" : 
 					[
-						4
+						3,
+						5
 					]
 				},
 				{
@@ -1438,8 +1523,8 @@
 						0,
 						1,
 						2,
-						3,
-						6
+						4,
+						10
 					]
 				},
 				{
@@ -1452,7 +1537,38 @@
 					"parentIndex" : 0,
 					"targetIndexes" : 
 					[
-						5
+						6
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						4
+					],
+					"directoryIndexes" : 
+					[
+						106,
+						109
+					],
+					"name" : "pico_dshot",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						7,
+						8
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						107,
+						108
+					],
+					"name" : "pico_pio_loader",
+					"parentIndex" : 3,
+					"targetIndexes" : 
+					[
+						9
 					]
 				}
 			],
@@ -1480,6 +1596,13 @@
 					"projectIndex" : 1
 				},
 				{
+					"directoryIndex" : 105,
+					"id" : "c_pico_dshot::@fa344f83e8b28ea4cf8e",
+					"jsonFile" : "target-c_pico_dshot-Debug-b760470b38a09cbd5267.json",
+					"name" : "c_pico_dshot",
+					"projectIndex" : 0
+				},
+				{
 					"directoryIndex" : 83,
 					"id" : "cyw43_driver_picow_cyw43_bus_pio_spi_pio_h::@c2fb4f534018e64680d5",
 					"jsonFile" : "target-cyw43_driver_picow_cyw43_bus_pio_spi_pio_h-Debug-94a58d61f4b5df1083c1.json",
@@ -1489,7 +1612,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "donutmelt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-donutmelt-Debug-ceb7ddb069d65b2dea22.json",
+					"jsonFile" : "target-donutmelt-Debug-87dbe5775bba476ad393.json",
 					"name" : "donutmelt",
 					"projectIndex" : 0
 				},
@@ -1499,6 +1622,27 @@
 					"jsonFile" : "target-pico_H3LIS331DL-Debug-9b98587f6ced2d9a9b8c.json",
 					"name" : "pico_H3LIS331DL",
 					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 106,
+					"id" : "pico_dshot::@1b693b3a52ba1499a6e0",
+					"jsonFile" : "target-pico_dshot-Debug-27e58af1e66c22e79a85.json",
+					"name" : "pico_dshot",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 106,
+					"id" : "pico_dshot_dshot_encoder_pio_h::@1b693b3a52ba1499a6e0",
+					"jsonFile" : "target-pico_dshot_dshot_encoder_pio_h-Debug-cdb8fdf8b4fb446d9878.json",
+					"name" : "pico_dshot_dshot_encoder_pio_h",
+					"projectIndex" : 3
+				},
+				{
+					"directoryIndex" : 107,
+					"id" : "pico_pio_loader::@4f92ad82f37666c11df3",
+					"jsonFile" : "target-pico_pio_loader-Debug-db5f555160665091892f.json",
+					"name" : "pico_pio_loader",
+					"projectIndex" : 4
 				},
 				{
 					"directoryIndex" : 97,

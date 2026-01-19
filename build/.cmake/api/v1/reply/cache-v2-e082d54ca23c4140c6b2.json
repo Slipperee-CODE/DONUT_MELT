@@ -180,10 +180,6 @@
 				{
 					"name" : "HELPSTRING",
 					"value" : "No help, variable specified on the command line."
-				},
-				{
-					"name" : "STRINGS",
-					"value" : "Debug;Release;MinSizeRel;RelWithDebInfo"
 				}
 			],
 			"type" : "STRING",
@@ -543,7 +539,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_DLLTOOL-NOTFOUND"
+			"value" : "C:/msys64/mingw64/bin/dlltool.exe"
 		},
 		{
 			"name" : "CMAKE_EDIT_COMMAND",
@@ -771,7 +767,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/DONUT_MELT"
+			"value" : "C:/Program Files (x86)/donutmelt"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -911,7 +907,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "105"
+			"value" : "110"
 		},
 		{
 			"name" : "CMAKE_OBJCOPY",
@@ -1288,42 +1284,6 @@
 			],
 			"type" : "BOOL",
 			"value" : "FALSE"
-		},
-		{
-			"name" : "DONUT_MELT_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build"
-		},
-		{
-			"name" : "DONUT_MELT_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "DONUT_MELT_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT"
 		},
 		{
 			"name" : "DOXYGEN_DOT_EXECUTABLE",
@@ -2124,6 +2084,78 @@
 			],
 			"type" : "STATIC",
 			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT"
+		},
+		{
+			"name" : "pico_dshot_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot"
+		},
+		{
+			"name" : "pico_dshot_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "OFF"
+		},
+		{
+			"name" : "pico_dshot_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot"
+		},
+		{
+			"name" : "pico_pio_loader_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader"
+		},
+		{
+			"name" : "pico_pio_loader_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "OFF"
+		},
+		{
+			"name" : "pico_pio_loader_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader"
 		},
 		{
 			"name" : "pico_sdk_BINARY_DIR",

@@ -102,7 +102,7 @@ CMAKE_C_FLAGS_RELEASE:STRING=-g -O3 -DNDEBUG
 CMAKE_C_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
 //Path to a program.
-CMAKE_DLLTOOL:FILEPATH=CMAKE_DLLTOOL-NOTFOUND
+CMAKE_DLLTOOL:FILEPATH=C:/msys64/mingw64/bin/dlltool.exe
 
 //Flags used by the linker during all build types.
 CMAKE_EXE_LINKER_FLAGS:STRING=
@@ -129,7 +129,7 @@ CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/CMakeFiles/pkgRedirects
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/DONUT_MELT
+CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/donutmelt
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ld.exe
@@ -241,15 +241,6 @@ CMAKE_TOOLCHAIN_FILE:FILEPATH=C:/Users/CAIS/.pico-sdk/sdk/2.2.0/cmake/preload/to
 // Studio IDE projects all commands are done without /nologo.
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
-//Value Computed by CMake
-DONUT_MELT_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build
-
-//Value Computed by CMake
-DONUT_MELT_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-DONUT_MELT_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT
-
 //Dot tool for use with Doxygen
 DOXYGEN_DOT_EXECUTABLE:FILEPATH=DOXYGEN_DOT_EXECUTABLE-NOTFOUND
 
@@ -354,6 +345,24 @@ donutmelt_IS_TOP_LEVEL:STATIC=ON
 donutmelt_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT
 
 //Value Computed by CMake
+pico_dshot_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot
+
+//Value Computed by CMake
+pico_dshot_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+pico_dshot_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot
+
+//Value Computed by CMake
+pico_pio_loader_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader
+
+//Value Computed by CMake
+pico_pio_loader_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+pico_pio_loader_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader
+
+//Value Computed by CMake
 pico_sdk_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk
 
 //Value Computed by CMake
@@ -388,8 +397,6 @@ CMAKE_ASM_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_ASM_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_FLAGS_RELWITHDEBINFO
 CMAKE_ASM_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
-//STRINGS property for variable: CMAKE_BUILD_TYPE
-CMAKE_BUILD_TYPE-STRINGS:INTERNAL=Debug;Release;MinSizeRel;RelWithDebInfo
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build
 //Major version of cmake used to create the current loaded cache
@@ -484,7 +491,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=105
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=110
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
