@@ -16,4 +16,5 @@ target_include_directories(c_wrapped_pico_dshot PRIVATE ${CMAKE_CURRENT_SOURCE_D
 
 target_link_libraries(c_wrapped_pico_dshot
     pico_dshot
+    hardware_pio
 )

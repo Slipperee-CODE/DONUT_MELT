@@ -1,5 +1,8 @@
 #pragma once
 
+#include <stdint.h>
+#include "hardware/pio.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
