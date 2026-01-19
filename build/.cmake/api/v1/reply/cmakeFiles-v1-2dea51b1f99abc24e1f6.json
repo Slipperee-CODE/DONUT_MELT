@@ -830,6 +830,35 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "C:/Users/CAIS/.pico-sdk/cmake/v3.31.5/share/cmake-3.31/Modules/FindPackageMessage.cmake"
+		},
+		{
+			"path" : "lib/pico_H3LIS331DL/CMakeLists.txt"
+		},
+		{
+			"path" : "lib/pico_H3LIS331DL/pico_sdk_import.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/pico_sdk_init.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/CAIS/.pico-sdk/cmake/v3.31.5/share/cmake-3.31/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/CAIS/.pico-sdk/cmake/v3.31.5/share/cmake-3.31/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/CAIS/.pico-sdk/cmake/v3.31.5/share/cmake-3.31/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/CMakeLists.txt"
 		}
 	],
 	"kind" : "cmakeFiles",

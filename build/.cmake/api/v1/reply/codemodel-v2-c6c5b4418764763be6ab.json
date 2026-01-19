@@ -8,7 +8,8 @@
 					"build" : ".",
 					"childIndexes" : 
 					[
-						1
+						1,
+						103
 					],
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
@@ -1216,7 +1217,7 @@
 					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/src/rp2_common/pico_status_led",
 					"targetIndexes" : 
 					[
-						5
+						6
 					]
 				},
 				{
@@ -1273,6 +1274,36 @@
 					"parentIndex" : 1,
 					"projectIndex" : 1,
 					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0/docs"
+				},
+				{
+					"build" : "lib/pico_H3LIS331DL",
+					"childIndexes" : 
+					[
+						104
+					],
+					"jsonFile" : "directory-lib.pico_H3LIS331DL-Debug-c1bf3aba669bac8d7cb2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 2,
+					"source" : "lib/pico_H3LIS331DL",
+					"targetIndexes" : 
+					[
+						5
+					]
+				},
+				{
+					"build" : "lib/pico_H3LIS331DL/pico-sdk",
+					"jsonFile" : "directory-lib.pico_H3LIS331DL.pico-sdk-Debug-84fb43af9225a1e815e8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.13"
+					},
+					"parentIndex" : 103,
+					"projectIndex" : 2,
+					"source" : "C:/Users/CAIS/.pico-sdk/sdk/2.2.0"
 				}
 			],
 			"name" : "Debug",
@@ -1281,7 +1312,8 @@
 				{
 					"childIndexes" : 
 					[
-						1
+						1,
+						2
 					],
 					"directoryIndexes" : 
 					[
@@ -1407,6 +1439,19 @@
 						1,
 						2,
 						3,
+						6
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						103,
+						104
+					],
+					"name" : "default_test",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
 						5
 					]
 				}
@@ -1444,9 +1489,16 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "donutmelt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-donutmelt-Debug-ba680bf5fcd1dcf83d9a.json",
+					"jsonFile" : "target-donutmelt-Debug-ceb7ddb069d65b2dea22.json",
 					"name" : "donutmelt",
 					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 103,
+					"id" : "pico_H3LIS331DL::@761581e1a80b04a48e45",
+					"jsonFile" : "target-pico_H3LIS331DL-Debug-9b98587f6ced2d9a9b8c.json",
+					"name" : "pico_H3LIS331DL",
+					"projectIndex" : 2
 				},
 				{
 					"directoryIndex" : 97,

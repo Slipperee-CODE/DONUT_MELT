@@ -8,6 +8,7 @@ int main()
     stdio_init_all();
 
     while (true){
-        does_library_work();
+        printf("DONUT MELT IS WORKING! \n");
+        pico_H3LIS331DL_is_library_accesible();
     }
 }

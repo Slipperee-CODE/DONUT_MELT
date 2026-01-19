@@ -911,7 +911,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "103"
+			"value" : "105"
 		},
 		{
 			"name" : "CMAKE_OBJCOPY",
@@ -1978,7 +1978,7 @@
 					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "UNINITIALIZED",
+			"type" : "STRING",
 			"value" : "C:/Users/CAIS/.pico-sdk/python/3.13.7/python.exe"
 		},
 		{
@@ -2052,6 +2052,42 @@
 			],
 			"type" : "INTERNAL",
 			"value" : ""
+		},
+		{
+			"name" : "default_test_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL"
+		},
+		{
+			"name" : "default_test_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "OFF"
+		},
+		{
+			"name" : "default_test_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_H3LIS331DL"
 		},
 		{
 			"name" : "donutmelt_BINARY_DIR",
