@@ -30,6 +30,7 @@ pico_sdk_init()
 add_executable(donutmelt src/donutmelt.c)
 add_subdirectory(lib/pico_H3LIS331DL) 
 #add_subdirectory(lib/pico_crsf) 
+#add_subdirectory(lib/pico_dshot) 
 
 pico_enable_stdio_uart(donutmelt 0)
 pico_enable_stdio_usb(donutmelt 1)
