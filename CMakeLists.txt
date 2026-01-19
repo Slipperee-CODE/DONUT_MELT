@@ -36,7 +36,7 @@ pico_enable_stdio_uart(donutmelt 0)
 pico_enable_stdio_usb(donutmelt 1)
 
 target_link_libraries(donutmelt 
-    c_pico_dshot
+    c_wrapped_pico_dshot
     pico_H3LIS331DL
     pico_stdlib
 )

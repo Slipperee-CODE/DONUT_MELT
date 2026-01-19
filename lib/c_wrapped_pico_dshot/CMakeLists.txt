@@ -7,13 +7,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(pico_dshot)
 
-add_library(c_pico_dshot
+add_library(c_wrapped_pico_dshot
     c_pico_dshot.cpp
 )
 
-target_include_directories(c_pico_dshot PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(c_pico_dshot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/pico_dshot/include/pico_dshot) #doing this because the pico_dshot library only goes to /pico_dshot/include
+target_include_directories(c_wrapped_pico_dshot PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(c_wrapped_pico_dshot PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/pico_dshot/include/pico_dshot) #doing this because the pico_dshot library only goes to /pico_dshot/include
 
-target_link_libraries(c_pico_dshot
+target_link_libraries(c_wrapped_pico_dshot
     pico_dshot
 )
