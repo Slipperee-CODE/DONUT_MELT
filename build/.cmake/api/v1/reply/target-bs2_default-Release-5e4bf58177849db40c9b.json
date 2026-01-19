@@ -89,7 +89,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG"
 				}
 			],
 			"defines" : 
@@ -213,7 +213,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g",
+				"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{

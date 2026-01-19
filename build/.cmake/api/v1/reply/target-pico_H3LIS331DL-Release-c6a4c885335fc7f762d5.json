@@ -50,7 +50,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g -std=gnu11"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG -std=gnu11"
 				},
 				{
 					"backtrace" : 2,
@@ -245,7 +245,7 @@
 				},
 				{
 					"backtrace" : 2,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 2,
@@ -616,7 +616,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 2,
@@ -811,7 +811,7 @@
 				},
 				{
 					"backtrace" : 2,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 2,
@@ -1137,7 +1137,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g -std=gnu++17"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG -std=gnu++17"
 				},
 				{
 					"backtrace" : 2,
@@ -1348,7 +1348,7 @@
 				},
 				{
 					"backtrace" : 2,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 2,

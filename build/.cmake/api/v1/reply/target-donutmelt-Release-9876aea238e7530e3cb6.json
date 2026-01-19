@@ -109,7 +109,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g -std=gnu11"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG -std=gnu11"
 				},
 				{
 					"backtrace" : 5,
@@ -124,7 +124,7 @@
 			[
 				{
 					"backtrace" : 5,
-					"define" : "CFG_TUSB_DEBUG=1"
+					"define" : "CFG_TUSB_DEBUG=0"
 				},
 				{
 					"backtrace" : 5,
@@ -324,7 +324,7 @@
 				},
 				{
 					"backtrace" : 5,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 5,
@@ -778,7 +778,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 5,
@@ -793,7 +793,7 @@
 			[
 				{
 					"backtrace" : 5,
-					"define" : "CFG_TUSB_DEBUG=1"
+					"define" : "CFG_TUSB_DEBUG=0"
 				},
 				{
 					"backtrace" : 5,
@@ -993,7 +993,7 @@
 				},
 				{
 					"backtrace" : 5,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 5,
@@ -1377,7 +1377,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g -std=gnu++17"
+					"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG -std=gnu++17"
 				},
 				{
 					"backtrace" : 5,
@@ -1408,7 +1408,7 @@
 			[
 				{
 					"backtrace" : 5,
-					"define" : "CFG_TUSB_DEBUG=1"
+					"define" : "CFG_TUSB_DEBUG=0"
 				},
 				{
 					"backtrace" : 5,
@@ -1608,7 +1608,7 @@
 				},
 				{
 					"backtrace" : 5,
-					"define" : "PICO_CMAKE_BUILD_TYPE=\"Debug\""
+					"define" : "PICO_CMAKE_BUILD_TYPE=\"Release\""
 				},
 				{
 					"backtrace" : 5,
@@ -2000,11 +2000,11 @@
 		},
 		{
 			"backtrace" : 5,
-			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
+			"id" : "pico_dshot::@1b693b3a52ba1499a6e0"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "pico_dshot::@1b693b3a52ba1499a6e0"
+			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
 		},
 		{
 			"backtrace" : 5,
@@ -2017,7 +2017,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -Og -g",
+				"fragment" : "-mcpu=cortex-m33 -mthumb -march=armv8-m.main+fp+dsp -mfloat-abi=softfp -mcmse -g -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{

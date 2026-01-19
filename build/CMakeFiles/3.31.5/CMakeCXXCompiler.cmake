@@ -1,4 +1,4 @@
-set(CMAKE_CXX_COMPILER "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-g++.exe")
+set(CMAKE_CXX_COMPILER "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-g++.exe")
 set(CMAKE_CXX_COMPILER_ARG1 "")
 set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_COMPILER_VERSION "14.2.1")
@@ -24,11 +24,11 @@ set(CMAKE_CXX_SIMULATE_VERSION "")
 
 
 
-set(CMAKE_AR "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ar.exe")
-set(CMAKE_CXX_COMPILER_AR "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc-ar.exe")
-set(CMAKE_RANLIB "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ranlib.exe")
-set(CMAKE_CXX_COMPILER_RANLIB "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc-ranlib.exe")
-set(CMAKE_LINKER "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ld.exe")
+set(CMAKE_AR "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ar.exe")
+set(CMAKE_CXX_COMPILER_AR "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc-ar.exe")
+set(CMAKE_RANLIB "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ranlib.exe")
+set(CMAKE_CXX_COMPILER_RANLIB "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc-ranlib.exe")
+set(CMAKE_LINKER "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ld.exe")
 set(CMAKE_LINKER_LINK "")
 set(CMAKE_LINKER_LLD "")
 set(CMAKE_CXX_COMPILER_LINKER "NOTFOUND")
@@ -87,9 +87,9 @@ endif()
 
 
 
-set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1/arm-none-eabi/thumb/v8-m.main+fp/softfp;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1/backward;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/include;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/include-fixed;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include")
+set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1/arm-none-eabi/thumb/v8-m.main+fp/softfp;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include/c++/14.2.1/backward;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/include;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/include-fixed;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/include")
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "")
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/thumb/v8-m.main+fp/softfp;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/lib/gcc;C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/lib")
+set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1/thumb/v8-m.main+fp/softfp;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/lib/thumb/v8-m.main+fp/softfp;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/lib/gcc/arm-none-eabi/14.2.1;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/lib/gcc;C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/arm-none-eabi/lib")
 set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
 set(CMAKE_CXX_COMPILER_CLANG_RESOURCE_DIR "")
 
