@@ -39,6 +39,8 @@ target_link_libraries(donutmelt
     c_wrapped_pico_dshot
     pico_H3LIS331DL
     pico_stdlib
+    hardware_i2c
+    hardware_uart
 )
 
 pico_add_extra_outputs(donutmelt)

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "hardware/uart.h"
 #include "hardware/i2c.h"
 
