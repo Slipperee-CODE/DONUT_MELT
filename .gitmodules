@@ -1,6 +1,3 @@
 [submodule "lib/pico_H3LIS331DL"]
 	path = lib/pico_H3LIS331DL
 	url = https://github.com/Slipperee-CODE/pico_H3LIS331DL
-[submodule "lib/pico_dshot"]
-	path = lib/pico_dshot
-	url = https://github.com/cadouthat/pico-dshot.git
