@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/CAIS/.pico-sdk/sdk/2.2.0/src/rp2_common/pico_float
+# Install script for directory: C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_crsf
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -37,9 +37,15 @@ if(NOT DEFINED CMAKE_OBJDUMP)
   set(CMAKE_OBJDUMP "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-objdump.exe")
 endif()
 
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for each subdirectory.
+  include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/pico-sdk/cmake_install.cmake")
+
+endif()
+
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/src/rp2_common/pico_float/install_local_manifest.txt"
+  file(WRITE "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

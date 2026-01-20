@@ -7,14 +7,14 @@
 
 # =============================================================================
 # Project: donutmelt
-# Configurations: Release
+# Configurations: Debug
 # =============================================================================
 # =============================================================================
 
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__donutmelt_unscanned_Release
+rule ASM_COMPILER__donutmelt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -24,7 +24,7 @@ rule ASM_COMPILER__donutmelt_unscanned_Release
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__donutmelt_unscanned_Release
+rule C_COMPILER__donutmelt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -34,7 +34,7 @@ rule C_COMPILER__donutmelt_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__donutmelt_unscanned_Release
+rule CXX_COMPILER__donutmelt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -44,7 +44,7 @@ rule CXX_COMPILER__donutmelt_unscanned_Release
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__donutmelt_Release
+rule CXX_EXECUTABLE_LINKER__donutmelt_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS @$RSP_FILE -o $TARGET_FILE && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   rspfile = $RSP_FILE
@@ -63,7 +63,7 @@ rule CUSTOM_COMMAND
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__bs2_default_unscanned_Release
+rule ASM_COMPILER__bs2_default_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -73,7 +73,7 @@ rule ASM_COMPILER__bs2_default_unscanned_Release
 #############################################
 # Rule for linking ASM executable.
 
-rule ASM_EXECUTABLE_LINKER__bs2_default_Release
+rule ASM_EXECUTABLE_LINKER__bs2_default_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking ASM executable $TARGET_FILE
   restat = $RESTAT
@@ -82,7 +82,7 @@ rule ASM_EXECUTABLE_LINKER__bs2_default_Release
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__bs2_default_library_unscanned_Release
+rule ASM_COMPILER__bs2_default_library_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -92,7 +92,7 @@ rule ASM_COMPILER__bs2_default_library_unscanned_Release
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__pico_H3LIS331DL_unscanned_Release
+rule ASM_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -102,7 +102,7 @@ rule ASM_COMPILER__pico_H3LIS331DL_unscanned_Release
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__pico_H3LIS331DL_unscanned_Release
+rule C_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -112,7 +112,7 @@ rule C_COMPILER__pico_H3LIS331DL_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__pico_H3LIS331DL_unscanned_Release
+rule CXX_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -122,7 +122,7 @@ rule CXX_COMPILER__pico_H3LIS331DL_unscanned_Release
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__pico_H3LIS331DL_Release
+rule CXX_STATIC_LIBRARY_LINKER__pico_H3LIS331DL_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
@@ -133,7 +133,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_H3LIS331DL_Release
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__c_wrapped_pico_dshot_unscanned_Release
+rule ASM_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -143,7 +143,7 @@ rule ASM_COMPILER__c_wrapped_pico_dshot_unscanned_Release
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__c_wrapped_pico_dshot_unscanned_Release
+rule C_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -153,7 +153,7 @@ rule C_COMPILER__c_wrapped_pico_dshot_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__c_wrapped_pico_dshot_unscanned_Release
+rule CXX_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -163,7 +163,7 @@ rule CXX_COMPILER__c_wrapped_pico_dshot_unscanned_Release
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__c_wrapped_pico_dshot_Release
+rule CXX_STATIC_LIBRARY_LINKER__c_wrapped_pico_dshot_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
@@ -174,7 +174,7 @@ rule CXX_STATIC_LIBRARY_LINKER__c_wrapped_pico_dshot_Release
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__pico_dshot_unscanned_Release
+rule ASM_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -184,7 +184,7 @@ rule ASM_COMPILER__pico_dshot_unscanned_Release
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__pico_dshot_unscanned_Release
+rule C_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -194,7 +194,7 @@ rule C_COMPILER__pico_dshot_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__pico_dshot_unscanned_Release
+rule CXX_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -204,7 +204,7 @@ rule CXX_COMPILER__pico_dshot_unscanned_Release
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__pico_dshot_Release
+rule CXX_STATIC_LIBRARY_LINKER__pico_dshot_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
@@ -215,7 +215,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_dshot_Release
 #############################################
 # Rule for compiling ASM files.
 
-rule ASM_COMPILER__pico_pio_loader_unscanned_Release
+rule ASM_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -225,7 +225,7 @@ rule ASM_COMPILER__pico_pio_loader_unscanned_Release
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__pico_pio_loader_unscanned_Release
+rule C_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -235,7 +235,7 @@ rule C_COMPILER__pico_pio_loader_unscanned_Release
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__pico_pio_loader_unscanned_Release
+rule CXX_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -245,11 +245,50 @@ rule CXX_COMPILER__pico_pio_loader_unscanned_Release
 #############################################
 # Rule for linking CXX static library.
 
-rule CXX_STATIC_LIBRARY_LINKER__pico_pio_loader_Release
+rule CXX_STATIC_LIBRARY_LINKER__pico_pio_loader_Debug
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling ASM files.
+
+rule ASM_COMPILER__pico_crsf_unscanned_Debug
+  depfile = $DEP_FILE
+  deps = gcc
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  description = Building ASM object $out
+
+
+#############################################
+# Rule for compiling C files.
+
+rule C_COMPILER__pico_crsf_unscanned_Debug
+  depfile = $DEP_FILE
+  deps = gcc
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building C object $out
+
+
+#############################################
+# Rule for compiling CXX files.
+
+rule CXX_COMPILER__pico_crsf_unscanned_Debug
+  depfile = $DEP_FILE
+  deps = gcc
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  description = Building CXX object $out
+
+
+#############################################
+# Rule for linking CXX static library.
+
+rule CXX_STATIC_LIBRARY_LINKER__pico_crsf_Debug
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  description = Linking CXX static library $TARGET_FILE
   restat = $RESTAT
 
 

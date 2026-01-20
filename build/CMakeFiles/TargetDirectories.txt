@@ -229,3 +229,8 @@ C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_d
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader/pico-sdk/CMakeFiles/rebuild_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-sdk/CMakeFiles/edit_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-sdk/CMakeFiles/rebuild_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/CMakeFiles/pico_crsf.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/CMakeFiles/edit_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/CMakeFiles/rebuild_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/pico-sdk/CMakeFiles/edit_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/pico-sdk/CMakeFiles/rebuild_cache.dir

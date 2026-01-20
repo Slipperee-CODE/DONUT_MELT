@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "Release")
+    set(CMAKE_INSTALL_CONFIG_NAME "Debug")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -42,6 +42,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/cmake_install.cmake")
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/cmake_install.cmake")
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/cmake_install.cmake")
+  include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/cmake_install.cmake")
 
 endif()
 
