@@ -2008,19 +2008,19 @@
 		},
 		{
 			"backtrace" : 5,
-			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
-		},
-		{
-			"backtrace" : 5,
 			"id" : "pico_H3LIS331DL::@761581e1a80b04a48e45"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
+			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
 		},
 		{
 			"backtrace" : 5,
 			"id" : "pico_dshot::@1b693b3a52ba1499a6e0"
+		},
+		{
+			"backtrace" : 5,
+			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
 		},
 		{
 			"backtrace" : 5,

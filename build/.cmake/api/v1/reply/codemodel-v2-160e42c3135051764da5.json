@@ -1643,7 +1643,7 @@
 				{
 					"directoryIndex" : 105,
 					"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e",
-					"jsonFile" : "target-c_wrapped_pico_dshot-Debug-9fac089a10c35b08fd0a.json",
+					"jsonFile" : "target-c_wrapped_pico_dshot-Debug-9052d30cfb4f4128abfd.json",
 					"name" : "c_wrapped_pico_dshot",
 					"projectIndex" : 0
 				},
@@ -1657,7 +1657,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "donutmelt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-donutmelt-Debug-ae2f0ed37fde0a110df3.json",
+					"jsonFile" : "target-donutmelt-Debug-8ced2135ecb83b7be8e2.json",
 					"name" : "donutmelt",
 					"projectIndex" : 0
 				},
@@ -1678,7 +1678,7 @@
 				{
 					"directoryIndex" : 106,
 					"id" : "pico_dshot::@1b693b3a52ba1499a6e0",
-					"jsonFile" : "target-pico_dshot-Debug-fecf9cd089ceaacc4dd9.json",
+					"jsonFile" : "target-pico_dshot-Debug-27e58af1e66c22e79a85.json",
 					"name" : "pico_dshot",
 					"projectIndex" : 3
 				},

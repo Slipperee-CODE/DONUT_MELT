@@ -1740,12 +1740,12 @@
 			"id" : "bs2_default_library::@9e89cb6b53d747b62405"
 		},
 		{
-			"backtrace" : 2,
-			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
-		},
-		{
 			"backtrace" : 4,
 			"id" : "pico_dshot_dshot_encoder_pio_h::@1b693b3a52ba1499a6e0"
+		},
+		{
+			"backtrace" : 2,
+			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
 		}
 	],
 	"id" : "pico_dshot::@1b693b3a52ba1499a6e0",
