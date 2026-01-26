@@ -1,4 +1,4 @@
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/CMakeFiles/donutmelt.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/CMakeFiles/donut_melt.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/CMakeFiles/edit_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/CMakeFiles/rebuild_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/CMakeFiles/edit_cache.dir
@@ -210,11 +210,6 @@ C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/src/rp2_com
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/src/rp2_common/pico_stdlib/CMakeFiles/rebuild_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/docs/CMakeFiles/edit_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/docs/CMakeFiles/rebuild_cache.dir
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/pico_H3LIS331DL.dir
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/edit_cache.dir
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/rebuild_cache.dir
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/pico-sdk/CMakeFiles/edit_cache.dir
-C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/pico-sdk/CMakeFiles/rebuild_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/CMakeFiles/c_wrapped_pico_dshot.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/CMakeFiles/edit_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/CMakeFiles/rebuild_cache.dir
@@ -234,3 +229,8 @@ C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/CMakeF
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/CMakeFiles/rebuild_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/pico-sdk/CMakeFiles/edit_cache.dir
 C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/pico-sdk/CMakeFiles/rebuild_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/pico_H3LIS331DL.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/edit_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/CMakeFiles/rebuild_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/pico-sdk/CMakeFiles/edit_cache.dir
+C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/pico-sdk/CMakeFiles/rebuild_cache.dir

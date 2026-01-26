@@ -171,7 +171,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=donutmelt
+CMAKE_PROJECT_NAME:STATIC=donut_melt
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-ranlib.exe
@@ -327,13 +327,22 @@ PICO_STDIO_USB:BOOL=OFF
 Python3_EXECUTABLE:STRING=C:/Users/CAIS/.pico-sdk/python/3.13.7/python.exe
 
 //Value Computed by CMake
-default_test_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf
+default_test_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL
 
 //Value Computed by CMake
 default_test_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-default_test_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_crsf
+default_test_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_H3LIS331DL
+
+//Value Computed by CMake
+donut_melt_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build
+
+//Value Computed by CMake
+donut_melt_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+donut_melt_SOURCE_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT
 
 //Value Computed by CMake
 donutmelt_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build

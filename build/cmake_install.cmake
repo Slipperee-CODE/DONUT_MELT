@@ -40,9 +40,9 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/cmake_install.cmake")
-  include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/cmake_install.cmake")
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/c_wrapped_pico_dshot/cmake_install.cmake")
   include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf/cmake_install.cmake")
+  include("C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL/cmake_install.cmake")
 
 endif()
 

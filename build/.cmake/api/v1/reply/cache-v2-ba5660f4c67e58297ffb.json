@@ -991,7 +991,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "donutmelt"
+			"value" : "donut_melt"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -2027,7 +2027,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_crsf"
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL"
 		},
 		{
 			"name" : "default_test_IS_TOP_LEVEL",
@@ -2051,7 +2051,43 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_crsf"
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/lib/pico_H3LIS331DL"
+		},
+		{
+			"name" : "donut_melt_BINARY_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build"
+		},
+		{
+			"name" : "donut_melt_IS_TOP_LEVEL",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "ON"
+		},
+		{
+			"name" : "donut_melt_SOURCE_DIR",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Value Computed by CMake"
+				}
+			],
+			"type" : "STATIC",
+			"value" : "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT"
 		},
 		{
 			"name" : "donutmelt_BINARY_DIR",

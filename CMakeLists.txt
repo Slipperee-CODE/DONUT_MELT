@@ -23,19 +23,19 @@ set(PICO_BOARD pico2 CACHE STRING "Board type")
 
 include(pico_sdk_import.cmake)
 
-project(donutmelt C CXX ASM)
+project(donut_melt C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(donutmelt src/donutmelt.c)
-add_subdirectory(lib/pico_H3LIS331DL)
+add_executable(donut_melt src/donut_melt.c)
 add_subdirectory(lib/c_wrapped_pico_dshot)
 add_subdirectory(lib/pico_crsf) 
+add_subdirectory(lib/pico_H3LIS331DL)
 
-pico_enable_stdio_uart(donutmelt 0)
-pico_enable_stdio_usb(donutmelt 1)
+pico_enable_stdio_uart(donut_melt 0)
+pico_enable_stdio_usb(donut_melt 1)
 
-target_link_libraries(donutmelt 
+target_link_libraries(donut_melt 
     c_wrapped_pico_dshot
     pico_H3LIS331DL
     pico_crsf
@@ -44,4 +44,4 @@ target_link_libraries(donutmelt
     hardware_uart
 )
 
-pico_add_extra_outputs(donutmelt)
+pico_add_extra_outputs(donut_melt)

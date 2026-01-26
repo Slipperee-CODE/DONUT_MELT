@@ -3,9 +3,6 @@
 #include "hardware/uart.h"
 #include "hardware/i2c.h"
 
-#ifndef DONUT_CONFIG_GUARD
-#define DONUT_CONFIG_GUARD
-
 //ALL OF THESE VALUES NEED TO BE ADJUSTED TO MATCH REALITY
 
 //----------TRANSLATIONAL DRIFT SETTINGS---------
@@ -23,6 +20,8 @@
 #define ACCEL_I2C_SCL 9
 
 #define RECEIVER_UART_ID uart1
+
+
 // RECEIVER_BAUD_RATE is 420000 and set in the crsf.c file
 #define RECEIVER_UART_TX_PIN 6
 #define RECEIVER_UART_RX_PIN 7
@@ -48,7 +47,4 @@
 //----------SAFETY----------
 #define ENABLE_WATCHDOG                           
 #define WATCH_DOG_TIMEOUT_MS 2000                
-#define VERIFY_RC_THROTTLE_ZERO_AT_BOOT 
-
-
-#endif 
+#define VERIFY_RC_THROTTLE_ZERO_AT_BOOT
