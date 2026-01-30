@@ -1657,7 +1657,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "donut_melt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-donut_melt-Debug-8f85636abab253661829.json",
+					"jsonFile" : "target-donut_melt-Debug-6db33fb922725d1115ca.json",
 					"name" : "donut_melt",
 					"projectIndex" : 0
 				},
@@ -1678,7 +1678,7 @@
 				{
 					"directoryIndex" : 104,
 					"id" : "pico_dshot::@1b693b3a52ba1499a6e0",
-					"jsonFile" : "target-pico_dshot-Debug-27e58af1e66c22e79a85.json",
+					"jsonFile" : "target-pico_dshot-Debug-fecf9cd089ceaacc4dd9.json",
 					"name" : "pico_dshot",
 					"projectIndex" : 2
 				},

@@ -1,0 +1,14 @@
+#pragma once
+
+// Used in header file and c file
+#include "c_pico_dshot.h"
+#include "hardware/pio.h"
+
+DShotEncoderInstance* MOTOR1;
+DShotEncoderInstance* MOTOR2;
+
+void motor_init_all(int motor1_pin, pio_hw_t* motor1_pio, int motor2_pin, pio_hw_t* motor2_pio);
+
+void motor_stop_all();
+
+void motor_send_throttle(DShotEncoderInstance* motor, double t);
