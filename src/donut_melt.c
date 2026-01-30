@@ -44,6 +44,8 @@ void wait_for_zero_throttle_and_receiver_connection(){
         // led_repeat_blink(2); 
         
         #ifdef OUTPUT_DIAGNOSTICS
+            printf("\n WAITING FOR ZERO THROTTLE OR RECEIVER CONNECTION \n \n");
+
             output_diagnostics();
         #endif
 
