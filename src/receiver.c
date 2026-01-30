@@ -1,62 +1,63 @@
 #include "receiver.h"
 
-channel_t left_joystick_x = {
-    .raw_ticks = 0,
-    .channel_id = 0,
-    .is_percent_signed = false
-};
-
-channel_t left_joystick_y = {
-    .raw_ticks = 0,
-    .channel_id = 1,
-    .is_percent_signed = false
-};
 
 channel_t right_joystick_x = {
     .raw_ticks = 0,
-    .channel_id = 2,
+    .channel_id = RIGHT_JOYSTICK_X_CHANNEL,
     .is_percent_signed = false
 };
 
 channel_t right_joystick_y = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = RIGHT_JOYSTICK_Y_CHANNEL,
     .is_percent_signed = false
 };
 
-channel_t switch_b = {
+channel_t left_joystick_x = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = LEFT_JOYSTICK_X_CHANNEL,
     .is_percent_signed = false
 };
 
-channel_t switch_c = {
+channel_t left_joystick_y = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = LEFT_JOYSTICK_Y_CHANNEL,
     .is_percent_signed = false
 };
 
 channel_t switch_e = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = SWITCH_E_CHANNEL,
+    .is_percent_signed = false
+};
+
+channel_t switch_b = {
+    .raw_ticks = 0,
+    .channel_id = SWITCH_B_CHANNEL,
+    .is_percent_signed = false
+};
+
+channel_t switch_c = {
+    .raw_ticks = 0,
+    .channel_id = SWITCH_C_CHANNEL,
     .is_percent_signed = false
 };
 
 channel_t switch_f = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = SWITCH_F_CHANNEL,
     .is_percent_signed = false
 };
 
 channel_t knob_s1 = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = KNOB_S1_CHANNEL,
     .is_percent_signed = false
 };
 
 channel_t knob_s2 = {
     .raw_ticks = 0,
-    .channel_id = 3,
+    .channel_id = KNOB_S2_CHANNEL,
     .is_percent_signed = false
 };
 
@@ -90,7 +91,7 @@ void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin){
     crsf_init(uart_id, tx_pin, rx_pin, on_update_rc_channels);
 }
 
-int receiver_check_if_disconnected(){
+uint8_t receiver_check_if_disconnected(){
     uint32_t curr_time = to_ms_since_boot(get_absolute_time());
     if (curr_time - time_of_last_update > RECEIVER_TIMEOUT_MS){
         time_of_last_update = curr_time;

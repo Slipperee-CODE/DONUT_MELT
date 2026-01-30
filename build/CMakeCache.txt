@@ -324,7 +324,7 @@ PICO_STDIO_UART:BOOL=ON
 PICO_STDIO_USB:BOOL=OFF
 
 //No help, variable specified on the command line.
-Python3_EXECUTABLE:UNINITIALIZED=C:/Users/CAIS/.pico-sdk/python/3.13.7/python.exe
+Python3_EXECUTABLE:STRING=C:/Users/CAIS/.pico-sdk/python/3.13.7/python.exe
 
 //Value Computed by CMake
 default_test_BINARY_DIR:STATIC=C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/lib/pico_H3LIS331DL
