@@ -9,8 +9,15 @@
  // IMPLEMENT ALL OTHER MISSING LOGIC (MOSTLY DRIVE) 
  //remember to flash proper esc firmware for bidirectional am32 movement (for tank)
  
+uint8_t get_drive_mode(){
+    if (switch_c.percent_of_max > 0.1){
+        return TANK_DRIVE;
+    }
+    return MELTY_DRIVE;
+}
+
 void output_diagnostics(){
-    printf("Accelerometer X: %lf \n", accelerometer_get_x());
+    //printf("Accelerometer X: %lf \n", accelerometer_get_x());
     printf("Receiver Health: %u", receiver_check_if_disconnected());
     printf("Current Drive Mode: %u", get_drive_mode());
     printf("left_joystick_x: %u \n", left_joystick_x.raw_ticks);
@@ -30,16 +37,9 @@ void output_diagnostics(){
 
 void wait_for_zero_throttle_and_receiver_connection(){
     while (receiver_check_if_disconnected()){ 
-        led_repeated_blink(2); 
+        led_repeat_blink(2); 
         watchdog_update(); 
     }
-}
-
-uint8_t get_drive_mode(){
-    if (switch_c.percent_of_max > 0.1){
-        return TANK_DRIVE;
-    }
-    return MELTY_DRIVE;
 }
 
 int main(){
