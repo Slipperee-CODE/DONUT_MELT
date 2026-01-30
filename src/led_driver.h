@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LED_DRIVER_H
+#define LED_DRIVER_H
 
 // Used in header file and c file
 #include <stdint.h>
@@ -12,3 +13,5 @@ void led_init(uint8_t pin);
 void led_repeat_blink(uint8_t repeats);
 
 void led_time_blink(int millis);
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RECEIVER_H
+#define RECEIVER_H
 
 // Used in header file and c file
 #include <stdint.h>
@@ -31,3 +32,5 @@ channel_t knob_s2;
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin);
 
 uint8_t receiver_check_if_disconnected();
+
+#endif

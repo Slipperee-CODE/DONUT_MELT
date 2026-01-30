@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DONUT_DRIVE_H
+#define DONUT_DRIVE_H
 
 // Used in c file
 #include "motor_driver.h"
@@ -9,3 +10,5 @@ void drive_handle_idle();
 void drive_handle_spin();
 
 void drive_handle_tank();
+
+#endif

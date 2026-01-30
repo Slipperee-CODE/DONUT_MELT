@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DONUT_CONFIG_H
+#define DONUT_CONFIG_H
 
 // Used in header file and c file
 #include "hardware/uart.h"
@@ -89,3 +90,5 @@
 #define WATCH_DOG_TIMEOUT_MS 100
 
 //----------END MISC----------
+
+#endif
