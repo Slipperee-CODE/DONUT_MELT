@@ -1,53 +1,85 @@
-#include <stdio.h>
-#include "pico/stdlib.h"
 #include "donut_config.h"
+#include "donut_drive.h"
+#include "led_driver.h"
+#include "receiver.h"
 #include "H3LIS331DL.h"
-#include "c_pico_dshot.h"
-#include "crsf.h"
 
-/*
-int main()
-{
-    stdio_init_all();
-
-    while (true){
-        printf("DONUT MELT IS WORKING! \n");
-        c_pico_dshot_is_library_accesible();
-        pico_H3LIS331DL_is_library_accesible();
-        pico_crsf_is_library_accesible();
+// TO DO:
+ // IMPLEMENT ALL OTHER MISSING LOGIC (MOSTLY DRIVE) 
+ //remember to flash proper esc firmware for bidirectional am32 movement (for tank)
+ 
+uint8_t get_drive_mode(){
+    if (switch_c.percent_of_max > 0.1){
+        return TANK_DRIVE;
     }
-
-    return 0;
+    return MELTY_DRIVE;
 }
-*/
+
+void output_diagnostics(){
+    //printf("Accelerometer X: %lf \n", accelerometer_get_x());
+    printf("----------DIAGNOSTICS---------- \n \n");
+    printf("Receiver Health: %u \n", receiver_check_if_disconnected());
+    printf("Current Drive Mode: %u \n", get_drive_mode());
+    printf("Killswitch State: %u \n", switch_e.percent_of_max == 0);
+    printf("left_joystick_x: %lf \n", left_joystick_x.raw_ticks);
+    printf("left_joystick_y: %lf \n", left_joystick_y.raw_ticks);
+    printf("right_joystick_x: %lf \n", right_joystick_x.raw_ticks);
+    printf("right_joystick_y: %lf \n", right_joystick_y.raw_ticks);
+
+    #ifdef OUTPUT_VERBOSE_DIAGNOSTICS
+        printf("switch_b: %lf \n", switch_b.raw_ticks);
+        printf("switch_c: %lf \n", switch_c.raw_ticks);
+        printf("switch_e: %lf \n", switch_e.raw_ticks);
+        printf("switch_f: %lf \n", switch_f.raw_ticks);
+        printf("knob_s1: %lf \n", knob_s1.raw_ticks);
+        printf("knob_s2: %lf \n", knob_s2.raw_ticks);
+    #endif
+
+    printf("\n ----------END DIAGNOSTICS---------- \n \n \n");
+}
+
+void wait_for_zero_throttle_and_receiver_connection(){
+    // while (receiver_check_if_disconnected()){ 
+    while (1){
+        // led_repeat_blink(2); 
+        
+        #ifdef OUTPUT_DIAGNOSTICS
+            printf("\n WAITING FOR ZERO THROTTLE OR RECEIVER CONNECTION \n \n");
+
+            output_diagnostics();
+        #endif
+
+        watchdog_update(); 
+    }
+}
 
 int main(){
-    //initialize stdio_init_all();
-    //initialize watchdog
-    //initialize accelerometer
-    //initialize motors/set their power to 0
-    //initialize leds
-    //initialize crsf data receiving
-    
-    //make diagnostics toggleable using #define in donut config 
-    //wait for 0 throttle and killswitch off before starting to spin (no matter what, i.e. if power down or transmitter dced)
-        //make receiver.c and receiver.h which handle storing channel data in structs which I then access from this file and donutcontrol.c
-        //hardcode storing specific channel in specific struct instance in get_receiver_channels() or update_receiver_channels() (<- do this) to update persisting global instances
+    stdio_init_all();
+    watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
+    //receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
+    //accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    //motor_init_all(MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO);
+    //led_init(HEADING_LIGHT_STRIP_PIN);
 
-    //stop robot if transmitter disconnects -> store some global value in crsf.c that represents how long it has been since we succesfully read uart, make a function like crsf_has_been_more_than_x_seconds_since_last_read(seconds) <- if that then return;
+    wait_for_zero_throttle_and_receiver_connection();
 
-    //go to same failsafe state/function if watchdog triggers or transmitter dcs (require throttle 0 again, blink in specific way)
+    while (1){
+        #ifdef OUTPUT_DIAGNOSTICS
+            output_diagnostics();
+        #endif
 
-    //make donutcontrol.c and donutcontrol.h
-        //include handle_idle(), handle_spin(), handle_tank() functions (call from here) which use pretty close to openmelt logic (or tank drive with both sticks)
+        if (switch_e.percent_of_max == 0){ continue; } // killswitch
 
-    //make led_driver.c and led_driver.h (make private library in lib folder)
-        //make multiple non-blocking led blink patterns that you call different functions for or select with a number that is abstracted into a #define (could use openmelt logic, very solid)
-            //i.e. #define FAST_BLINK 0 
-            // #define SLOW_BLINK 1
-            // PROBABLY USE ENUM STORED IN HEADER FILE INSTEAD OF A BUNCH OF DEFINES BECAUSE ENUM IS AUTO NUMBERED AND SEEMS TO COMPILE TO SIMILAR THING
+        watchdog_update(); // keep watchdog happy
 
-    //remember to flash proper esc firmware for bidirectional am32 movement (for tank)
+        if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
+
+        if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
+
+        if (get_drive_mode() == MELTY_DRIVE){ drive_handle_spin(); }
+
+        if (get_drive_mode() == TANK_DRIVE){ drive_handle_tank(); } 
+    }
 
     return 0;
 }
