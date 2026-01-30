@@ -42,6 +42,7 @@ target_link_libraries(donut_melt
     pico_H3LIS331DL
     pico_crsf
     pico_stdlib
+    pico_time
     hardware_i2c
     hardware_uart
 )
