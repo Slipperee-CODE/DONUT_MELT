@@ -18,16 +18,16 @@ typedef struct {
     bool is_percent_signed; 
 } channel_t;
 
-channel_t left_joystick_x;
-channel_t left_joystick_y;
-channel_t right_joystick_x;
-channel_t right_joystick_y;
-channel_t switch_b;
-channel_t switch_c;
-channel_t switch_e;
-channel_t switch_f;
-channel_t knob_s1;
-channel_t knob_s2;
+extern channel_t left_joystick_x;
+extern channel_t left_joystick_y;
+extern channel_t right_joystick_x;
+extern channel_t right_joystick_y;
+extern channel_t switch_b;
+extern channel_t switch_c;
+extern channel_t switch_e;
+extern channel_t switch_f;
+extern channel_t knob_s1;
+extern channel_t knob_s2;
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin);
 

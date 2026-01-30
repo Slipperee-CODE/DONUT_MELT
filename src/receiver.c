@@ -3,18 +3,21 @@
 channel_t right_joystick_x = {
     .raw_ticks = 0,
     .channel_id = RIGHT_JOYSTICK_X_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t right_joystick_y = {
     .raw_ticks = 0,
     .channel_id = RIGHT_JOYSTICK_Y_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t left_joystick_y = {
     .raw_ticks = 0,
     .channel_id = LEFT_JOYSTICK_Y_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
@@ -22,42 +25,49 @@ channel_t left_joystick_y = {
 channel_t left_joystick_x = {
     .raw_ticks = 0,
     .channel_id = LEFT_JOYSTICK_X_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t switch_e = {
     .raw_ticks = 0,
     .channel_id = SWITCH_E_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t switch_b = {
     .raw_ticks = 0,
     .channel_id = SWITCH_B_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t switch_c = {
     .raw_ticks = 0,
     .channel_id = SWITCH_C_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t switch_f = {
     .raw_ticks = 0,
     .channel_id = SWITCH_F_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t knob_s1 = {
     .raw_ticks = 0,
     .channel_id = KNOB_S1_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 
 channel_t knob_s2 = {
     .raw_ticks = 0,
     .channel_id = KNOB_S2_CHANNEL,
+    .percent_of_max = 0,
     .is_percent_signed = false
 };
 

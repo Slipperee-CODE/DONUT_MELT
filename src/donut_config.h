@@ -1,7 +1,7 @@
 #ifndef DONUT_CONFIG_H
 #define DONUT_CONFIG_H
 
-// Used in header file and c file
+// Used in this header file and donut_melt.c
 #include "hardware/uart.h"
 #include "hardware/i2c.h"
 #include "hardware/pio.h"
@@ -85,7 +85,7 @@
 #define HEADING_LIGHT_STRIP_PIN	22
 
 #define OUTPUT_DIAGNOSTICS
-#define OUTPUT_VERBOSE_DIAGNOSTICS
+// #define OUTPUT_VERBOSE_DIAGNOSTICS
 
 #define WATCH_DOG_TIMEOUT_MS 100
 

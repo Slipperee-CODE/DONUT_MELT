@@ -5,8 +5,8 @@
 #include "c_pico_dshot.h"
 #include "hardware/pio.h"
 
-DShotEncoderInstance* MOTOR1;
-DShotEncoderInstance* MOTOR2;
+extern DShotEncoderInstance* MOTOR1;
+extern DShotEncoderInstance* MOTOR2;
 
 void motor_init_all(int motor1_pin, pio_hw_t* motor1_pio, int motor2_pin, pio_hw_t* motor2_pio);
 
