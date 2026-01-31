@@ -31,6 +31,8 @@ extern channel_t knob_s2;
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin);
 
+void receiver_update();
+
 uint8_t receiver_check_if_disconnected();
 
 #endif

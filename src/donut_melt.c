@@ -16,8 +16,8 @@ uint8_t get_drive_mode(){
 }
 
 void output_diagnostics(){
-    //printf("Accelerometer X: %lf \n", accelerometer_get_x());
     printf("----------DIAGNOSTICS---------- \n \n");
+    printf("Accelerometer X: %lf \n", accelerometer_get_x());
     printf("Receiver Health: %u \n", receiver_check_if_disconnected());
     printf("Current Drive Mode: %u \n", get_drive_mode());
     printf("Killswitch State: %u \n", switch_e.percent_of_max == 0);
@@ -39,15 +39,17 @@ void output_diagnostics(){
 }
 
 void wait_for_zero_throttle_and_receiver_connection(){
-    // while (receiver_check_if_disconnected()){ 
+    // while (receiver_check_if_disconnected()){
     while (1){
-        // led_repeat_blink(2); 
+        led_time_blink(TIME_BETWEEN_SLOW_BLINK); 
         
         #ifdef OUTPUT_DIAGNOSTICS
             printf("\n WAITING FOR ZERO THROTTLE OR RECEIVER CONNECTION \n \n");
 
             output_diagnostics();
         #endif
+
+        receiver_update();
 
         watchdog_update(); 
     }
@@ -56,10 +58,10 @@ void wait_for_zero_throttle_and_receiver_connection(){
 int main(){
     stdio_init_all();
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
-    //receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
+    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
     //accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     //motor_init_all(MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO);
-    //led_init(HEADING_LIGHT_STRIP_PIN);
+    led_init(HEADING_LIGHT_STRIP_PIN);
 
     wait_for_zero_throttle_and_receiver_connection();
 
@@ -72,7 +74,7 @@ int main(){
 
         watchdog_update(); // keep watchdog happy
 
-        if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
+        //if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
         if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
 

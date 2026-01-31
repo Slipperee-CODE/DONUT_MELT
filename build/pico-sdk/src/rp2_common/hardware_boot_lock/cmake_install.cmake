@@ -1,8 +1,8 @@
-# Install script for directory: C:/Users/CAIS/.pico-sdk/sdk/2.2.0/src/rp2_common/hardware_boot_lock
+# Install script for directory: C:/Users/schei/.pico-sdk/sdk/2.2.0/src/rp2_common/hardware_boot_lock
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/donutmelt")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/donut_melt")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,12 +34,12 @@ endif()
 
 # Set path to fallback-tool for dependency-resolution.
 if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "C:/Users/CAIS/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-objdump.exe")
+  set(CMAKE_OBJDUMP "C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-objdump.exe")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "C:/Users/CAIS/Documents/GitHubRepositories/DONUT_MELT/build/pico-sdk/src/rp2_common/hardware_boot_lock/install_local_manifest.txt"
+  file(WRITE "C:/Users/schei/Documents/DONUT_MELT/build/pico-sdk/src/rp2_common/hardware_boot_lock/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

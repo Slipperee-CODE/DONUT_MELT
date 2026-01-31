@@ -99,12 +99,16 @@ void on_update_rc_channels(packed_payload_t* channels) {
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin){
     crsf_init(uart_id, tx_pin, rx_pin, on_update_rc_channels);
+    time_of_last_update = 0;
+}
+
+void receiver_update(){
+    crsf_read_incoming_frames();
 }
 
 uint8_t receiver_check_if_disconnected(){
     uint32_t curr_time = to_ms_since_boot(get_absolute_time());
     if (curr_time - time_of_last_update > RECEIVER_TIMEOUT_MS){
-        time_of_last_update = curr_time;
         return 1;
     }
     return 0;

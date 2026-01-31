@@ -17,7 +17,7 @@
 rule ASM_COMPILER__donut_melt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -27,7 +27,7 @@ rule ASM_COMPILER__donut_melt_unscanned_Debug
 rule C_COMPILER__donut_melt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -37,7 +37,7 @@ rule C_COMPILER__donut_melt_unscanned_Debug
 rule CXX_COMPILER__donut_melt_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -45,7 +45,7 @@ rule CXX_COMPILER__donut_melt_unscanned_Debug
 # Rule for linking CXX executable.
 
 rule CXX_EXECUTABLE_LINKER__donut_melt_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS @$RSP_FILE -o $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS @$RSP_FILE -o $TARGET_FILE && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
@@ -66,7 +66,7 @@ rule CUSTOM_COMMAND
 rule ASM_COMPILER__bs2_default_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -74,7 +74,7 @@ rule ASM_COMPILER__bs2_default_unscanned_Debug
 # Rule for linking ASM executable.
 
 rule ASM_EXECUTABLE_LINKER__bs2_default_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $FLAGS -Wl,--build-id=none $LINK_FLAGS $in -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking ASM executable $TARGET_FILE
   restat = $RESTAT
 
@@ -85,7 +85,7 @@ rule ASM_EXECUTABLE_LINKER__bs2_default_Debug
 rule ASM_COMPILER__bs2_default_library_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -95,7 +95,7 @@ rule ASM_COMPILER__bs2_default_library_unscanned_Debug
 rule ASM_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -105,7 +105,7 @@ rule ASM_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
 rule C_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -115,7 +115,7 @@ rule C_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
 rule CXX_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -123,7 +123,7 @@ rule CXX_COMPILER__c_wrapped_pico_dshot_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__c_wrapped_pico_dshot_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
@@ -136,7 +136,7 @@ rule CXX_STATIC_LIBRARY_LINKER__c_wrapped_pico_dshot_Debug
 rule ASM_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -146,7 +146,7 @@ rule ASM_COMPILER__pico_dshot_unscanned_Debug
 rule C_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -156,7 +156,7 @@ rule C_COMPILER__pico_dshot_unscanned_Debug
 rule CXX_COMPILER__pico_dshot_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -164,7 +164,7 @@ rule CXX_COMPILER__pico_dshot_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__pico_dshot_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
@@ -177,7 +177,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_dshot_Debug
 rule ASM_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -187,7 +187,7 @@ rule ASM_COMPILER__pico_pio_loader_unscanned_Debug
 rule C_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -197,7 +197,7 @@ rule C_COMPILER__pico_pio_loader_unscanned_Debug
 rule CXX_COMPILER__pico_pio_loader_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -205,7 +205,7 @@ rule CXX_COMPILER__pico_pio_loader_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__pico_pio_loader_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
@@ -218,7 +218,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_pio_loader_Debug
 rule ASM_COMPILER__pico_crsf_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -228,7 +228,7 @@ rule ASM_COMPILER__pico_crsf_unscanned_Debug
 rule C_COMPILER__pico_crsf_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -238,7 +238,7 @@ rule C_COMPILER__pico_crsf_unscanned_Debug
 rule CXX_COMPILER__pico_crsf_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -246,7 +246,7 @@ rule CXX_COMPILER__pico_crsf_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__pico_crsf_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS $in && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   restat = $RESTAT
 
@@ -257,7 +257,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_crsf_Debug
 rule ASM_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
   description = Building ASM object $out
 
 
@@ -267,7 +267,7 @@ rule ASM_COMPILER__pico_H3LIS331DL_unscanned_Debug
 rule C_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-gcc.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building C object $out
 
 
@@ -277,7 +277,7 @@ rule C_COMPILER__pico_H3LIS331DL_unscanned_Debug
 rule CXX_COMPILER__pico_H3LIS331DL_unscanned_Debug
   depfile = $DEP_FILE
   deps = gcc
-  command = ${LAUNCHER}${CODE_CHECK}C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = ${LAUNCHER}${CODE_CHECK}C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-g++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -285,7 +285,7 @@ rule CXX_COMPILER__pico_H3LIS331DL_unscanned_Debug
 # Rule for linking CXX static library.
 
 rule CXX_STATIC_LIBRARY_LINKER__pico_H3LIS331DL_Debug
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\CAIS\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
+  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe -E rm -f $TARGET_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ar.exe qc $TARGET_FILE $LINK_FLAGS @$RSP_FILE && C:\Users\schei\.pico-sdk\toolchain\14_2_Rel1\bin\arm-none-eabi-ranlib.exe $TARGET_FILE && $POST_BUILD"
   description = Linking CXX static library $TARGET_FILE
   rspfile = $RSP_FILE
   rspfile_content = $in $LINK_PATH $LINK_LIBRARIES
@@ -296,7 +296,7 @@ rule CXX_STATIC_LIBRARY_LINKER__pico_H3LIS331DL_Debug
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = C:\Users\CAIS\.pico-sdk\cmake\v3.31.5\bin\cmake.exe --regenerate-during-build -SC:\Users\CAIS\Documents\GitHubRepositories\DONUT_MELT -BC:\Users\CAIS\Documents\GitHubRepositories\DONUT_MELT\build
+  command = C:\Users\schei\.pico-sdk\cmake\v3.31.5\bin\cmake.exe --regenerate-during-build -SC:\Users\schei\Documents\DONUT_MELT -BC:\Users\schei\Documents\DONUT_MELT\build
   description = Re-running CMake...
   generator = 1
 
@@ -305,7 +305,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = C:\Users\CAIS\.pico-sdk\ninja\v1.12.1\ninja.exe $FILE_ARG -t clean $TARGETS
+  command = C:\Users\schei\.pico-sdk\ninja\v1.12.1\ninja.exe $FILE_ARG -t clean $TARGETS
   description = Cleaning all built files...
 
 
@@ -313,6 +313,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = C:\Users\CAIS\.pico-sdk\ninja\v1.12.1\ninja.exe -t targets
+  command = C:\Users\schei\.pico-sdk\ninja\v1.12.1\ninja.exe -t targets
   description = All primary targets available:
 

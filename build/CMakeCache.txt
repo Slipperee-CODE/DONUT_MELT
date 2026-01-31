@@ -46,12 +46,11 @@ CMAKE_ASM_FLAGS_RELEASE:STRING=-g -O3 -DNDEBUG
 //Flags used by the ASM compiler during RELWITHDEBINFO builds.
 CMAKE_ASM_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//Choose the type of build, options are: 'Debug', 'Release', 'MinSizeRel',
-// 'RelWithDebInfo'.
-CMAKE_BUILD_TYPE:STRING=Release
+//No help, variable specified on the command line.
+CMAKE_BUILD_TYPE:STRING=Debug
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-g++.exe
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:FILEPATH=C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-g++.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -76,8 +75,8 @@ CMAKE_CXX_FLAGS_RELEASE:STRING=-g -O3 -DNDEBUG
 //Flags used by the CXX compiler during RELWITHDEBINFO builds.
 CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG
 
-//C compiler
-CMAKE_C_COMPILER:STRING=C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc.exe
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER:FILEPATH=C:/Users/schei/.pico-sdk/toolchain/14_2_Rel1/bin/arm-none-eabi-gcc.exe
 
 //A wrapper around 'ar' adding the appropriate '--plugin' option
 // for the GCC compiler
@@ -122,6 +121,9 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 
 //Enable/Disable output of build database during the build.
 CMAKE_EXPORT_BUILD_DATABASE:BOOL=
+
+//No help, variable specified on the command line.
+CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE
 
 //Value Computed by CMake.
 CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/schei/Documents/DONUT_MELT/build/CMakeFiles/pkgRedirects
@@ -352,6 +354,15 @@ pico_dshot_IS_TOP_LEVEL:STATIC=OFF
 pico_dshot_SOURCE_DIR:STATIC=C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot
 
 //Value Computed by CMake
+pico_pio_loader_BINARY_DIR:STATIC=C:/Users/schei/Documents/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader
+
+//Value Computed by CMake
+pico_pio_loader_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+pico_pio_loader_SOURCE_DIR:STATIC=C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/pico-pio-loader
+
+//Value Computed by CMake
 pico_sdk_BINARY_DIR:STATIC=C:/Users/schei/Documents/DONUT_MELT/build/pico-sdk
 
 //Value Computed by CMake
@@ -386,8 +397,6 @@ CMAKE_ASM_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1
 CMAKE_ASM_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_ASM_FLAGS_RELWITHDEBINFO
 CMAKE_ASM_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
-//STRINGS property for variable: CMAKE_BUILD_TYPE
-CMAKE_BUILD_TYPE-STRINGS:INTERNAL=Debug;Release;MinSizeRel;RelWithDebInfo
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/schei/Documents/DONUT_MELT/build
 //Major version of cmake used to create the current loaded cache
@@ -482,7 +491,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=111
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=112
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
