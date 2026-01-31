@@ -3,13 +3,9 @@
 #include "led_driver.h"
 #include "receiver.h"
 #include "H3LIS331DL.h"
- 
-uint8_t get_killswitch_state(){
-    return knob_s1.percent_of_max > 0.5;
-}
 
 uint8_t get_drive_mode(){
-    return knob_s1.percent_of_max > 0.5;
+    return knob_s1.raw_ticks > RAW_TICK_NORMALIZER / 2;
 }
 
 void output_diagnostics(){
@@ -17,7 +13,6 @@ void output_diagnostics(){
     //printf("Accelerometer X: %lf \n", accelerometer_get_x());
     printf("Receiver Health: %u \n", receiver_check_if_disconnected()==0);
     printf("Current Drive Mode: %u \n", get_drive_mode());
-    //printf("Killswitch State: %u \n", get_killswitch_state());
     printf("left_joystick_x: %u \n", left_joystick_x.raw_ticks);
     printf("left_joystick_y: %u \n", left_joystick_y.raw_ticks);
     printf("right_joystick_x: %u \n", right_joystick_x.raw_ticks);
@@ -26,7 +21,7 @@ void output_diagnostics(){
 }
 
 void wait_for_zero_throttle_and_receiver_connection(){
-    while (receiver_check_if_disconnected() && right_joystick_y.percent_of_max < 0.15){
+    while (receiver_check_if_disconnected() && fabs(right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER - 0.5) > 0.1 && fabs(left_joystick_y.raw_ticks / RAW_TICK_NORMALIZER - 0.5) > 0.1){
         led_time_blink(TIME_BETWEEN_SLOW_BLINK); 
         
         #ifdef OUTPUT_DIAGNOSTICS
@@ -62,15 +57,11 @@ int main(){
 
         watchdog_update(); // keep watchdog happy
 
-        //if (get_killswitch_state()){ continue; } // killswitch
-
         if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
-        if (right_joystick_y.percent_of_max >= 0.4 && right_joystick_y.percent_of_max <= 0.6){ drive_handle_idle(); continue; }
+        if (get_drive_mode() == 1){ drive_handle_spin((double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); }
 
-        if (get_drive_mode() == 1){ drive_handle_spin(right_joystick_y.percent_of_max); }
-
-        if (get_drive_mode() == 0){ drive_handle_tank(left_joystick_y.percent_of_max, right_joystick_y.percent_of_max); } 
+        if (get_drive_mode() == 0){ drive_handle_tank((double) left_joystick_y.raw_ticks / RAW_TICK_NORMALIZER, (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); } 
     }
 
     return 0;

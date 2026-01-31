@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/watchdog.h"
+#include <math.h>
 
 //---------------LED SETTINGS---------------
 
@@ -81,9 +82,11 @@
 
 #define HEADING_LIGHT_STRIP_PIN	22
 
-#define OUTPUT_DIAGNOSTICS
+//#define OUTPUT_DIAGNOSTICS
 
 #define WATCH_DOG_TIMEOUT_MS 100
+
+#define RAW_TICK_NORMALIZER 2047
 
 //----------END MISC----------
 

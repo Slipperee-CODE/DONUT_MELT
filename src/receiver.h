@@ -16,9 +16,6 @@
 
 typedef struct {
     volatile uint16_t raw_ticks;
-    uint8_t channel_id;
-    volatile double percent_of_max;
-    bool is_percent_signed; 
 } channel_t;
 
 extern channel_t left_joystick_x;
