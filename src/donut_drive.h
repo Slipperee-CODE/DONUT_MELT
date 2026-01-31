@@ -7,6 +7,8 @@
 #include "donut_config.h"
 #include "pico/time.h"
 
+#include <stdio.h>
+
 void drive_handle_idle();
 
 void drive_handle_spin(double throttle);

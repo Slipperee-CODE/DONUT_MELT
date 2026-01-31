@@ -18,10 +18,10 @@ void output_diagnostics(){
     printf("Receiver Health: %u \n", receiver_check_if_disconnected()==0);
     printf("Current Drive Mode: %u \n", get_drive_mode());
     //printf("Killswitch State: %u \n", get_killswitch_state());
-    printf("left_joystick_x: %lf \n", left_joystick_x.percent_of_max);
-    printf("left_joystick_y: %lf \n", left_joystick_y.percent_of_max);
-    printf("right_joystick_x: %lf \n", right_joystick_x.percent_of_max);
-    printf("right_joystick_y: %lf \n", right_joystick_y.percent_of_max);
+    printf("left_joystick_x: %u \n", left_joystick_x.raw_ticks);
+    printf("left_joystick_y: %u \n", left_joystick_y.raw_ticks);
+    printf("right_joystick_x: %u \n", right_joystick_x.raw_ticks);
+    printf("right_joystick_y: %u \n", right_joystick_y.raw_ticks);
     printf("\n ----------END DIAGNOSTICS---------- \n \n \n");
 }
 
