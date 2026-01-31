@@ -1,5 +1,8 @@
 #include "motor_driver.h"
 
+DShotEncoderInstance* MOTOR1;
+DShotEncoderInstance* MOTOR2;
+
 void motor_init_all(int motor1_pin, pio_hw_t* motor1_pio, int motor2_pin, pio_hw_t* motor2_pio){
     MOTOR1 = DShotEncoder_create(motor1_pin, motor1_pio);
     MOTOR2 = DShotEncoder_create(motor2_pin, motor2_pio);

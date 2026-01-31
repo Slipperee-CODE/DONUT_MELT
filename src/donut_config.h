@@ -79,13 +79,9 @@
 
 //----------MISC----------
 
-#define MELTY_DRIVE 0
-#define TANK_DRIVE 1
-
 #define HEADING_LIGHT_STRIP_PIN	22
 
 #define OUTPUT_DIAGNOSTICS
-//#define OUTPUT_VERBOSE_DIAGNOSTICS
 
 #define WATCH_DOG_TIMEOUT_MS 100
 

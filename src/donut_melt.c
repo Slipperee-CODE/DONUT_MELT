@@ -3,16 +3,13 @@
 #include "led_driver.h"
 #include "receiver.h"
 #include "H3LIS331DL.h"
-
-// TO DO:
- // IMPLEMENT ALL OTHER MISSING LOGIC (MOSTLY DRIVE) 
- //remember to flash proper esc firmware for bidirectional am32 movement (for tank)
  
+uint8_t get_killswitch_state(){
+    return knob_s1.percent_of_max > 0.5;
+}
+
 uint8_t get_drive_mode(){
-    if (switch_c.percent_of_max > 0.5){
-        return TANK_DRIVE;
-    }
-    return MELTY_DRIVE;
+    return knob_s1.percent_of_max > 0.5;
 }
 
 void output_diagnostics(){
@@ -20,21 +17,11 @@ void output_diagnostics(){
     //printf("Accelerometer X: %lf \n", accelerometer_get_x());
     printf("Receiver Health: %u \n", receiver_check_if_disconnected()==0);
     printf("Current Drive Mode: %u \n", get_drive_mode());
-    printf("Killswitch State: %lf \n", switch_e.percent_of_max);
-    printf("left_joystick_x: %u \n", left_joystick_x.raw_ticks);
-    printf("left_joystick_y: %u \n", left_joystick_y.raw_ticks);
-    printf("right_joystick_x: %u \n", right_joystick_x.raw_ticks);
-    printf("right_joystick_y: %u \n", right_joystick_y.raw_ticks);
-
-    #ifdef OUTPUT_VERBOSE_DIAGNOSTICS
-        printf("switch_b: %u \n", switch_b.raw_ticks);
-        printf("switch_c: %u \n", switch_c.raw_ticks);
-        printf("switch_e: %u \n", switch_e.raw_ticks);
-        printf("switch_f: %u \n", switch_f.raw_ticks);
-        printf("knob_s1: %u \n", knob_s1.raw_ticks);
-        printf("knob_s2: %u \n", knob_s2.raw_ticks);
-    #endif
-
+    //printf("Killswitch State: %u \n", get_killswitch_state());
+    printf("left_joystick_x: %lf \n", left_joystick_x.percent_of_max);
+    printf("left_joystick_y: %lf \n", left_joystick_y.percent_of_max);
+    printf("right_joystick_x: %lf \n", right_joystick_x.percent_of_max);
+    printf("right_joystick_y: %lf \n", right_joystick_y.percent_of_max);
     printf("\n ----------END DIAGNOSTICS---------- \n \n \n");
 }
 
@@ -71,17 +58,19 @@ int main(){
 
         led_time_blink(TIME_BETWEEN_FAST_BLINK); 
 
-        if (switch_e.percent_of_max > 0.5){ continue; } // killswitch
+        receiver_update();
 
         watchdog_update(); // keep watchdog happy
 
+        //if (get_killswitch_state()){ continue; } // killswitch
+
         if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
-        if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
+        if (left_joystick_x.percent_of_max <= 0.15){ drive_handle_idle(); continue; }
 
-        if (get_drive_mode() == MELTY_DRIVE){ drive_handle_spin(); }
+        if (get_drive_mode() == 1){ drive_handle_spin(); }
 
-        if (get_drive_mode() == TANK_DRIVE){ drive_handle_tank(); } 
+        if (get_drive_mode() == 0){ drive_handle_tank(); } 
     }
 
     return 0;
