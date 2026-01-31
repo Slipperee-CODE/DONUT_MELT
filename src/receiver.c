@@ -76,9 +76,9 @@ uint32_t time_of_last_update;
 void update_channel_t_data(channel_t* channel, uint16_t raw_ticks){
     channel->raw_ticks = raw_ticks;
     if (channel->is_percent_signed){
-        channel->percent_of_max = channel->raw_ticks / 2047.0f;
-    } else {
         channel->percent_of_max = (1/1023.5f) * channel->raw_ticks - 1;
+    } else {
+        channel->percent_of_max = channel->raw_ticks / 2047.0f;
     }
 }
 

@@ -11,6 +11,9 @@
 #include "crsf.h"
 #include "donut_config.h"
 
+// If this is included, something is actively wrong and I am checking it
+// #include <stdio.h>
+
 typedef struct {
     volatile uint16_t raw_ticks;
     uint8_t channel_id;

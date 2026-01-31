@@ -9,7 +9,7 @@
  //remember to flash proper esc firmware for bidirectional am32 movement (for tank)
  
 uint8_t get_drive_mode(){
-    if (switch_c.percent_of_max > 0.1){
+    if (switch_c.percent_of_max > 0.5){
         return TANK_DRIVE;
     }
     return MELTY_DRIVE;
@@ -17,30 +17,29 @@ uint8_t get_drive_mode(){
 
 void output_diagnostics(){
     printf("----------DIAGNOSTICS---------- \n \n");
-    printf("Accelerometer X: %lf \n", accelerometer_get_x());
-    printf("Receiver Health: %u \n", receiver_check_if_disconnected());
+    //printf("Accelerometer X: %lf \n", accelerometer_get_x());
+    printf("Receiver Health: %u \n", receiver_check_if_disconnected()==0);
     printf("Current Drive Mode: %u \n", get_drive_mode());
-    printf("Killswitch State: %u \n", switch_e.percent_of_max == 0);
-    printf("left_joystick_x: %lf \n", left_joystick_x.raw_ticks);
-    printf("left_joystick_y: %lf \n", left_joystick_y.raw_ticks);
-    printf("right_joystick_x: %lf \n", right_joystick_x.raw_ticks);
-    printf("right_joystick_y: %lf \n", right_joystick_y.raw_ticks);
+    printf("Killswitch State: %lf \n", switch_e.percent_of_max);
+    printf("left_joystick_x: %u \n", left_joystick_x.raw_ticks);
+    printf("left_joystick_y: %u \n", left_joystick_y.raw_ticks);
+    printf("right_joystick_x: %u \n", right_joystick_x.raw_ticks);
+    printf("right_joystick_y: %u \n", right_joystick_y.raw_ticks);
 
     #ifdef OUTPUT_VERBOSE_DIAGNOSTICS
-        printf("switch_b: %lf \n", switch_b.raw_ticks);
-        printf("switch_c: %lf \n", switch_c.raw_ticks);
-        printf("switch_e: %lf \n", switch_e.raw_ticks);
-        printf("switch_f: %lf \n", switch_f.raw_ticks);
-        printf("knob_s1: %lf \n", knob_s1.raw_ticks);
-        printf("knob_s2: %lf \n", knob_s2.raw_ticks);
+        printf("switch_b: %u \n", switch_b.raw_ticks);
+        printf("switch_c: %u \n", switch_c.raw_ticks);
+        printf("switch_e: %u \n", switch_e.raw_ticks);
+        printf("switch_f: %u \n", switch_f.raw_ticks);
+        printf("knob_s1: %u \n", knob_s1.raw_ticks);
+        printf("knob_s2: %u \n", knob_s2.raw_ticks);
     #endif
 
     printf("\n ----------END DIAGNOSTICS---------- \n \n \n");
 }
 
 void wait_for_zero_throttle_and_receiver_connection(){
-    // while (receiver_check_if_disconnected()){
-    while (1){
+    while (receiver_check_if_disconnected()){
         led_time_blink(TIME_BETWEEN_SLOW_BLINK); 
         
         #ifdef OUTPUT_DIAGNOSTICS
@@ -70,11 +69,13 @@ int main(){
             output_diagnostics();
         #endif
 
-        if (switch_e.percent_of_max == 0){ continue; } // killswitch
+        led_time_blink(TIME_BETWEEN_FAST_BLINK); 
+
+        if (switch_e.percent_of_max > 0.5){ continue; } // killswitch
 
         watchdog_update(); // keep watchdog happy
 
-        //if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
+        if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
         if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
 

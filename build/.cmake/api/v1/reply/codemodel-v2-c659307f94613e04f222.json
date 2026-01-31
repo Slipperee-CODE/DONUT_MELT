@@ -1643,7 +1643,7 @@
 				{
 					"directoryIndex" : 103,
 					"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e",
-					"jsonFile" : "target-c_wrapped_pico_dshot-Debug-2705a1cae74ec51ac8bd.json",
+					"jsonFile" : "target-c_wrapped_pico_dshot-Debug-c8feaf0380e2d1ea3696.json",
 					"name" : "c_wrapped_pico_dshot",
 					"projectIndex" : 0
 				},
@@ -1657,7 +1657,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "donut_melt::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-donut_melt-Debug-d9bb85c0a80138a5c054.json",
+					"jsonFile" : "target-donut_melt-Debug-53e28653d7a4cc099538.json",
 					"name" : "donut_melt",
 					"projectIndex" : 0
 				},
