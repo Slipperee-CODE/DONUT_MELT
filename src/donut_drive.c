@@ -1,7 +1,7 @@
 #include "donut_drive.h"
 
 void drive_handle_idle(){
-    led_time_blink(TIME_BETWEEN_FAST_BLINKS);
+    // led_time_blink(TIME_BETWEEN_FAST_BLINKS);
 }
 
 void drive_handle_spin(double throttle){
