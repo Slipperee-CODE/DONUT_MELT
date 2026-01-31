@@ -26,7 +26,7 @@ void output_diagnostics(){
 }
 
 void wait_for_zero_throttle_and_receiver_connection(){
-    while (receiver_check_if_disconnected()){
+    while (receiver_check_if_disconnected() && right_joystick_y.percent_of_max < 0.15){
         led_time_blink(TIME_BETWEEN_SLOW_BLINK); 
         
         #ifdef OUTPUT_DIAGNOSTICS
@@ -46,7 +46,7 @@ int main(){
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
     //accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
-    //motor_init_all(MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO);
+    motor_init_all(MOTOR1_PIN, MOTOR2_PIN);
     led_init(HEADING_LIGHT_STRIP_PIN);
 
     wait_for_zero_throttle_and_receiver_connection();
@@ -66,11 +66,11 @@ int main(){
 
         if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
-        if (left_joystick_x.percent_of_max <= 0.15){ drive_handle_idle(); continue; }
+        if (right_joystick_y.percent_of_max >= 0.4 && right_joystick_y.percent_of_max <= 0.6){ drive_handle_idle(); continue; }
 
-        if (get_drive_mode() == 1){ drive_handle_spin(); }
+        if (get_drive_mode() == 1){ drive_handle_spin(right_joystick_y.percent_of_max); }
 
-        if (get_drive_mode() == 0){ drive_handle_tank(); } 
+        if (get_drive_mode() == 0){ drive_handle_tank(left_joystick_y.percent_of_max, right_joystick_y.percent_of_max); } 
     }
 
     return 0;

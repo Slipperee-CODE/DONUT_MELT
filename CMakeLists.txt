@@ -45,6 +45,7 @@ target_link_libraries(donut_melt
     pico_time
     hardware_i2c
     hardware_uart
+    hardware_pwm
 )
 
 pico_add_extra_outputs(donut_melt)

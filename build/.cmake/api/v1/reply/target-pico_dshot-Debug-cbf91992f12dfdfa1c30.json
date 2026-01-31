@@ -3,7 +3,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "lib/c_wrapped_pico_dshot/libc_wrapped_pico_dshot.a"
+			"path" : "lib/c_wrapped_pico_dshot/pico_dshot/libpico_dshot.a"
 		}
 	],
 	"backtrace" : 1,
@@ -13,11 +13,14 @@
 		[
 			"add_library",
 			"target_link_libraries",
+			"add_dependencies",
+			"pico_generate_pio_header",
 			"target_include_directories"
 		],
 		"files" : 
 		[
-			"lib/c_wrapped_pico_dshot/CMakeLists.txt"
+			"lib/c_wrapped_pico_dshot/pico_dshot/CMakeLists.txt",
+			"C:/Users/schei/.pico-sdk/sdk/2.2.0/tools/CMakeLists.txt"
 		],
 		"nodes" : 
 		[
@@ -27,26 +30,44 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 10,
+				"line" : 14,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
+				"line" : 20,
+				"parent" : 0
+			},
+			{
+				"command" : 3,
+				"file" : 0,
+				"line" : 26,
+				"parent" : 0
+			},
+			{
+				"command" : 2,
+				"file" : 1,
+				"line" : 265,
+				"parent" : 3
+			},
+			{
+				"command" : 4,
+				"file" : 0,
 				"line" : 17,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
+				"command" : 4,
 				"file" : 0,
-				"line" : 14,
+				"line" : 18,
 				"parent" : 0
 			},
 			{
-				"command" : 2,
-				"file" : 0,
-				"line" : 15,
-				"parent" : 0
+				"command" : 4,
+				"file" : 1,
+				"line" : 272,
+				"parent" : 3
 			}
 		]
 	},
@@ -301,19 +322,15 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot"
-				},
-				{
-					"backtrace" : 4,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include/pico_dshot"
-				},
-				{
-					"backtrace" : 2,
+					"backtrace" : 5,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include"
 				},
 				{
-					"backtrace" : 2,
+					"backtrace" : 6,
+					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/src"
+				},
+				{
+					"backtrace" : 7,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot"
 				},
 				{
@@ -838,19 +855,15 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot"
-				},
-				{
-					"backtrace" : 4,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include/pico_dshot"
-				},
-				{
-					"backtrace" : 2,
+					"backtrace" : 5,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include"
 				},
 				{
-					"backtrace" : 2,
+					"backtrace" : 6,
+					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/src"
+				},
+				{
+					"backtrace" : 7,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot"
 				},
 				{
@@ -1419,19 +1432,15 @@
 			"includes" : 
 			[
 				{
-					"backtrace" : 3,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot"
-				},
-				{
-					"backtrace" : 4,
-					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include/pico_dshot"
-				},
-				{
-					"backtrace" : 2,
+					"backtrace" : 5,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/include"
 				},
 				{
-					"backtrace" : 2,
+					"backtrace" : 6,
+					"path" : "C:/Users/schei/Documents/DONUT_MELT/lib/c_wrapped_pico_dshot/pico_dshot/src"
+				},
+				{
+					"backtrace" : 7,
 					"path" : "C:/Users/schei/Documents/DONUT_MELT/build/lib/c_wrapped_pico_dshot/pico_dshot"
 				},
 				{
@@ -1732,20 +1741,20 @@
 		},
 		{
 			"backtrace" : 2,
-			"id" : "pico_dshot::@1b693b3a52ba1499a6e0"
+			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
 		},
 		{
-			"backtrace" : 2,
-			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
+			"backtrace" : 4,
+			"id" : "pico_dshot_dshot_encoder_pio_h::@1b693b3a52ba1499a6e0"
 		}
 	],
-	"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e",
-	"name" : "c_wrapped_pico_dshot",
-	"nameOnDisk" : "libc_wrapped_pico_dshot.a",
+	"id" : "pico_dshot::@1b693b3a52ba1499a6e0",
+	"name" : "pico_dshot",
+	"nameOnDisk" : "libpico_dshot.a",
 	"paths" : 
 	{
-		"build" : "lib/c_wrapped_pico_dshot",
-		"source" : "lib/c_wrapped_pico_dshot"
+		"build" : "lib/c_wrapped_pico_dshot/pico_dshot",
+		"source" : "lib/c_wrapped_pico_dshot/pico_dshot"
 	},
 	"sourceGroups" : 
 	[
@@ -1825,7 +1834,7 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "lib/c_wrapped_pico_dshot/c_pico_dshot.cpp",
+			"path" : "lib/c_wrapped_pico_dshot/pico_dshot/src/dshot_encoder.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{

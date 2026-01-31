@@ -9,8 +9,8 @@
 
 void drive_handle_idle();
 
-void drive_handle_spin();
+void drive_handle_spin(double throttle);
 
-void drive_handle_tank();
+void drive_handle_tank(double left_y, double right_y);
 
 #endif
