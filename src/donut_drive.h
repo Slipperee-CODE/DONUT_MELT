@@ -3,6 +3,8 @@
 
 // Used in c file
 #include "motor_driver.h"
+#include "led_driver.h"
+#include "donut_config.h"
 #include "pico/time.h"
 
 void drive_handle_idle();
