@@ -2046,11 +2046,11 @@
 		},
 		{
 			"backtrace" : 5,
-			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
+			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "pico_pio_loader::@4f92ad82f37666c11df3"
+			"id" : "c_wrapped_pico_dshot::@fa344f83e8b28ea4cf8e"
 		},
 		{
 			"backtrace" : 5,
@@ -2058,11 +2058,11 @@
 		},
 		{
 			"backtrace" : 5,
-			"id" : "pico_H3LIS331DL::@761581e1a80b04a48e45"
+			"id" : "pico_crsf::@634adccfea80968d9c8d"
 		},
 		{
 			"backtrace" : 5,
-			"id" : "pico_crsf::@634adccfea80968d9c8d"
+			"id" : "pico_H3LIS331DL::@761581e1a80b04a48e45"
 		}
 	],
 	"id" : "donut_melt::@6890427a1f51a3e7e1df",

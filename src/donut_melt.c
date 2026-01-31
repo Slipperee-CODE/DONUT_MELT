@@ -30,6 +30,8 @@ void wait_for_zero_throttle_and_receiver_connection(){
             output_diagnostics();
         #endif
 
+        drive_handle_idle();
+
         receiver_update();
 
         watchdog_update(); 
