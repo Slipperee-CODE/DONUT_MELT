@@ -53,7 +53,7 @@ int main(){
             output_diagnostics();
         #endif
 
-        led_time_blink(TIME_BETWEEN_FAST_BLINK); 
+        led_time_blink(TIME_BETWEEN_SLOW_BLINK); 
 
         receiver_update();
 
@@ -61,9 +61,11 @@ int main(){
 
         if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
-        if (get_drive_mode() == 1){ drive_handle_spin( (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); }
+        drive_handle_tank((double) left_joystick_y.raw_ticks / RAW_TICK_NORMALIZER, (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER);
+        
+        //if (get_drive_mode() == 1){ drive_handle_spin( (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); }
 
-        if (get_drive_mode() == 0){ drive_handle_tank((double) left_joystick_y.raw_ticks / RAW_TICK_NORMALIZER, (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); } 
+        //if (get_drive_mode() == 0){ drive_handle_tank((double) left_joystick_y.raw_ticks / RAW_TICK_NORMALIZER, (double) right_joystick_y.raw_ticks / RAW_TICK_NORMALIZER); } 
     }
 
     return 0;
