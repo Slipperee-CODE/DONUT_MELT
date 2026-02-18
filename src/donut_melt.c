@@ -39,8 +39,7 @@ void output_diagnostics(){
 }
 
 void wait_for_zero_throttle_and_receiver_connection(){
-    // while (receiver_check_if_disconnected()){ 
-    while (1){
+    while (receiver_check_if_disconnected()){ 
         // led_repeat_blink(2); 
         
         #ifdef OUTPUT_DIAGNOSTICS
@@ -56,7 +55,7 @@ void wait_for_zero_throttle_and_receiver_connection(){
 int main(){
     stdio_init_all();
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
-    //receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
+    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN);
     //accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     //motor_init_all(MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO);
     //led_init(HEADING_LIGHT_STRIP_PIN);
@@ -74,11 +73,11 @@ int main(){
 
         if (receiver_check_if_disconnected()){ wait_for_zero_throttle_and_receiver_connection(); }
 
-        if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
+        // if (left_joystick_x.percent_of_max == 0){ drive_handle_idle(); continue; }
 
-        if (get_drive_mode() == MELTY_DRIVE){ drive_handle_spin(); }
+        // if (get_drive_mode() == MELTY_DRIVE){ drive_handle_spin(); }
 
-        if (get_drive_mode() == TANK_DRIVE){ drive_handle_tank(); } 
+        // if (get_drive_mode() == TANK_DRIVE){ drive_handle_tank(); } 
     }
 
     return 0;
