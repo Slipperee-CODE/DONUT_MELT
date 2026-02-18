@@ -94,7 +94,7 @@ int crsf_len = 0;
 
 void process_crsf_packet(uint8_t *packet) {
     uint8_t type = packet[2];
-    
+
     // Type 0x16 is RC Channels (Joysticks)
     if (type == 0x16) {
         // Payload starts at packet[3]

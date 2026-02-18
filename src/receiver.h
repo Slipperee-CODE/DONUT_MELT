@@ -11,11 +11,11 @@
 #include "crsf.h"
 #include "donut_config.h"
 
+// If this is included, something is actively wrong and I am checking it
+// #include <stdio.h>
+
 typedef struct {
     volatile uint16_t raw_ticks;
-    uint8_t channel_id;
-    volatile double percent_of_max;
-    bool is_percent_signed; 
 } channel_t;
 
 extern channel_t left_joystick_x;
@@ -30,6 +30,8 @@ extern channel_t knob_s1;
 extern channel_t knob_s2;
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin);
+
+void receiver_update();
 
 uint8_t receiver_check_if_disconnected();
 

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/watchdog.h"
+#include <math.h>
 
 //---------------LED SETTINGS---------------
 
@@ -61,7 +62,7 @@
 #define RECEIVER_UART_ID uart1
 #define RECEIVER_UART_TX_PIN 8
 #define RECEIVER_UART_RX_PIN 9
-#define RECEIVER_TIMEOUT_MS 1000
+#define RECEIVER_TIMEOUT_MS 500
 
 //----------END REICEVER SETTINGS----------
 
@@ -79,15 +80,13 @@
 
 //----------MISC----------
 
-#define MELTY_DRIVE 0
-#define TANK_DRIVE 1
-
 #define HEADING_LIGHT_STRIP_PIN	22
 
 #define OUTPUT_DIAGNOSTICS
-// #define OUTPUT_VERBOSE_DIAGNOSTICS
 
 #define WATCH_DOG_TIMEOUT_MS 100
+
+#define RAW_TICK_NORMALIZER 2047
 
 //----------END MISC----------
 
