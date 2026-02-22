@@ -1,38 +1,50 @@
-#include <stdio.h>
 #include "c_pico_dshot.h"
-#include "dshot_encoder.h"
-
-struct DShotEncoderInstance {
-    DShotEncoder instance;
-};
 
 extern "C" {
-    DShotEncoderInstance* DShotEncoder_create(uint dshot_gpio, PIO pio){
-        return new DShotEncoderInstance{
-            .instance = DShotEncoder(dshot_gpio, pio)
-        };
+    struct BidirDShotX1Instance {
+        BidirDShotX1 instance; // not a pointer, might become a problem later - Cai
+    };
+
+    BidirDShotX1Instance* BidirDShotX1_constructor(uint8_t pin, uint32_t speed, PIO pio, int8_t sm){
+        return new BidirDShotX1Instance{ BidirDShotX1(pin, speed, pio, sm) };
     }
 
-    bool DShotEncoder_init(DShotEncoderInstance* dshot_encoder_instance, bool enable_repeat){
-        return dshot_encoder_instance->instance.init(enable_repeat);
-    }
-
-    void DShotEncoder_destroy(DShotEncoderInstance* dshot_encoder_instance){
-        if (dshot_encoder_instance != nullptr){
-            delete dshot_encoder_instance;
+    void BidirDShotX1_destructor(BidirDShotX1Instance* bidirDShotX1Instance){
+        if (bidirDShotX1Instance != nullptr){
+            delete bidirDShotX1Instance;
         }
     }
 
-    void DShotEncoder_sendCommand(DShotEncoderInstance* dshot_encoder_instance, uint16_t c){
-        return dshot_encoder_instance->instance.sendCommand(c);
+    void BidirDShotX1_sendThrottle(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t throttle){
+        bidirDShotX1Instance->instance.sendThrottle(throttle);
     }
 
-    void DShotEncoder_sendThrottle(DShotEncoderInstance* dshot_encoder_instance, double t){
-        return dshot_encoder_instance->instance.sendThrottle(t);
+    void BidirDShotX1_sendRaw11Bit(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t data){
+        bidirDShotX1Instance->instance.sendRaw11Bit(data);
     }
 
-    void DShotEncoder_stop(DShotEncoderInstance* dshot_encoder_instance){
-        return dshot_encoder_instance->instance.stop();
+    void BidirDShotX1_sendRaw12Bit(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t data){
+        bidirDShotX1Instance->instance.sendRaw12Bit(data);
+    }
+
+    bool BidirDShotX1_checkTelemetryAvailable(BidirDShotX1Instance* bidirDShotX1Instance){
+        return bidirDShotX1Instance->instance.checkTelemetryAvailable();
+    }
+
+    BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *erpm){
+        return bidirDShotX1Instance->instance.getTelemetryErpm(erpm);
+    }
+
+    BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *value){
+        return bidirDShotX1Instance->instance.getTelemetryPacket(value);
+    }
+
+    BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *value){
+        return bidirDShotX1Instance->instance.getTelemetryRaw(value);
+    }
+
+    static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t raw, BidirDshotTelemetryType type){
+        return bidirDShotX1Instance->instance.convertFromRaw(raw, type);
     }
 
     void c_pico_dshot_is_library_accesible(){

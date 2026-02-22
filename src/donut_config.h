@@ -75,6 +75,8 @@
 #define MOTOR1_PIO pio0
 #define MOTOR2_PIO pio1
 
+#define DSHOT_SPEED 150; // could be 150, 300, 450, 600 + some more
+
 //----------END MOTOR SETTINGS----------
                   
 

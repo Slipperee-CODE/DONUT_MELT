@@ -1,28 +1,42 @@
-#pragma once
+#ifndef C_PICO_DSHOT_H
+#define C_PICO_DSHOT_H
 
+// Used in header file and c file
 #include <stdint.h>
+#include <stdio.h>
 #include "hardware/pio.h"
+#include "bidir_dshot_x1.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct DShotEncoderInstance DShotEncoderInstance;
+typedef struct BidirDShotX1Instance BidirDShotX1Instance;
 
-DShotEncoderInstance* DShotEncoder_create(uint dshot_gpio, PIO pio);
+BidirDShotX1Instance* BidirDShotX1_constructor(uint8_t pin, uint32_t speed, PIO pio, int8_t sm);
 
-bool DShotEncoder_init(DShotEncoderInstance* dshot_encoder_instance, bool enable_repeat);
+void BidirDShotX1_destructor(BidirDShotX1Instance* bidirDShotX1Instance);
 
-void DShotEncoder_destroy(DShotEncoderInstance* dshot_encoder_instance);
+void BidirDShotX1_sendThrottle(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t throttle);
 
-void DShotEncoder_sendCommand(DShotEncoderInstance* dshot_encoder_instance, uint16_t c);
+void BidirDShotX1_sendRaw11Bit(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t data);
 
-void DShotEncoder_sendThrottle(DShotEncoderInstance* dshot_encoder_instance, double t);
+void BidirDShotX1_sendRaw12Bit(BidirDShotX1Instance* bidirDShotX1Instance, uint16_t data);
 
-void DShotEncoder_stop(DShotEncoderInstance* dshot_encoder_instance);
+bool BidirDShotX1_checkTelemetryAvailable(BidirDShotX1Instance* bidirDShotX1Instance);
+
+BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *erpm);
+
+BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *value);
+
+BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t *value);
+
+static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1Instance* bidirDShotX1Instance, uint32_t raw, BidirDshotTelemetryType type);
 
 void c_pico_dshot_is_library_accesible();
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
