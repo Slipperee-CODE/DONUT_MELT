@@ -27,25 +27,29 @@ project(donut_melt C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(donut_melt src/donut_melt.c src/led_driver.c src/motor_driver.c src/donut_drive.c) # src/receiver.c
+add_executable(donut_melt src/donut_melt.c src/receiver.c)
 target_include_directories(donut_melt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(lib/c_wrapped_pico_dshot)
-add_subdirectory(lib/external_pico_crsf) 
+add_subdirectory(lib/c_pico_bidir_dshot)
+add_subdirectory(lib/pico_crsf)
 add_subdirectory(lib/pico_H3LIS331DL)
 
 pico_enable_stdio_uart(donut_melt 0)
 pico_enable_stdio_usb(donut_melt 1)
 
 target_link_libraries(donut_melt 
-    c_wrapped_pico_dshot
-    pico_H3LIS331DL
-    external_pico_crsf
     pico_stdlib
-    pico_time
-    hardware_i2c
-    hardware_uart
-    hardware_pwm
+    pico_stdio
+
+    c_wrapped_pico_dshot
+    pico_crsf
+    pico_H3LIS331DL
+
+    # hardware_uart
+    # hardware_pio
+    # hardware_uart
+    # hardware_watchdog
+    # pico_time
 )
 
 pico_add_extra_outputs(donut_melt)

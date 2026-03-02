@@ -20,5 +20,3 @@ target_include_directories(Pico_Bidir_DShot
 )
 
 target_link_libraries(Pico_Bidir_DShot hardware_pio)
-
-

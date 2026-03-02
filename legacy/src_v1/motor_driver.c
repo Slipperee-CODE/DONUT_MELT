@@ -1,7 +1,7 @@
 #include "motor_driver.h"
 
-static BidirDShotX1Instance* MOTOR1;
-static BidirDShotX1Instance* MOTOR2;
+static BidirDShotX1* MOTOR1;
+static BidirDShotX1* MOTOR2;
 
 void motor_init_all(){
     MOTOR1 = BidirDShotX1_constructor(MOTOR1_PIN, DSHOT_SPEED, MOTOR1_PIO, -1);
