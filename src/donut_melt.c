@@ -31,6 +31,12 @@ void output_diagnostics(){
 
 void update_bot_state(){
     printf("BOT STATE UPDATING \n");
+
+    // TO DO:
+    // + add extended telemetry data to verbose diagnostics and then actually try to read it  
+    // + test rx/tx connection (failsafe)
+    // + test setting motor power values (MAKE SURE IT DOES EXACTLY WHAT INTENDED)
+    // + flash both motors with same firmware
 }
 
 int main(){
