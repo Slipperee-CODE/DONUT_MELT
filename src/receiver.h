@@ -9,8 +9,23 @@
 #include "donut_config.h"
 #include "crsf.h"
 
-void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin);
+typedef enum {
+    RIGHT_JOYSTICK_X,
+    RIGHT_JOYSTICK_Y,
+    LEFT_JOYSTICK_Y,
+    LEFT_JOYSTICK_X,
+    SWITCH_E,
+    SWITCH_B,
+    SWITCH_C,
+    SWITCH_F,
+    KNOB_S1,
+    KNOB_S2
+} Channel;
+
+void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_quality_threshold, int rssi_threshold, bot_state_t* user_bot_state);
 
 void receiver_update();
+
+uint16_t receiver_get_channel(uint16_t channel);
 
 #endif

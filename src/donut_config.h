@@ -12,30 +12,20 @@
 #include "hardware/watchdog.h"
 #include <math.h>
 
+typedef struct {
+    int crsf_link_quality;
+    int crsf_rssi;
+    int crsf_snr;
+    int crsf_tx_power;
+    uint8_t is_failsafed;
+} bot_state_t;
+
 //---------------LED SETTINGS---------------
 
-#define TIME_BETWEEN_SLOW_BLINK 500
-#define TIME_BETWEEN_FAST_BLINK 50
-#define TIME_BETWEEN_REPEATED_BLINKS 100
-#define TIME_BETWEEN_REPEATED_BLINK_BURSTS 300
+#define SLOW_BLINK 500
+#define FAST_BLINK 50
 
 //---------------END LED SETTINGS---------------
-
-
-//---------------BUTTONS TO CHANNELS---------------
-
-#define RIGHT_JOYSTICK_X_CHANNEL 1
-#define RIGHT_JOYSTICK_Y_CHANNEL 2
-#define LEFT_JOYSTICK_Y_CHANNEL 3
-#define LEFT_JOYSTICK_X_CHANNEL 4
-#define SWITCH_E_CHANNEL 5
-#define SWITCH_B_CHANNEL 6
-#define SWITCH_C_CHANNEL 7
-#define SWITCH_F_CHANNEL 8
-#define KNOB_S1_CHANNEL 9
-#define KNOB_S2_CHANNEL 10
-
-//---------------END BUTTONS TO CHANNELS---------------
 
 
 //----------DONUT DRIVE SETTINGS---------
@@ -80,11 +70,18 @@
 //----------END MOTOR SETTINGS----------
                   
 
+//----------TELEMETRY SETTINGS----------
+
+#define OUTPUT_DIAGNOSTICS
+
+#define OUTPUT_VERBOSE_DIAGNOSTICS
+
+//----------END TELEMETRY SETTINGS----------
+
+
 //----------MISC----------
 
 #define HEADING_LIGHT_STRIP_PIN	22
-
-#define OUTPUT_DIAGNOSTICS
 
 #define WATCH_DOG_TIMEOUT_MS 100
 
