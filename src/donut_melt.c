@@ -5,10 +5,16 @@
 
 static bot_state_t* state;
 
+void init_bot_state(){
+    state->crsf_link_quality = 0;
+    state->crsf_rssi = 0;
+    state->crsf_snr = 0;
+    state->is_failsafed = 0;
+}
+
 void output_diagnostics(){
     #ifndef OUTPUT_VERBOSE_DIAGNOSTICS
         // print main diagnostics here
-    #else 
         printf("--------FULL CONTROLLER INFO---------\n");
         printf("RIGHT_JOYSTICK_X: %d", receiver_get_channel(RIGHT_JOYSTICK_X));
         printf("RIGHT_JOYSTICK_Y: %d \n", receiver_get_channel(RIGHT_JOYSTICK_Y));
@@ -20,12 +26,15 @@ void output_diagnostics(){
         printf("SWITCH_F: %d \n", receiver_get_channel(SWITCH_F));
         printf("KNOB_S1: %d", receiver_get_channel(KNOB_S1));
         printf("KNOB_S2: %d \n", receiver_get_channel(KNOB_S2));
-
+    #else 
         printf("--------CRSF INFO---------\n");
         printf("crsf_link_quality: %d \n", state->crsf_link_quality);
-        printf("crsf_link_quality: %d \n", state->crsf_rssi);
-        printf("crsf_link_quality: %d \n", state->crsf_snr);
-        printf("crsf_link_quality: %d \n", state->crsf_tx_power);
+        printf("crsf_rssi: %d \n", state->crsf_rssi);
+        printf("crsf_snr: %d \n", state->crsf_snr);
+        printf("crsf_tx_power: %d \n", state->crsf_tx_power);
+
+        printf("--------OTHER INFO---------\n");
+        printf("is_failsafed: %d \n", state->is_failsafed);
     #endif
 }
 
@@ -41,9 +50,10 @@ void update_bot_state(){
 
 int main(){
     stdio_init_all();
+    init_bot_state();
 
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
-    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 115, state);
+    //receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 115, state);
     // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     // motor_init_all(MOTOR1_PIN, MOTOR2_PIN);
     led_init(HEADING_LIGHT_STRIP_PIN);
@@ -63,7 +73,7 @@ int main(){
             led_time_blink(SLOW_BLINK);
         }
 
-        receiver_update();
+        // receiver_update();
 
         watchdog_update(); // keep watchdog happy
     }
