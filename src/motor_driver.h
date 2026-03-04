@@ -7,7 +7,7 @@
 #include "pico/stdlib.h"
 #include "donut_config.h"
 
-void motor_init_all();
+void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio);
 
 void motor_stop_all();
 

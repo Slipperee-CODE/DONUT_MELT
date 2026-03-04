@@ -52,7 +52,6 @@ typedef struct {
 #define RECEIVER_UART_ID uart1
 #define RECEIVER_UART_TX_PIN 8
 #define RECEIVER_UART_RX_PIN 9
-#define RECEIVER_TIMEOUT_MS 500
 
 //----------END REICEVER SETTINGS----------
 
@@ -81,7 +80,7 @@ typedef struct {
 
 //----------MISC----------
 
-#define HEADING_LIGHT_STRIP_PIN	22
+#define HEADING_LIGHT_STRIP_PIN	25
 
 #define WATCH_DOG_TIMEOUT_MS 100
 

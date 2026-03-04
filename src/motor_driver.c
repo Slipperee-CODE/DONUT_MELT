@@ -3,9 +3,9 @@
 static BidirDShotX1* MOTOR1;
 static BidirDShotX1* MOTOR2;
 
-void motor_init_all(){
-    MOTOR1 = BidirDShotX1_constructor(MOTOR1_PIN, DSHOT_SPEED, MOTOR1_PIO, -1);
-    MOTOR2 = BidirDShotX1_constructor(MOTOR2_PIN, DSHOT_SPEED, MOTOR2_PIO, -1);
+void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio){
+    MOTOR1 = BidirDShotX1_constructor(motor1_pin, dshot_speed, motor1_pio, -1);
+    MOTOR2 = BidirDShotX1_constructor(motor2_pin, dshot_speed, motor2_pio, -1);
     motor_stop_all(); // stopping all motors for sanity
 }
 

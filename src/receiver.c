@@ -1,6 +1,6 @@
 #include "receiver.h"
 
-static uint16_t* _user_channels;
+static uint16_t _user_channels[16];
 static bot_state_t* _user_bot_state;
 
 void on_rc_channels(const uint16_t channels[16]){
@@ -13,7 +13,7 @@ uint16_t receiver_get_channel(uint16_t channel){
     return _user_channels[channel];
 }
 
-void on_link_stats(const link_statistics_t link_stats){ // Figure out what to do with this func either in donut_melt.c or here
+void on_link_stats(const link_statistics_t link_stats){
     _user_bot_state->crsf_link_quality = link_stats.link_quality;
     _user_bot_state->crsf_link_quality = link_stats.rssi;
     _user_bot_state->crsf_snr = link_stats.snr;
