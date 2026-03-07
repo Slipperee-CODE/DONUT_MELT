@@ -95,7 +95,10 @@ void update_bot_state(){
     //   - probably need to make c++ enum wrapper file (making it into c enum so we can use it) 
     //     but can just put that in c-pico-bidir-dshot folder / existing wrapper code probably
 
-    // write auto esc configuring code w/ dshot once working 
+    
+    // write auto esc configuring code w/ dshot once working
+    //   - maybe if switch is active on startup then auto-configure escs otherwise don't
+
     // get wifi telemetry working while somehow using bot_state?
 
     // then just actually write the melty logic lol
