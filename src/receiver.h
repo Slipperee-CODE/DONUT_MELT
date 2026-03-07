@@ -22,10 +22,12 @@ typedef enum {
     KNOB_S2
 } Channel;
 
+uint16_t receiver_get_channel(uint16_t channel);
+
+void receiver_send_telemetry(uint8_t *data, uint8_t data_length);
+
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_quality_threshold, int rssi_threshold, bot_state_t* user_bot_state);
 
 void receiver_update();
-
-uint16_t receiver_get_channel(uint16_t channel);
 
 #endif

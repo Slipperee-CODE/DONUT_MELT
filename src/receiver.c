@@ -25,6 +25,10 @@ void on_failsafe(const bool failsafe){
     _user_bot_state->is_failsafed = failsafe;
 }
 
+void receiver_send_telemetry(uint8_t *data, uint8_t data_length){
+    crsf_telem_set_custom_payload(&_user_crsf_instance, data, data_length);
+}
+
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_quality_threshold, int rssi_threshold, bot_state_t* user_bot_state){
     crsf_init(&_user_crsf_instance);
 
