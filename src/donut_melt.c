@@ -87,45 +87,45 @@ int len_of_uint32_array_in_bytes(uint32_t* arr){
     return 4 * (sizeof(arr) / sizeof(arr[0]));
 }
 
-void send_telemetry(){
-    uint8_t starting_byte_of_data = CUSTOM_TELEMETRY_START_BYTE;
-    receiver_send_telemetry(&starting_byte_of_data, 1);
+// void send_telemetry(){
+//     uint8_t starting_byte_of_data = CUSTOM_TELEMETRY_START_BYTE;
+//     receiver_send_telemetry(&starting_byte_of_data, 1);
 
-    #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
-        custom_telemetry_frame_t time_since_boot_data;
-        time_since_boot_data.custom_telemetry_frame_type = TIME_SINCE_BOOT_DIAGNOSTICS;
+//     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
+//         custom_telemetry_frame_t time_since_boot_data;
+//         time_since_boot_data.custom_telemetry_frame_type = TIME_SINCE_BOOT_DIAGNOSTICS;
 
-        uint32_t payload[1] = {
-            to_ms_since_boot(get_absolute_time()) / 1000.0
-        };
+//         uint32_t payload[1] = {
+//             to_ms_since_boot(get_absolute_time()) / 1000.0
+//         };
 
-        time_since_boot_data.payload = payload;
-        receiver_send_telemetry(payload, len_of_uint32_array_in_bytes(payload) + 1);
-    #endif
+//         time_since_boot_data.payload = payload;
+//         receiver_send_telemetry(payload, len_of_uint32_array_in_bytes(payload) + 1);
+//     #endif
 
-    #ifdef FULL_CONTROLLER_DIAGNOSTICS
-        custom_telemetry_frame_t time_since_boot_data;
-        time_since_boot_data.custom_telemetry_frame_type = FULL_CONTROLLER_DIAGNOSTICS;
+//     #ifdef FULL_CONTROLLER_DIAGNOSTICS
+//         custom_telemetry_frame_t time_since_boot_data;
+//         time_since_boot_data.custom_telemetry_frame_type = FULL_CONTROLLER_DIAGNOSTICS;
 
-        uint32_t payload[10] = {
-            receiver_get_channel(RIGHT_JOYSTICK_X),
-            receiver_get_channel(RIGHT_JOYSTICK_Y),
-            receiver_get_channel(LEFT_JOYSTICK_Y),
-            receiver_get_channel(LEFT_JOYSTICK_X),
-            receiver_get_channel(SWITCH_E),
-            receiver_get_channel(SWITCH_B),
-            receiver_get_channel(SWITCH_C),
-            receiver_get_channel(SWITCH_F),
-            receiver_get_channel(KNOB_S1),
-            receiver_get_channel(KNOB_S2),
-        };
+//         uint32_t payload[10] = {
+//             receiver_get_channel(RIGHT_JOYSTICK_X),
+//             receiver_get_channel(RIGHT_JOYSTICK_Y),
+//             receiver_get_channel(LEFT_JOYSTICK_Y),
+//             receiver_get_channel(LEFT_JOYSTICK_X),
+//             receiver_get_channel(SWITCH_E),
+//             receiver_get_channel(SWITCH_B),
+//             receiver_get_channel(SWITCH_C),
+//             receiver_get_channel(SWITCH_F),
+//             receiver_get_channel(KNOB_S1),
+//             receiver_get_channel(KNOB_S2),
+//         };
 
-        time_since_boot_data.payload = payload;
-        receiver_send_telemetry(payload, len_of_uint32_array_in_bytes(payload) + 1);
-    #endif
+//         time_since_boot_data.payload = payload;
+//         receiver_send_telemetry(payload, len_of_uint32_array_in_bytes(payload) + 1);
+//     #endif
 
-    // send rest of telemetry here depending on what macros are defined
-}
+//     // send rest of telemetry here depending on what macros are defined
+// }
 
 void update_bot_state(){
     printf("BOT STATE UPDATING \n");
@@ -166,7 +166,7 @@ int main(){
         #endif
 
         #ifdef SHOULD_SEND_CUSTOM_TELEMETRY_TO_TRANSMITTER
-            send_telemetry();
+            // send_telemetry();
         #endif
 
         if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !is_killswitch_active()){
