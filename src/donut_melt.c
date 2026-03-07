@@ -5,15 +5,15 @@
 // #include "H3LIS331DL.h"
 
 
-static bot_state_t state;
+static bot_state_t bot_state;
 
 void init_bot_state(){
-    state.crsf_link_quality = 0;
-    state.crsf_rssi = 0;
-    state.crsf_snr = 0;
-    state.crsf_tx_power = 0;
-    state.is_failsafed = 1;
-    state.require_zero_throttle = 1;
+    bot_state.crsf_link_quality = 0;
+    bot_state.crsf_rssi = 0;
+    bot_state.crsf_snr = 0;
+    bot_state.crsf_tx_power = 0;
+    bot_state.is_failsafed = 1;
+    bot_state.require_zero_throttle = 1;
 }
 
 uint8_t is_killswitch_active(){
@@ -47,35 +47,35 @@ void output_diagnostics(){
 
     #ifdef CRSF_DIAGNOSTICS
         printf("--------CRSF INFO---------\n");
-        printf("crsf_link_quality: %d \n", state.crsf_link_quality);
-        printf("crsf_rssi: %d \n", state.crsf_rssi);
-        printf("crsf_snr: %d \n", state.crsf_snr);
-        printf("crsf_tx_power: %d \n\n", state.crsf_tx_power);
+        printf("crsf_link_quality: %d \n", bot_state.crsf_link_quality);
+        printf("crsf_rssi: %d \n", bot_state.crsf_rssi);
+        printf("crsf_snr: %d \n", bot_state.crsf_snr);
+        printf("crsf_tx_power: %d \n\n", bot_state.crsf_tx_power);
     #endif
 
     #ifdef MOTOR1_DIAGNOSTICS
         printf("--------MOTOR1 TELEMETRY INFO---------\n");
-        printf("bidir_m1_erpm: %d | ", state.bidir_m1_erpm);
-        printf("bidir_m1_voltage: %d | ", state.bidir_m1_voltage);
-        printf("bidir_m1_current: %d \n", state.bidir_m1_current);
-        printf("bidir_m1_temperature: %d | ", state.bidir_m1_temperature);
-        printf("bidir_m1_status: %d | ", state.bidir_m1_status);
-        printf("bidir_m1_stress: %d \n\n", state.bidir_m1_stress);
+        printf("bidir_m1_erpm: %d | ", bot_state.bidir_m1_erpm);
+        printf("bidir_m1_voltage: %d | ", bot_state.bidir_m1_voltage);
+        printf("bidir_m1_current: %d \n", bot_state.bidir_m1_current);
+        printf("bidir_m1_temperature: %d | ", bot_state.bidir_m1_temperature);
+        printf("bidir_m1_status: %d | ", bot_state.bidir_m1_status);
+        printf("bidir_m1_stress: %d \n\n", bot_state.bidir_m1_stress);
     #endif
 
     #ifdef MOTOR2_DIAGNOSTICS
         printf("--------MOTOR2 TELEMETRY INFO---------\n");
-        printf("bidir_m2_erpm: %d | ", state.bidir_m2_erpm);
-        printf("bidir_m2_voltage: %d | ", state.bidir_m2_voltage);
-        printf("bidir_m2_current: %d \n", state.bidir_m2_current);
-        printf("bidir_m2_temperature: %d | ", state.bidir_m2_temperature);
-        printf("bidir_m2_status: %d | ", state.bidir_m2_status);
-        printf("bidir_m2_stress: %d \n\n", state.bidir_m2_stress);
+        printf("bidir_m2_erpm: %d | ", bot_state.bidir_m2_erpm);
+        printf("bidir_m2_voltage: %d | ", bot_state.bidir_m2_voltage);
+        printf("bidir_m2_current: %d \n", bot_state.bidir_m2_current);
+        printf("bidir_m2_temperature: %d | ", bot_state.bidir_m2_temperature);
+        printf("bidir_m2_status: %d | ", bot_state.bidir_m2_status);
+        printf("bidir_m2_stress: %d \n\n", bot_state.bidir_m2_stress);
     #endif
 
     #ifdef OTHER_DIAGNOSTICS
         printf("--------OTHER INFO---------\n");
-        printf("is_failsafed: %d \n", state.is_failsafed);
+        printf("is_failsafed: %d \n", bot_state.is_failsafed);
         printf("is_killswitch_active: %d \n", is_killswitch_active());
         printf("is_throttle_zero: %d \n\n", is_throttle_zero());
     #endif
@@ -96,7 +96,7 @@ void update_bot_state(){
     //     but can just put that in c-pico-bidir-dshot folder / existing wrapper code probably
 
     // write auto esc configuring code w/ dshot once working 
-    //  
+    // get wifi telemetry working while somehow using bot_state?
 
     // then just actually write the melty logic lol
 }
@@ -106,8 +106,8 @@ int main(){
     init_bot_state();
 
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
-    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &state);
-    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &state);
+    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
+    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
     led_init(HEADING_LIGHT_STRIP_PIN);
     // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
 
@@ -116,17 +116,17 @@ int main(){
             output_diagnostics();
         #endif
 
-        if (state.is_failsafed == 0 && state.require_zero_throttle == 0 && !is_killswitch_active()){
+        if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !is_killswitch_active()){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here
             motor_stop_all();
-            state.require_zero_throttle = 1;
+            bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);
 
-            if (state.is_failsafed == 0 && is_throttle_zero()){
-                state.require_zero_throttle = 0;
+            if (bot_state.is_failsafed == 0 && is_throttle_zero()){
+                bot_state.require_zero_throttle = 0;
             }
         }
 
