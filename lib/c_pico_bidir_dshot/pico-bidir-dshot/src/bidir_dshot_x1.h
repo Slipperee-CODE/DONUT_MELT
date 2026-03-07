@@ -1,6 +1,9 @@
 #ifndef BIDIR_DSHOT_X1_H
 #define BIDIR_DSHOT_X1_H
 
+
+#ifdef __cplusplus // I ADDED THIS FOR C COMPATIBILITY REASONS - CAI
+
 #include "hardware/pio.h"
 #include <vector>
 using std::vector;
@@ -160,5 +163,7 @@ private:
 	 */
 	static uint16_t appendChecksum(uint16_t data);
 };
+
+#endif // __cplusplus
 
 #endif // BIDIR_DSHOT_X1_H

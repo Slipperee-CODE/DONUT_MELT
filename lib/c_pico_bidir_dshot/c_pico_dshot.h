@@ -25,13 +25,13 @@ void BidirDShotX1_sendRaw12Bit(BidirDShotX1* bidirDShotX1, uint16_t data);
 
 bool BidirDShotX1_checkTelemetryAvailable(BidirDShotX1* bidirDShotX1);
 
-BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm);
+// BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm);
 
-BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value);
+// BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value);
 
-BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value);
+// BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value);
 
-static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotTelemetryType type);
+// static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotTelemetryType type);
 
 void c_pico_dshot_is_library_accesible();
 
