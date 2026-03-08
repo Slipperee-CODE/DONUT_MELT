@@ -1,5 +1,12 @@
 #include "c_pico_dshot.h"
 
+BidirDshotX1TelemetryType bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(BidirDshotTelemetryType bidirDshotTelemetryType){
+    return static_cast<BidirDshotX1TelemetryType>(bidirDshotTelemetryType);
+}
+
+BidirDshotTelemetryType bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(BidirDshotX1TelemetryType bidirDshotX1TelemetryType){
+    return static_cast<BidirDshotTelemetryType>(bidirDshotX1TelemetryType);
+}
 
 extern "C" {
     BidirDShotX1* BidirDShotX1_constructor(uint8_t pin, uint32_t speed, PIO pio, int8_t sm){
@@ -46,12 +53,4 @@ extern "C" {
         printf("Accessing the c_pico_dshot library is functioning properly! \n");
     }
 
-}
-
-BidirDshotX1TelemetryType bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(BidirDshotTelemetryType bidirDshotTelemetryType){
-    return static_cast<BidirDshotX1TelemetryType>(bidirDshotTelemetryType);
-}
-
-BidirDshotTelemetryType bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(BidirDshotX1TelemetryType bidirDshotX1TelemetryType){
-    return static_cast<BidirDshotTelemetryType>(bidirDshotX1TelemetryType);
 }

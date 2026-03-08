@@ -24,11 +24,25 @@ uint8_t is_throttle_zero(){
     return receiver_get_channel(LEFT_JOYSTICK_Y) <= RECEIVER_LOWEST_CHANNEL_VALUE;
 }
 
+uint8_t get_telemetry_state(){
+    if (receiver_get_channel(SWITCH_F) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
+        return TELEMETRY_MOTOR1;
+    } else if (receiver_get_channel(SWITCH_F) <= RECEIVER_LOWEST_CHANNEL_VALUE){
+        return TELEMETRY_MAIN;
+    } else {
+        return TELEMETRY_MOTOR2;
+    }
+}
+
+uint32_t get_seconds_since_boot(){
+    return to_ms_since_boot(get_absolute_time()) / 1000.0;
+}
+
 void output_diagnostics(){
     printf("\n---------DIAGNOSTICS START-------------\n\n");
 
     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
-        printf("DIAGNOSTICS AT %f SECS SINCE BOOT \n\n", to_ms_since_boot(get_absolute_time()) / 1000.0);
+        printf("DIAGNOSTICS AT %f SECS SINCE BOOT \n\n", get_seconds_since_boot());
     #endif
 
     #ifdef FULL_CONTROLLER_DIAGNOSTICS
@@ -76,6 +90,7 @@ void output_diagnostics(){
     #ifdef OTHER_DIAGNOSTICS
         printf("--------OTHER INFO---------\n");
         printf("is_failsafed: %d \n", bot_state.is_failsafed);
+        printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
         printf("is_killswitch_active: %d \n", is_killswitch_active());
         printf("is_throttle_zero: %d \n\n", is_throttle_zero());
     #endif
@@ -88,43 +103,20 @@ int len_of_uint32_array_in_bytes(uint32_t* arr){
 }
 
 void send_telemetry(){
-    uint8_t starting_byte_of_data = CUSTOM_TELEMETRY_START_BYTE;
-    receiver_send_telemetry(&starting_byte_of_data, 1);
-
-    #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
-        custom_telemetry_frame_t time_since_boot_data;
-        time_since_boot_data.custom_telemetry_frame_type = TIME_SINCE_BOOT_DIAGNOSTICS;
-
-        uint32_t payload[1] = {
-            to_ms_since_boot(get_absolute_time()) / 1000.0
-        };
-
-        time_since_boot_data.payload = payload;
-        receiver_send_telemetry((uint8_t*) &time_since_boot_data, 1 + len_of_uint32_array_in_bytes(payload));
-    #endif
-
-    #ifdef FULL_CONTROLLER_DIAGNOSTICS
-        custom_telemetry_frame_t full_controller_data;
-        full_controller_data.custom_telemetry_frame_type = FULL_CONTROLLER_DIAGNOSTICS;
-
-        uint32_t payload[10] = {
-            receiver_get_channel(RIGHT_JOYSTICK_X),
-            receiver_get_channel(RIGHT_JOYSTICK_Y),
-            receiver_get_channel(LEFT_JOYSTICK_Y),
-            receiver_get_channel(LEFT_JOYSTICK_X),
-            receiver_get_channel(SWITCH_E),
-            receiver_get_channel(SWITCH_B),
-            receiver_get_channel(SWITCH_C),
-            receiver_get_channel(SWITCH_F),
-            receiver_get_channel(KNOB_S1),
-            receiver_get_channel(KNOB_S2),
-        };
-
-        full_controller_data.payload = payload;
-        receiver_send_telemetry((uint8_t*) &full_controller_data, 1 + len_of_uint32_array_in_bytes(payload));
-    #endif
-
-    // send rest of telemetry here depending on what macros are defined
+    switch(get_telemetry_state()){
+        case TELEMETRY_MOTOR1:
+            printf("SENDING MOTOR1");
+            receiver_send_telemetry(1,1,1,1);
+            break;
+        case TELEMETRY_MOTOR2:
+            printf("SENDING MOTOR2");
+            receiver_send_telemetry(2,2,2,2);
+            break;
+        case TELEMETRY_MAIN:
+            printf("SENDING MAIN");
+            receiver_send_telemetry(bot_state.require_zero_throttle,bot_state.is_failsafed,get_seconds_since_boot(),3);
+            break;
+    }
 }
 
 void update_bot_state(){
@@ -132,12 +124,6 @@ void update_bot_state(){
 
     motor_motor1_send_throttle(1500);
     motor_motor2_send_throttle(1500);
-
-    // TO DO:
-    // get wifi telemetry working while somehow using bot_state?
-    //   - instead of wifi telemetry just send crsf packets back to transmitter and read them from serial monitor of laptop
-    //   - move telemetry code to a different file LOL
-    //   - maybe make a UI for looking at the data from there
 
     // + test setting motor power values WITH DSHOT (MAKE SURE IT DOES EXACTLY WHAT INTENDED)
     // + add extended telemetry data to verbose diagnostics and then actually try to read it  
@@ -183,7 +169,7 @@ int main(){
             }
         }
 
-        motor_update_bot_state();
+        // motor_update_bot_state();
 
         receiver_update();
 

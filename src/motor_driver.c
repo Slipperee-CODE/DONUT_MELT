@@ -29,53 +29,53 @@ void motor_motor2_send_throttle(uint16_t throttle){
 
 void motor_update_bot_state(){
     if (BidirDShotX1_checkTelemetryAvailable(MOTOR1)){
-        uint32_t data;
-        BidirDshotX1TelemetryType data_type = BidirDShotX1_getTelemetryPacket(MOTOR1, data);
+        uint32_t data1;
+        BidirDshotX1TelemetryType data_type = BidirDShotX1_getTelemetryPacket(MOTOR1, &data1);
 
         switch (data_type) {
             case BIDIR_ERPM:
-                _user_bot_state->bidir_m1_erpm = data;
+                _user_bot_state->bidir_m1_erpm = data1;
                 break;
             case BIDIR_VOLTAGE:
-                _user_bot_state->bidir_m1_voltage=data;
+                _user_bot_state->bidir_m1_voltage=data1;
                 break;
             case BIDIR_CURRENT:
-                _user_bot_state->bidir_m1_current=data;
+                _user_bot_state->bidir_m1_current=data1;
                 break;
             case BIDIR_TEMPERATURE:
-                _user_bot_state->bidir_m1_temperature=data;
+                _user_bot_state->bidir_m1_temperature=data1;
                 break;
             case BIDIR_STATUS:
-                _user_bot_state->bidir_m1_status=data;
+                _user_bot_state->bidir_m1_status=data1;
                 break;
             case BIDIR_STRESS:
-                _user_bot_state->bidir_m1_stress=data;
+                _user_bot_state->bidir_m1_stress=data1;
                 break;
         }
     }
 
     if (BidirDShotX1_checkTelemetryAvailable(MOTOR2)){
-        uint32_t data;
-        BidirDshotX1TelemetryType data_type = BidirDShotX1_getTelemetryPacket(MOTOR1, data);
+        uint32_t data2;
+        BidirDshotX1TelemetryType data_type = BidirDShotX1_getTelemetryPacket(MOTOR1, &data2);
 
         switch (data_type) {
             case BIDIR_ERPM:
-                _user_bot_state->bidir_m2_erpm = data;
+                _user_bot_state->bidir_m2_erpm = data2;
                 break;
             case BIDIR_VOLTAGE:
-                _user_bot_state->bidir_m2_voltage=data;
+                _user_bot_state->bidir_m2_voltage=data2;
                 break;
             case BIDIR_CURRENT:
-                _user_bot_state->bidir_m2_current=data;
+                _user_bot_state->bidir_m2_current=data2;
                 break;
             case BIDIR_TEMPERATURE:
-                _user_bot_state->bidir_m2_temperature=data;
+                _user_bot_state->bidir_m2_temperature=data2;
                 break;
             case BIDIR_STATUS:
-                _user_bot_state->bidir_m2_status=data;
+                _user_bot_state->bidir_m2_status=data2;
                 break;
             case BIDIR_STRESS:
-                _user_bot_state->bidir_m2_stress=data;
+                _user_bot_state->bidir_m2_stress=data2;
                 break;
         }
     }

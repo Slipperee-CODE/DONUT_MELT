@@ -24,7 +24,7 @@ typedef enum {
 
 uint16_t receiver_get_channel(uint16_t channel);
 
-void receiver_send_telemetry(uint8_t *data, uint8_t data_length);
+void receiver_send_telemetry(uint16_t diag1, uint16_t diag2, uint32_t diag3, uint8_t diag4);
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_quality_threshold, int rssi_threshold, bot_state_t* user_bot_state);
 

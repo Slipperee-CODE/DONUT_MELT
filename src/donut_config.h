@@ -90,28 +90,20 @@ typedef struct {
 
 //----------TELEMETRY SETTINGS----------
 
-typedef struct __attribute__((packed)) {
-    uint8_t custom_telemetry_frame_type;
-    uint32_t* payload;
-} custom_telemetry_frame_t;
-
-#define CUSTOM_TELEMETRY_START_BYTE 0xAA
-
 #define SHOULD_SEND_CUSTOM_TELEMETRY_TO_TRANSMITTER
 
 #define OUTPUT_DIAGNOSTICS
 
-#define TIME_SINCE_BOOT_DIAGNOSTICS 0xAB
+#define TIME_SINCE_BOOT_DIAGNOSTICS
+#define FULL_CONTROLLER_DIAGNOSTICS
+// #define CRSF_DIAGNOSTICS
+// #define MOTOR1_DIAGNOSTICS
+// #define MOTOR2_DIAGNOSTICS
+#define OTHER_DIAGNOSTICS
 
-#define FULL_CONTROLLER_DIAGNOSTICS 0xBB
-
-#define CRSF_DIAGNOSTICS 0xBC
-
-#define MOTOR1_DIAGNOSTICS 0xCC
-
-#define MOTOR2_DIAGNOSTICS 0xCD
-
-#define OTHER_DIAGNOSTICS 0xDD
+#define TELEMETRY_MOTOR1 0
+#define TELEMETRY_MOTOR2 1
+#define TELEMETRY_MAIN 2
 
 //----------END TELEMETRY SETTINGS----------
 
