@@ -26,20 +26,36 @@ extern "C" {
         return bidirDShotX1->checkTelemetryAvailable();
     }
 
-    BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm){
-        return bidirDShotX1->getTelemetryErpm(erpm);
+    BidirDshotX1TelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm){
+        return bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(bidirDShotX1->getTelemetryErpm(erpm));
     }
 
-    BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value){
-        return bidirDShotX1->getTelemetryPacket(value);
+    BidirDshotX1TelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value){
+        return bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(bidirDShotX1->getTelemetryPacket(value));
     }
 
-    BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value){
-        return bidirDShotX1->getTelemetryRaw(value);
+    BidirDshotX1TelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value){
+        return bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(bidirDShotX1->getTelemetryRaw(value));
     }
 
-    static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotTelemetryType type){
-        return bidirDShotX1->convertFromRaw(raw, type);
+    static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotX1TelemetryType type){
+        return bidirDShotX1->convertFromRaw(raw, bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(type));
+    }
+
+    BidirDshotX1TelemetryType bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(BidirDshotTelemetryType bidirDshotTelemetryType){
+        if (bidirDshotTelemetryType==ERPM){
+            return ERPM;
+        }
+
+        // add others here
+    }
+
+    BidirDshotTelemetryType bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(BidirDshotX1TelemetryType bidirDshotX1TelemetryType){
+        if (bidirDshotX1TelemetryType==ERPM){
+            return ERPM;
+        }
+        
+        // add others here
     }
 
     void c_pico_dshot_is_library_accesible(){

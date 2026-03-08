@@ -118,7 +118,7 @@ typedef struct __attribute__((packed)) {
 
 //----------MISC----------
 
-#define HEADING_LIGHT_STRIP_PIN	25
+#define HEADING_LIGHT_STRIP_PIN	22
 
 #define WATCH_DOG_TIMEOUT_MS 100
 

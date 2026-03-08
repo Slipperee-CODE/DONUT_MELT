@@ -13,6 +13,20 @@ extern "C" {
 
 typedef struct BidirDShotX1 BidirDShotX1;
 
+typedef enum {
+    ERPM,
+	OTHER_VALUE,
+	CHECKSUM_ERROR,
+	NO_PACKET,
+	VOLTAGE,
+	CURRENT,
+	TEMPERATURE,
+	STATUS,
+	STRESS,
+	DEBUG_FRAME_1,
+	DEBUG_FRAME_2,
+} BidirDshotX1TelemetryType;
+
 BidirDShotX1* BidirDShotX1_constructor(uint8_t pin, uint32_t speed, PIO pio, int8_t sm);
 
 void BidirDShotX1_destructor(BidirDShotX1* bidirDShotX1);
@@ -25,13 +39,13 @@ void BidirDShotX1_sendRaw12Bit(BidirDShotX1* bidirDShotX1, uint16_t data);
 
 bool BidirDShotX1_checkTelemetryAvailable(BidirDShotX1* bidirDShotX1);
 
-// BidirDshotTelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm);
+BidirDshotX1TelemetryType BidirDShotX1_getTelemetryErpm(BidirDShotX1* bidirDShotX1, uint32_t *erpm);
 
-// BidirDshotTelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value);
+BidirDshotX1TelemetryType BidirDShotX1_getTelemetryPacket(BidirDShotX1* bidirDShotX1, uint32_t *value);
 
-// BidirDshotTelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value);
+BidirDshotX1TelemetryType BidirDShotX1_getTelemetryRaw(BidirDShotX1* bidirDShotX1, uint32_t *value);
 
-// static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotTelemetryType type);
+static uint32_t BidirDShotX1_convertFromRaw(BidirDShotX1* bidirDShotX1, uint32_t raw, BidirDshotX1TelemetryType type);
 
 void c_pico_dshot_is_library_accesible();
 
