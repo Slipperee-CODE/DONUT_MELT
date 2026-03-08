@@ -42,23 +42,16 @@ extern "C" {
         return bidirDShotX1->convertFromRaw(raw, bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(type));
     }
 
-    BidirDshotX1TelemetryType bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(BidirDshotTelemetryType bidirDshotTelemetryType){
-        if (bidirDshotTelemetryType==ERPM){
-            return ERPM;
-        }
-
-        // add others here
-    }
-
-    BidirDshotTelemetryType bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(BidirDshotX1TelemetryType bidirDshotX1TelemetryType){
-        if (bidirDshotX1TelemetryType==ERPM){
-            return ERPM;
-        }
-        
-        // add others here
-    }
-
     void c_pico_dshot_is_library_accesible(){
         printf("Accessing the c_pico_dshot library is functioning properly! \n");
     }
+
+}
+
+BidirDshotX1TelemetryType bidirDshotTelemetryTypeToBidirDshotX1TelemetryType(BidirDshotTelemetryType bidirDshotTelemetryType){
+    return static_cast<BidirDshotX1TelemetryType>(bidirDshotTelemetryType);
+}
+
+BidirDshotTelemetryType bidirDshotX1TelemetryTypeToBidirDshotTelemetryType(BidirDshotX1TelemetryType bidirDshotX1TelemetryType){
+    return static_cast<BidirDshotTelemetryType>(bidirDshotX1TelemetryType);
 }

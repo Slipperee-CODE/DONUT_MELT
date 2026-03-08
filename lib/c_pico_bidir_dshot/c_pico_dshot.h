@@ -14,17 +14,17 @@ extern "C" {
 typedef struct BidirDShotX1 BidirDShotX1;
 
 typedef enum {
-    ERPM,
-	OTHER_VALUE,
-	CHECKSUM_ERROR,
-	NO_PACKET,
-	VOLTAGE,
-	CURRENT,
-	TEMPERATURE,
-	STATUS,
-	STRESS,
-	DEBUG_FRAME_1,
-	DEBUG_FRAME_2,
+    BIDIR_ERPM,
+	BIDIR_OTHER_VALUE,
+	BIDIR_CHECKSUM_ERROR,
+	BIDIR_NO_PACKET,
+	BIDIR_VOLTAGE,
+	BIDIR_CURRENT,
+	BIDIR_TEMPERATURE,
+	BIDIR_STATUS,
+	BIDIR_STRESS,
+	BIDIR_DEBUG_FRAME_1,
+	BIDIR_DEBUG_FRAME_2,
 } BidirDshotX1TelemetryType;
 
 BidirDShotX1* BidirDShotX1_constructor(uint8_t pin, uint32_t speed, PIO pio, int8_t sm);
