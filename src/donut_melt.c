@@ -16,12 +16,18 @@ void init_bot_state(){
     bot_state.require_zero_throttle = 1;
 }
 
-uint8_t is_killswitch_active(){
-    return receiver_get_channel(SWITCH_E) >= RECEIVER_HIGHEST_CHANNEL_VALUE;
-}
-
 uint8_t is_throttle_zero(){
     return receiver_get_channel(LEFT_JOYSTICK_Y) <= RECEIVER_LOWEST_CHANNEL_VALUE;
+}
+
+uint8_t get_curr_drive_mode(){
+    if (receiver_get_channel(SWITCH_E) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
+        return DRIVE_MODE_KILL_SWITCHED;
+    } else if (receiver_get_channel(SWITCH_E) <= RECEIVER_LOWEST_CHANNEL_VALUE){
+        return DRIVE_MODE_MELTY;
+    } else {
+        return DRIVE_MODE_TANK;
+    }
 }
 
 uint8_t get_telemetry_state(){
@@ -91,15 +97,11 @@ void output_diagnostics(){
         printf("--------OTHER INFO---------\n");
         printf("is_failsafed: %d \n", bot_state.is_failsafed);
         printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
-        printf("is_killswitch_active: %d \n", is_killswitch_active());
+        printf("get_curr_drive_mode: %d \n", get_curr_drive_mode());
         printf("is_throttle_zero: %d \n\n", is_throttle_zero());
     #endif
 
     printf("---------DIAGNOSTICS END-------------\n\n");
-}
-
-int len_of_uint32_array_in_bytes(uint32_t* arr){
-    return 4 * (sizeof(arr) / sizeof(arr[0]));
 }
 
 void send_telemetry(){
@@ -122,8 +124,11 @@ void send_telemetry(){
 void update_bot_state(){
     printf("BOT STATE UPDATING \n");
 
-    motor_motor1_send_throttle(1500);
-    motor_motor2_send_throttle(1500);
+    if (!is_throttle_zero()){
+
+    } else {
+        motor_stop_all();
+    }
 
     // + test setting motor power values WITH DSHOT (MAKE SURE IT DOES EXACTLY WHAT INTENDED)
     // + add extended telemetry data to verbose diagnostics and then actually try to read it  
@@ -155,7 +160,7 @@ int main(){
             send_telemetry();
         #endif
 
-        if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !is_killswitch_active()){
+        if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !(get_curr_drive_mode()==DRIVE_MODE_KILL_SWITCHED)){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here

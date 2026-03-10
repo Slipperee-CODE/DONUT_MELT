@@ -85,6 +85,10 @@ typedef struct {
 
 #define DSHOT_SPEED 150 // could be 150, 300, 450, 600 + some more
 
+#define DRIVE_MODE_KILL_SWITCHED -1
+#define DRIVE_MODE_MELTY 0
+#define DRIVE_MODE_TANK 1
+
 //----------END MOTOR SETTINGS----------
                   
 
