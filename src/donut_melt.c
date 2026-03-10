@@ -20,13 +20,15 @@ uint8_t is_throttle_zero(){
     return receiver_get_channel(LEFT_JOYSTICK_Y) <= RECEIVER_LOWEST_CHANNEL_VALUE;
 }
 
+uint8_t is_killswitch_active(){
+    return receiver_get_channel(SWITCH_E) >= RECEIVER_HIGHEST_CHANNEL_VALUE;
+}
+
 uint8_t get_curr_drive_mode(){
-    if (receiver_get_channel(SWITCH_E) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
-        return DRIVE_MODE_KILL_SWITCHED;
-    } else if (receiver_get_channel(SWITCH_E) <= RECEIVER_LOWEST_CHANNEL_VALUE){
-        return DRIVE_MODE_MELTY;
-    } else {
+    if (receiver_get_channel(SWITCH_C) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
         return DRIVE_MODE_TANK;
+    } else {
+        return DRIVE_MODE_MELTY;
     }
 }
 
@@ -98,6 +100,7 @@ void output_diagnostics(){
         printf("is_failsafed: %d \n", bot_state.is_failsafed);
         printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
         printf("get_curr_drive_mode: %d \n", get_curr_drive_mode());
+        printf("is_killswitch_active: %d \n", is_killswitch_active());
         printf("is_throttle_zero: %d \n\n", is_throttle_zero());
     #endif
 
@@ -125,7 +128,7 @@ void update_bot_state(){
     printf("BOT STATE UPDATING \n");
 
     if (!is_throttle_zero()){
-
+        printf("VROOM \n");
     } else {
         motor_stop_all();
     }
@@ -160,7 +163,7 @@ int main(){
             send_telemetry();
         #endif
 
-        if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !(get_curr_drive_mode()==DRIVE_MODE_KILL_SWITCHED)){
+        if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !is_killswitch_active()){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here

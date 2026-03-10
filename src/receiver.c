@@ -26,8 +26,8 @@ void on_failsafe(const bool failsafe){
 }
 
 void receiver_send_telemetry(uint16_t diag1, uint16_t diag2, uint32_t diag3, uint8_t diag4){
-    crsf_telem_set_battery_data(&_user_crsf_instance, 3, 2, 1, 50);
-    //crsf_telem_set_battery_data(&_user_crsf_instance, diag1, diag2, diag3, diag4);
+    //crsf_telem_set_battery_data(&_user_crsf_instance, 3, 2, 1, 50);
+    crsf_telem_set_battery_data(&_user_crsf_instance, diag1, diag2, diag3, diag4);
 }
 
 void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_quality_threshold, int rssi_threshold, bot_state_t* user_bot_state){
