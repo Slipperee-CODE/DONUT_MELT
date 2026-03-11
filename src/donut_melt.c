@@ -2,8 +2,8 @@
 #include "receiver.h"
 #include "led_driver.h"
 #include "motor_driver.h"
+#include "donut_drive.h"
 // #include "H3LIS331DL.h"
-
 
 static bot_state_t bot_state;
 
@@ -30,6 +30,10 @@ uint8_t get_curr_drive_mode(){
     } else {
         return DRIVE_MODE_MELTY;
     }
+}
+
+double get_percent_for_channel(Channel channel){
+    return fmax(0, fmin(1, (receiver_get_channel(channel) - 10.0) / RECEIVER_HIGHEST_CHANNEL_VALUE) - ((double) RECEIVER_LOWEST_CHANNEL_VALUE / RECEIVER_HIGHEST_CHANNEL_VALUE));
 }
 
 uint8_t get_telemetry_state(){
@@ -101,7 +105,9 @@ void output_diagnostics(){
         printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
         printf("get_curr_drive_mode: %d \n", get_curr_drive_mode());
         printf("is_killswitch_active: %d \n", is_killswitch_active());
-        printf("is_throttle_zero: %d \n\n", is_throttle_zero());
+        printf("is_throttle_zero: %d \n", is_throttle_zero());
+        printf("left_stick_y_percent: %lf \n", get_percent_for_channel(LEFT_JOYSTICK_Y));
+        printf("right_stick_y_percent: %lf \n\n", get_percent_for_channel(RIGHT_JOYSTICK_Y));
     #endif
 
     printf("---------DIAGNOSTICS END-------------\n\n");
@@ -128,9 +134,9 @@ void update_bot_state(){
     printf("BOT STATE UPDATING \n");
 
     if (!is_throttle_zero()){
-        printf("VROOM \n");
+        drive_handle_tank(get_percent_for_channel(LEFT_JOYSTICK_Y), get_percent_for_channel(RIGHT_JOYSTICK_Y));
     } else {
-        motor_stop_all();
+        drive_handle_idle();
     }
 
     // + test setting motor power values WITH DSHOT (MAKE SURE IT DOES EXACTLY WHAT INTENDED)
@@ -166,7 +172,7 @@ int main(){
         if (bot_state.is_failsafed == 0 && bot_state.require_zero_throttle == 0 && !is_killswitch_active()){
             update_bot_state();
             led_time_blink(FAST_BLINK);
-        } else { // a just connected or just powered on bot starts here
+        } else { // a just connected or just powered on bot starts here, this is also where failsafed bots go
             motor_stop_all();
             bot_state.require_zero_throttle = 1;
 
