@@ -1,4 +1,5 @@
 #include "donut_config.h"
+#include "donut_drive.h"
 #include "receiver.h"
 #include "led_driver.h"
 #include "motor_driver.h"
@@ -18,6 +19,14 @@ void init_bot_state(){
 
 uint8_t is_throttle_zero(){
     return receiver_get_channel(LEFT_JOYSTICK_Y) <= RECEIVER_LOWEST_CHANNEL_VALUE;
+}
+
+double get_left_throttle_percent(){
+    return fmax(0, fmin(1, (double) (receiver_get_channel(LEFT_JOYSTICK_Y) - 10) / RECEIVER_HIGHEST_CHANNEL_VALUE) - 0.12);
+}
+
+double get_right_throttle_percent(){
+    return fmax(0, fmin(1, (double) (receiver_get_channel(RIGHT_JOYSTICK_Y) - 10) / RECEIVER_HIGHEST_CHANNEL_VALUE) - 0.12);
 }
 
 uint8_t is_killswitch_active(){
@@ -101,7 +110,9 @@ void output_diagnostics(){
         printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
         printf("get_curr_drive_mode: %d \n", get_curr_drive_mode());
         printf("is_killswitch_active: %d \n", is_killswitch_active());
-        printf("is_throttle_zero: %d \n\n", is_throttle_zero());
+        printf("is_throttle_zero: %d \n", is_throttle_zero());
+        printf("get_left_throttle_percent %lf \n", get_left_throttle_percent());
+        printf("get_right_throttle_percent %lf \n\n", get_right_throttle_percent());
     #endif
 
     printf("---------DIAGNOSTICS END-------------\n\n");
@@ -128,7 +139,7 @@ void update_bot_state(){
     printf("BOT STATE UPDATING \n");
 
     if (!is_throttle_zero()){
-        printf("VROOM \n");
+        drive_handle_tank(get_left_throttle_percent(), get_right_throttle_percent());
     } else {
         motor_stop_all();
     }
@@ -167,7 +178,7 @@ int main(){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here
-            motor_stop_all();
+            motor_send_starting_zero_throttle();
             bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);
