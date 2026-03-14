@@ -158,12 +158,15 @@ void update_bot_state(){
 int main(){
     stdio_init_all();
     init_bot_state();
-
-    watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
+    
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
     led_init(HEADING_LIGHT_STRIP_PIN);
     // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+
+    // motor_init_all sends special dshot 0 command for 300 millis to get escs ready to work 
+    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
+
+    watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
 
     while (1){
         #ifdef OUTPUT_DIAGNOSTICS
@@ -178,7 +181,7 @@ int main(){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here
-            motor_send_starting_zero_throttle();
+            motor_send_all_starting_zero_command(); // sanity failsafe of disarming all motors with dshot 0 command
             bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);

@@ -11,7 +11,7 @@ void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_
 
 void motor_stop_all();
 
-void motor_send_starting_zero_throttle();
+void motor_send_all_starting_zero_command();
 
 void motor_motor1_send_throttle(uint16_t throttle);
 

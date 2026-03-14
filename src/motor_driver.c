@@ -10,16 +10,11 @@ void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_
     MOTOR2 = BidirDShotX1_constructor(motor2_pin, dshot_speed, motor2_pio, -1);
 
     _user_bot_state = user_bot_state;
-}
 
-void motor_stop_all(){
-    motor_motor1_send_throttle(1000);
-    motor_motor2_send_throttle(1000);
-}
-
-void motor_send_starting_zero_throttle(){
-    motor_motor1_send_throttle(0);
-    motor_motor2_send_throttle(0);
+    uint32_t start_time = to_ms_since_boot(get_absolute_time());
+    while (to_ms_since_boot(get_absolute_time()) <= start_time + 3000){
+        motor_send_all_starting_zero_command();
+    }   
 }
 
 // throttle range is 0-2000, 1000 in 3D mode (forward-backward) is stopped
@@ -29,6 +24,24 @@ void motor_motor1_send_throttle(uint16_t throttle){
 
 void motor_motor2_send_throttle(uint16_t throttle){
     BidirDShotX1_sendThrottle(MOTOR2, throttle);
+}
+
+void motor_stop_all(){
+    motor_motor1_send_throttle(1000);
+    motor_motor2_send_throttle(1000);
+}
+
+void motor_motor1_send_command(uint16_t command){
+    BidirDShotX1_sendRaw12Bit(MOTOR1, command);
+}
+
+void motor_motor2_send_command(uint16_t command){
+    BidirDShotX1_sendRaw12Bit(MOTOR2, command);
+}
+
+void motor_send_all_starting_zero_command(){
+    motor_motor1_send_command(0);
+    motor_motor2_send_command(0);
 }
 
 void motor_update_bot_state(){
