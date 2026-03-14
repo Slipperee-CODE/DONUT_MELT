@@ -59,7 +59,7 @@ void output_diagnostics(){
     printf("\n---------DIAGNOSTICS START-------------\n\n");
 
     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
-        printf("DIAGNOSTICS AT %f SECS SINCE BOOT \n\n", get_seconds_since_boot());
+        printf("DIAGNOSTICS AT %d SECS SINCE BOOT \n\n", get_seconds_since_boot());
     #endif
 
     #ifdef FULL_CONTROLLER_DIAGNOSTICS
@@ -156,6 +156,12 @@ void update_bot_state(){
 }
 
 int main(){
+    #ifdef FLASHING_MOTORS
+        while(1){
+
+        }
+    #endif
+
     stdio_init_all();
     init_bot_state();
     
@@ -181,7 +187,7 @@ int main(){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here
-            motor_send_all_starting_zero_command(); // sanity failsafe of disarming all motors with dshot 0 command
+            motor_stop_all(); // must be a function that calls bidir send_throttle method specifically
             bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);
