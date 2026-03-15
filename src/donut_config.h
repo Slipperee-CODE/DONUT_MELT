@@ -77,13 +77,18 @@ typedef struct {
 
 //----------MOTOR SETTINGS----------
 
-#define MOTOR1_PIN 2
-#define MOTOR2_PIN 3
+// ESC pins are connected as follows:
+// MOTOR1_PIN was 2, MOTOR2_PIN was 3
+
+// #define FLASHING_MOTORS 
+
+#define MOTOR1_PIN 3 
+#define MOTOR2_PIN 2
 
 #define MOTOR1_PIO pio0
 #define MOTOR2_PIO pio1
 
-#define DSHOT_SPEED 150 // could be 150, 300, 450, 600 + some more
+#define DSHOT_SPEED 600 // could be 150, 300, 450, 600 + some more
 
 #define DRIVE_MODE_MELTY 1
 #define DRIVE_MODE_TANK 2

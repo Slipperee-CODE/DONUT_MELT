@@ -1,4 +1,5 @@
 #include "donut_config.h"
+#include "donut_drive.h"
 #include "receiver.h"
 #include "led_driver.h"
 #include "motor_driver.h"
@@ -54,7 +55,7 @@ void output_diagnostics(){
     printf("\n---------DIAGNOSTICS START-------------\n\n");
 
     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
-        printf("DIAGNOSTICS AT %f SECS SINCE BOOT \n\n", get_seconds_since_boot());
+        printf("DIAGNOSTICS AT %d SECS SINCE BOOT \n\n", get_seconds_since_boot());
     #endif
 
     #ifdef FULL_CONTROLLER_DIAGNOSTICS
@@ -151,14 +152,23 @@ void update_bot_state(){
 }
 
 int main(){
+    #ifdef FLASHING_MOTORS
+        while(1){
+
+        }
+    #endif
+
     stdio_init_all();
     init_bot_state();
-
-    watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
+    
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
     led_init(HEADING_LIGHT_STRIP_PIN);
     // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+
+    // motor_init_all sends special dshot 0 command for 300 millis to get escs ready to work 
+    motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
+
+    watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
 
     while (1){
         #ifdef OUTPUT_DIAGNOSTICS
@@ -173,7 +183,7 @@ int main(){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here, this is also where failsafed bots go
-            motor_stop_all();
+            motor_stop_all(); // must be a function that calls bidir send_throttle method specifically
             bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);
