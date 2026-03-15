@@ -42,7 +42,7 @@ target_link_libraries(pico_crsf
 )
 
 if (PROJECT_IS_TOP_LEVEL)
-    add_executable(default_test test/default_test.c)
+    add_executable(default_test tests/default_test.c)
 
     pico_enable_stdio_uart(default_test 0)
     pico_enable_stdio_usb(default_test 1)
