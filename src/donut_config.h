@@ -120,7 +120,7 @@ typedef struct {
 
 #define HEADING_LIGHT_STRIP_PIN	22
 
-#define WATCH_DOG_TIMEOUT_MS 100
+#define WATCH_DOG_TIMEOUT_MS 500 // changed to prevent 200 microsecond delay from having any chance of triggering watchdog
 
 //----------END MISC----------
 

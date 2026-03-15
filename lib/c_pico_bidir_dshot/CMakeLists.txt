@@ -49,7 +49,12 @@ if (PROJECT_IS_TOP_LEVEL)
     target_link_libraries(default_test
         pico_stdio
         pico_stdlib
+        
+
         c_pico_bidir_dshot
+
+        hardware_pio
+        pico_time
     )
 
     pico_add_extra_outputs(default_test) 

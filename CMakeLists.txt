@@ -46,7 +46,6 @@ target_link_libraries(donut_melt
     pico_crsf
     pico_H3LIS331DL
 
-    hardware_uart
     hardware_pio
     hardware_uart
     hardware_watchdog

@@ -183,7 +183,7 @@ int main(){
             update_bot_state();
             led_time_blink(FAST_BLINK);
         } else { // a just connected or just powered on bot starts here, this is also where failsafed bots go
-            motor_stop_all(); // must be a function that calls bidir send_throttle method specifically
+            motor_stop_all(); // calls sendThrottle(0) on both motors
             bot_state.require_zero_throttle = 1;
 
             led_time_blink(SLOW_BLINK);
