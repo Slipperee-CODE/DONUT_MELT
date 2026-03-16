@@ -9,24 +9,50 @@
 
 BidirDShotX1* esc;
 
+void send_throttle_for_millis(int throttle, int millis){
+    uint32_t start_time = to_ms_since_boot(get_absolute_time());
+    while (to_ms_since_boot(get_absolute_time()) <= start_time + millis){
+        BidirDShotX1_sendThrottle(esc, throttle);
+        sleep_us(200); // keep packets spaced out
+    }
+}
+
 int main() {
     stdio_init_all();
-
     esc = BidirDShotX1_constructor(2, 600, pio0, -1);
 
-    uint32_t start_time = to_ms_since_boot(get_absolute_time());
-    while (to_ms_since_boot(get_absolute_time()) <= start_time + 3000){
-        BidirDShotX1_sendThrottle(esc, 0);
-    }
+    send_throttle_for_millis(0, 3000);
 
-    while (1){
+    int throttle = 0;  
+    while (throttle <= 2000){
+        BidirDShotX1_sendThrottle(esc, throttle);
+
         sleep_us(200); // keep packets spaced out
+    
         uint32_t rpm = 0;
         BidirDShotX1_getTelemetryErpm(esc, &rpm);
         rpm /= MOTOR_POLES / 2; // eRPM = RPM * poles/2 <=> RPM = eRPM / (poles/2)
         printf("rpm: %d \n", rpm);
-        BidirDShotX1_sendThrottle(esc, 0); // make this instead sweep through full/some portion of throttle range semi-slowly
+
+        sleep_us(10000); // waiting 10 milliseconds before increasing throttle for next loop
+        throttle+=10;
     }
+  
+    while (throttle >= 0){
+        BidirDShotX1_sendThrottle(esc, throttle);
+
+        sleep_us(200); // keep packets spaced out
+    
+        uint32_t rpm = 0;
+        BidirDShotX1_getTelemetryErpm(esc, &rpm);
+        rpm /= MOTOR_POLES / 2; // eRPM = RPM * poles/2 <=> RPM = eRPM / (poles/2)
+        printf("rpm: %d \n", rpm);
+
+        sleep_us(10000); // waiting 10 milliseconds before increasing throttle for next loop
+        throttle-=10;
+    }
+    
+    printf("FINISHED MOVING THROUGH ALL THROTTLES");
 
     return 0;
 }
