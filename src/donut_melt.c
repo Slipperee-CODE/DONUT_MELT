@@ -140,14 +140,6 @@ void update_bot_state(){
         drive_handle_idle();
     }
 
-    // + test setting motor power values WITH DSHOT (MAKE SURE IT DOES EXACTLY WHAT INTENDED)
-    // + add extended telemetry data to verbose diagnostics and then actually try to read it  
-    //   - probably need to make c++ enum wrapper file (making it into c enum so we can use it) 
-    //     but can just put that in c-pico-bidir-dshot folder / existing wrapper code probably
-
-    // write auto esc configuring code w/ dshot once working
-    //   - maybe if switch is active on startup then auto-configure escs otherwise don't
-
     // then just actually write the melty logic lol
 }
 
@@ -198,6 +190,8 @@ int main(){
         receiver_update();
 
         watchdog_update(); // keep watchdog happy
+
+        // put a 200 microsecond wait here to make bidir dshot happy, shouldn't mess with anything else so we should be good
     }
 
     return 0;
