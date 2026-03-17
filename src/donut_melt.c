@@ -192,6 +192,7 @@ int main(){
         watchdog_update(); // keep watchdog happy
 
         // put a 200 microsecond wait here to make bidir dshot happy, shouldn't mess with anything else so we should be good
+        // could be a lower microsecond amount maybe but 200 should will work fine
     }
 
     return 0;
