@@ -82,8 +82,8 @@ typedef struct {
 
 // #define FLASHING_MOTORS 
 
-#define MOTOR1_PIN 3 
-#define MOTOR2_PIN 2
+#define MOTOR1_PIN 2 
+#define MOTOR2_PIN 3
 
 #define MOTOR1_PIO pio0
 #define MOTOR2_PIO pio1

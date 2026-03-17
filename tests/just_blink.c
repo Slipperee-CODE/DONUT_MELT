@@ -2,7 +2,7 @@
 
 int main() {
     // Specify the onboard LED pin (GPIO 25)
-    const uint LED_PIN = 25;
+    const uint LED_PIN = 22;
     
     // Initialize GPIO
     gpio_init(LED_PIN);
