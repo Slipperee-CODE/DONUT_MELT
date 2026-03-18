@@ -45,6 +45,8 @@ void update_bot_state(){
     } else {
         drive_handle_idle();
     }
+
+    // then just actually write the melty logic lol
 }
 
 int main(){
@@ -94,6 +96,9 @@ int main(){
         receiver_update();
 
         watchdog_update(); // keep watchdog happy
+
+        // put a 200 microsecond wait here to make bidir dshot happy, shouldn't mess with anything else so we should be good
+        // could be a lower microsecond amount maybe but 200 should will work fine
     }
 
     return 0;

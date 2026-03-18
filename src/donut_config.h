@@ -82,8 +82,8 @@ typedef struct {
 
 // #define FLASHING_MOTORS 
 
-#define MOTOR1_PIN 3 
-#define MOTOR2_PIN 2
+#define MOTOR1_PIN 2 
+#define MOTOR2_PIN 3
 
 #define MOTOR1_PIO pio0
 #define MOTOR2_PIO pio1
@@ -123,5 +123,6 @@ typedef struct {
 #define WATCH_DOG_TIMEOUT_MS 500 // changed to prevent 200 microsecond delay from having any chance of triggering watchdog
 
 //----------END MISC----------
+
 
 #endif
