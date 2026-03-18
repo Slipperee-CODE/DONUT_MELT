@@ -8,6 +8,7 @@
 // Used in c file
 #include "donut_config.h"
 #include "crsf.h"
+#include "math.h"
 
 typedef enum {
     RIGHT_JOYSTICK_X,
@@ -22,7 +23,11 @@ typedef enum {
     KNOB_S2
 } Channel;
 
-uint16_t receiver_get_channel(uint16_t channel);
+uint16_t receiver_get_channel(Channel channel);
+
+double receiver_get_percent_for_channel(Channel channel);
+
+uint8_t receiver_is_channel_near_value(Channel channel, uint16_t value, uint16_t tolerance);
 
 void receiver_send_telemetry(uint16_t diag1, uint16_t diag2, uint32_t diag3, uint8_t diag4);
 

@@ -4,7 +4,7 @@ uint32_t get_seconds_since_boot(){
     return to_ms_since_boot(get_absolute_time()) / 1000.0;
 }
 
-void output_diagnostics(bot_state_t bot_state){
+void output_diagnostics(bot_state_t* bot_state){
     printf("\n---------DIAGNOSTICS START-------------\n\n");
 
     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
@@ -55,18 +55,19 @@ void output_diagnostics(bot_state_t bot_state){
 
     #ifdef OTHER_DIAGNOSTICS
         printf("--------OTHER INFO---------\n");
-        printf("is_failsafed: %d \n", bot_state.is_failsafed);
-        printf("require_zero_throttle: %d \n", bot_state.require_zero_throttle);
-        printf("get_curr_drive_mode: %d \n", get_curr_drive_mode());
+        printf("is_failsafed: %d \n", bot_state->is_failsafed);
+        printf("require_zero_throttle: %d \n", bot_state->require_zero_throttle);
+        printf("get_curr_drive_mode: %d \n", drive_get_curr_drive_mode());
         printf("is_killswitch_active: %d \n", is_killswitch_active());
         printf("is_throttle_zero: %d \n", is_throttle_zero());
-        printf("left_stick_y_percent: %lf \n", get_percent_for_channel(LEFT_JOYSTICK_Y));
-        printf("right_stick_y_percent: %lf \n\n", get_percent_for_channel(RIGHT_JOYSTICK_Y));
+        printf("left_stick_y_percent: %lf \n", receiver_get_percent_for_channel(LEFT_JOYSTICK_Y));
+        printf("right_stick_y_percent: %lf \n\n", receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y));
     #endif
 
     printf("---------DIAGNOSTICS END-------------\n\n");
 }
 
+// this function and send_telemetry work together to switch between different sets of telemetry to send to transmitter 
 uint8_t get_telemetry_state(){
     if (receiver_get_channel(SWITCH_F) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
         return TELEMETRY_MOTOR1;
@@ -77,7 +78,7 @@ uint8_t get_telemetry_state(){
     }
 }
 
-void send_telemetry(bot_state_t bot_state){
+void send_telemetry(bot_state_t* bot_state){
     switch(get_telemetry_state()){
         case TELEMETRY_MOTOR1:
             printf("SENDING MOTOR1");
@@ -89,7 +90,7 @@ void send_telemetry(bot_state_t bot_state){
             break;
         case TELEMETRY_MAIN:
             printf("SENDING MAIN");
-            receiver_send_telemetry(bot_state.require_zero_throttle,bot_state.is_failsafed,get_seconds_since_boot(),3);
+            receiver_send_telemetry(bot_state->require_zero_throttle,bot_state->is_failsafed,get_seconds_since_boot(),3);
             break;
     }
 }

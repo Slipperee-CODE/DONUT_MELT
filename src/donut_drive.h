@@ -4,15 +4,14 @@
 // Used in c file
 #include "motor_driver.h"
 #include "led_driver.h"
+#include "receiver.h"
 #include "donut_config.h"
 #include "pico/time.h"
 
 #include <stdio.h>
 
-void drive_handle_idle();
+uint8_t drive_get_curr_drive_mode();
 
-void drive_handle_spin(double throttle);
-
-void drive_handle_tank(double left_throttle, double right_throttle);
+void drive_update_bot_state(bot_state_t* bot_state);
 
 #endif

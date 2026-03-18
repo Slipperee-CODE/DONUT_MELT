@@ -10,6 +10,10 @@
 
 void led_init(uint8_t pin);
 
-void led_time_blink(int millis);
+void led_zero_prev_time();
+
+void led_time_blink(uint32_t millis);
+
+void led_repeat_blink(uint8_t repeats);
 
 #endif

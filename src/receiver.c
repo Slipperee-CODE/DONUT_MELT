@@ -10,8 +10,16 @@ void on_rc_channels(const uint16_t channels[16]){
     }
 }
 
-uint16_t receiver_get_channel(uint16_t channel){
+uint16_t receiver_get_channel(Channel channel){
     return _user_channels[channel];
+}
+
+uint8_t receiver_is_channel_near_value(Channel channel, uint16_t value, uint16_t tolerance){
+    return fabs(receiver_get_channel(channel) - value) <= tolerance;
+}
+
+double receiver_get_percent_for_channel(Channel channel){
+    return fmin(1, fmax(0, (receiver_get_channel(channel) - RECEIVER_LOWEST_CHANNEL_VALUE) / RECEIVER_HIGHEST_CHANNEL_VALUE - RECEIVER_LOWEST_CHANNEL_VALUE));
 }
 
 void on_link_stats(const link_statistics_t link_stats){
@@ -47,5 +55,4 @@ void receiver_init(uart_inst_t* uart_id, int tx_pin, int rx_pin, int link_qualit
 
 void receiver_update(){
     crsf_process_frames(&_user_crsf_instance);
-    //printf("RECEIVER UPDATING");
 }

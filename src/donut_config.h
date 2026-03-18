@@ -34,12 +34,16 @@ typedef struct {
 
     uint8_t is_failsafed;
     uint8_t require_zero_throttle;
+
+    uint32_t rpm;
+    uint32_t rotation_time_elapsed;
 } bot_state_t;
 
 //---------------LED SETTINGS---------------
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
+#define REPEAT_BLINK 100
 
 //---------------END LED SETTINGS---------------
 
@@ -98,7 +102,7 @@ typedef struct {
 
 //----------TELEMETRY SETTINGS----------
 
-#define SHOULD_SEND_CUSTOM_TELEMETRY_TO_TRANSMITTER
+#define SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
 
 #define OUTPUT_DIAGNOSTICS
 
