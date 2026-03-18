@@ -32,7 +32,7 @@ void led_time_blink(uint32_t millis){
     }
 }
 
-// something's wrong with this logic
+// something's wrong with this logic, try to simplify it
 void led_repeat_blink(uint8_t repeats){
     static uint8_t led_state_changes = 0;
 
