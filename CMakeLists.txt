@@ -27,7 +27,7 @@ project(donut_melt C CXX ASM)
 
 pico_sdk_init()
 
-add_executable(donut_melt src/donut_melt.c src/led_driver.c src/receiver.c src/motor_driver.c src/donut_drive.c)
+add_executable(donut_melt src/donut_melt.c src/led_driver.c src/receiver.c src/motor_driver.c src/donut_drive.c src/donut_telemetry.c)
 
 target_include_directories(donut_melt PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
