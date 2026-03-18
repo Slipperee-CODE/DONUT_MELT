@@ -14,4 +14,6 @@ uint8_t drive_get_curr_drive_mode();
 
 void drive_update_bot_state(bot_state_t* bot_state);
 
+void drive_handle_tank(bot_state_t* bot_state, uint16_t left_throttle, uint16_t right_throttle);
+
 #endif

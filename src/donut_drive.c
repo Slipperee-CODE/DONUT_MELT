@@ -23,7 +23,7 @@ void drive_update_bot_state(bot_state_t* bot_state){
     if (get_curr_drive_mode() == DRIVE_MODE_MELTY){
         handle_spin(bot_state, left_throttle);
     } else {
-        handle_tank(bot_state, left_throttle, right_throttle);
+        drive_handle_tank(bot_state, left_throttle, right_throttle);
     }
 }
 
@@ -38,7 +38,7 @@ void handle_spin(bot_state_t* bot_state, uint16_t throttle){
     motor_motor2_send_throttle(throttle);
 }
 
-void handle_tank(bot_state_t* bot_state, uint16_t left_throttle, uint16_t right_throttle){
+void drive_handle_tank(bot_state_t* bot_state, uint16_t left_throttle, uint16_t right_throttle){
     led_repeat_blink(3);
     motor_motor1_send_throttle(left_throttle);
     motor_motor2_send_throttle(right_throttle);
