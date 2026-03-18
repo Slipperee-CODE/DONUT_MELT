@@ -43,7 +43,7 @@ typedef struct {
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
-#define REPEAT_BLINK 100
+#define REPEAT_BLINK 250
 
 //---------------END LED SETTINGS---------------
 
