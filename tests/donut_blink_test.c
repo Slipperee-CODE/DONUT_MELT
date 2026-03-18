@@ -1,4 +1,5 @@
 #include "pico/stdlib.h"
+#include "pico/time.h"
 #include "../src/led_driver.h"
 #include "../src/donut_config.h"
 
@@ -7,21 +8,28 @@ int main() {
 
     uint32_t start_time;
 
-    int time_to_test_each_blink_type = 5000;
-    start_time = to_ms_since_boot(get_absolute_time());
-    while (to_ms_since_boot(get_absolute_time()) <= start_time + time_to_test_each_blink_type){
-        led_time_blink(SLOW_BLINK);
-    }
+    int time_to_test_each_blink_type = 10000;
+    // start_time = to_ms_since_boot(get_absolute_time());
+    // while (to_ms_since_boot(get_absolute_time()) <= start_time + time_to_test_each_blink_type){
+    //     led_time_blink(SLOW_BLINK);
+    // }
 
-    start_time = to_ms_since_boot(get_absolute_time());
-    while (to_ms_since_boot(get_absolute_time()) <= start_time + time_to_test_each_blink_type){
-        led_time_blink(FAST_BLINK);
-    }
+    // led_set_state(0);
+    // sleep_ms(5000);
 
-    for (int repeats = 2; repeats < 10; repeats+=1){
+    // start_time = to_ms_since_boot(get_absolute_time());
+    // while (to_ms_since_boot(get_absolute_time()) <= start_time + time_to_test_each_blink_type){
+    //     led_time_blink(FAST_BLINK);
+    // }
+
+    led_set_state(0);
+    sleep_ms(5000);
+
+    for (int repeats = 2; repeats < 6; repeats+=1){
         start_time = to_ms_since_boot(get_absolute_time());
         while (to_ms_since_boot(get_absolute_time()) <= start_time + time_to_test_each_blink_type){
             led_repeat_blink(repeats);
         }
+        sleep_ms(5000);
     }
 }

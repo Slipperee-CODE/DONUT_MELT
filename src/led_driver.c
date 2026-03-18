@@ -17,6 +17,10 @@ void led_zero_prev_time(){
     prev_time = 0;
 }
 
+void led_set_state(uint8_t state){
+    led_state = state;
+}
+
 void led_time_blink(uint32_t millis){
     uint32_t curr_time = to_ms_since_boot(get_absolute_time());
 
@@ -28,15 +32,20 @@ void led_time_blink(uint32_t millis){
     }
 }
 
+// something's wrong with this logic
 void led_repeat_blink(uint8_t repeats){
     static uint8_t led_state_changes = 0;
 
-    if (led_state_changes > repeats * 2 + 2){
+    if (led_state_changes > repeats * 2 + 1){
         led_state_changes = 0;
     }
 
+    if (led_state_changes == 0){
+        led_set_state(1);
+    }
+
     uint16_t time_to_wait_before_next_blink = REPEAT_BLINK;
-    if (led_state_changes >= repeats * 2){
+    if (led_state_changes == repeats * 2){
         time_to_wait_before_next_blink = SLOW_BLINK;
     }
 
