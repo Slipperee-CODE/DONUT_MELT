@@ -44,8 +44,15 @@ void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_
     motor_stop_all();
 
     // negative time means that the callback is called at a consistent rate regardless of time taken during callback call
-    add_repeating_timer_us(-1000, set_throttle_callback, NULL, &set_throttle_timer);
+    add_repeating_timer_us(-200, set_throttle_callback, NULL, &set_throttle_timer);
 
-    // arm escs by sending 0 throttle for at least 3 seconds
-    sleep_ms(3000);
+    // initing escs by going 0 - 1000 - 0 for some reason, it shouldn't work like this but it does
+    motor_set_throttle_for_all(0);
+    sleep_ms(1000);
+
+    motor_set_throttle_for_all(1000);
+    sleep_ms(1000);
+
+    motor_set_throttle_for_all(0);
+    sleep_ms(1000);
 }

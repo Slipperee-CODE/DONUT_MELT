@@ -92,7 +92,7 @@ typedef struct {
 #define MOTOR1_PIO pio0
 #define MOTOR2_PIO pio1
 
-#define DSHOT_SPEED 300 // could be 150, 300, 450, 600 + some more
+#define DSHOT_SPEED 600 // could be 150, 300, 450, 600 + some more
 
 #define DRIVE_MODE_MELTY 1
 #define DRIVE_MODE_TANK 2
