@@ -21,6 +21,11 @@ void led_set_state(uint8_t state){
     led_state = state;
 }
 
+void led_toggle(){
+    led_state = 1 - led_state;
+    gpio_put(LED_PIN, led_state);
+}
+
 void led_time_blink(uint32_t millis){
     uint32_t curr_time = to_ms_since_boot(get_absolute_time());
 

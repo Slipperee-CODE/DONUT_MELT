@@ -8,11 +8,12 @@ volatile uint16_t MOTOR2_throttle;
 
 static bot_state_t* _user_bot_state;
 
-static struct repeating_timer send_throttle_timer;
+static struct repeating_timer set_throttle_timer;
 
-bool set_throttle_callback(){
+bool set_throttle_callback(struct repeating_timer *t){
     BidirDShotX1_sendThrottle(MOTOR1, MOTOR1_throttle);
     BidirDShotX1_sendThrottle(MOTOR2, MOTOR2_throttle);
+    led_toggle();
     return true;
 }
 
@@ -41,7 +42,7 @@ void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_
     _user_bot_state = user_bot_state;
 
     // negative time means that the callback is called at a consistent rate regardless of time taken during callback call
-    add_repeating_timer_us(-200, set_throttle_callback, NULL, &send_throttle_timer);
+    add_repeating_timer_us(-200, set_throttle_callback, NULL, &set_throttle_timer);
 
     // arm escs by sending 0 throttle for 3 seconds
     motor_set_throttle_for_all(0);
