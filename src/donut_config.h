@@ -55,6 +55,8 @@ typedef struct {
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
 #define MIN_TRANSLATION_RPM 400
 
+#define TANK_DRIVE_MAX_THROTTLE_PERCENT 0.5
+
 //----------END DONUT DRIVE SETTINGS---------
 
 

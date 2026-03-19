@@ -38,8 +38,17 @@ void handle_spin(bot_state_t* bot_state, uint16_t throttle){
     motor_motor2_send_throttle(throttle);
 }
 
+uint16_t throttle_to_desired_tank_throttle(uint16_t throttle){
+    // both motors need to be going a limited amount forwards but that might look vastly different for each
+    // motor depending on direction to be very careful
+}
+
 void drive_handle_tank(bot_state_t* bot_state, uint16_t left_throttle, uint16_t right_throttle){
     led_repeat_blink(3);
-    motor_motor1_send_throttle(left_throttle);
-    motor_motor2_send_throttle(right_throttle);
+
+    uint16_t adjusted_left_throttle = throttle_to_desired_tank_throttle(left_throttle);
+    uint16_t adjusted_right_throttle = throttle_to_desired_tank_throttle(right_throttle);
+
+    motor_motor1_send_throttle(adjusted_left_throttle);
+    motor_motor2_send_throttle(adjusted_right_throttle);
 }
