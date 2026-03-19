@@ -2,6 +2,7 @@
 #define DONUT_TELEMETRY_H
 
 #include "donut_config.h"
+#include "donut_drive.h"
 #include "receiver.h"
 #include "stdint.h"
 

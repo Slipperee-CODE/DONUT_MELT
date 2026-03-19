@@ -35,8 +35,8 @@ typedef struct {
     uint8_t is_failsafed;
     uint8_t require_zero_throttle;
 
+    uint32_t max_rpm;
     uint32_t rpm;
-    uint32_t rotation_time_elapsed;
 } bot_state_t;
 
 //---------------LED SETTINGS---------------
@@ -54,8 +54,9 @@ typedef struct {
 #define ACCEL_ZERO_G_OFFSET 1.5                                           
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
 #define MIN_TRANSLATION_RPM 400
+#define LED_OFFSET_PERCENT 0.25 // This is just some random number I picked rn - Cai
 
-#define TANK_DRIVE_MAX_THROTTLE_PERCENT 0.5
+#define TANK_DRIVE_MAX_THROTTLE_PERCENT 0.50
 
 //----------END DONUT DRIVE SETTINGS---------
 

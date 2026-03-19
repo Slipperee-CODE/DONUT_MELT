@@ -22,8 +22,9 @@ void init_bot_state(){
     bot_state.rotation_time_elapsed = 0;
 }
 
+// need to make this function and is_killswitch_active accesible from donut_drive.c somehow
 uint8_t is_throttle_zero(){ 
-    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 10);
+    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 10);
 }
 
 uint8_t is_killswitch_active(){
