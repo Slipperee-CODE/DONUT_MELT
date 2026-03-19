@@ -32,7 +32,7 @@ int main() {
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
-    sleep_ms(3000);
+    sleep_ms(20000);
 
     for (int i = 1000; i >= 0; i-=10){
         motor_set_throttle_for_all(i);
