@@ -41,7 +41,7 @@ pico_sdk_init()
 # add_executable(donut_melt tests/just_blink_test.c src/led_driver.c)
 # add_executable(donut_melt tests/donut_blink_test.c src/led_driver.c)
 
-add_executable(donut_melt tests/dshot_ramp_test.c src/motor_driver.c)
+add_executable(donut_melt tests/dshot_ramp_test.c src/motor_driver.c src/led_driver.c)
 # add_executable(donut_melt tests/dshot_from_tx_test.c src/motor_driver.c src/led_driver.c src/receiver.c)
 
 #---------------END TESTS---------------

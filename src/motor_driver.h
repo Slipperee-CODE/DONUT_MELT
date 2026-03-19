@@ -6,6 +6,7 @@
 #include "pico/time.h"
 #include "hardware/pio.h"
 #include "pico/stdlib.h"
+#include "led_driver.h"
 #include "donut_config.h"
 
 void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio, bot_state_t* user_bot_state);

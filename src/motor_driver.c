@@ -13,7 +13,7 @@ static struct repeating_timer set_throttle_timer;
 bool set_throttle_callback(struct repeating_timer *t){
     BidirDShotX1_sendThrottle(MOTOR1, MOTOR1_throttle);
     BidirDShotX1_sendThrottle(MOTOR2, MOTOR2_throttle);
-    led_toggle();
+    // led_toggle();
     return true;
 }
 
