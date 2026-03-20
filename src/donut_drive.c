@@ -133,25 +133,42 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
         right_y_percent = 0.499 - right_y_percent;
     } 
 
-    motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
-    motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
+    #if !defined(MELTY_DRIVE_MELTY_LED_ONLY)
+        motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
+        motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
+    #endif
 }
 
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    if (donut_is_throttle_zero()){
-        handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
-        return;
-    }
-    
-    if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
-        handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
+    // I do a lot of macro shenanigans here to make testing different parts of the code easier in unit tests - Cai
+
+    #ifdef NOT_DEBUGGING_DRIVE
+        if (donut_is_throttle_zero()){
+            handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
+            return;
+        }
+    #endif
+
+    #ifdef NOT_DEBUGGING_DRIVE
+        if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
+    #endif
+
+        #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || defined(NOT_DEBUGGING_DRIVE)
+            handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        #endif
+
+    #ifdef NOT_DEBUGGING_DRIVE
     } else {
-        led_repeat_blink(3);
+    #endif
 
-        // restricting allowed standard tank drive values so that robot can be more controlled hopefully
-        left_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, left_y_percent));
-        right_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, right_y_percent));
+        #if defined(TANK_DRIVE_ONLY) || defined(NOT_DEBUGGING_DRIVE)
+            led_repeat_blink(3);
 
-        handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
+            // restricting allowed standard tank drive values so that robot can be more controlled hopefully
+            left_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, left_y_percent));
+            right_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, right_y_percent));
+
+            handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        #endif
     }
 }

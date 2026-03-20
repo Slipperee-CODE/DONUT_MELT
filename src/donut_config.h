@@ -119,6 +119,8 @@ uint8_t donut_is_killswitch_active();
 
 //----------MISC----------
 
+// #define NOT_DEBUGGING_DRIVE // Should be defined when you want the robot to work normally for a fight
+
 #define HEADING_LIGHT_STRIP_PIN	25 // Actual robot led is pin 22, Onboard Pico2 led is pin 25
 
 #define WATCH_DOG_TIMEOUT_MS 500 // changed to prevent 200 microsecond delay from having any chance of triggering watchdog
