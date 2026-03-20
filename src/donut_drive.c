@@ -1,5 +1,9 @@
 #include "donut_drive.h"
 
+#ifdef LIE_ABOUT_UPR
+    static uint64_t _fake_curr_upr;
+#endif
+
 uint8_t drive_get_curr_drive_mode(){
     if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
         return DRIVE_MODE_TANK;
@@ -12,27 +16,47 @@ void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_p
     motor_stop_all();
 }
 
-// gets microseconds per rotation
-// lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
-uint64_t get_adjusted_upr(double right_x_percent){
-    // get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
-    double x_gs = accelerometer_get_x();
+#ifdef LIE_ABOUT_UPR
+    void drive_set_fake_curr_upr_from_rpm(uint64_t fake_curr_rpm){
+        if (fake_curr_rpm == 0) { return 0; }
+        _fake_curr_upr = (uint64_t) (60000000/fake_curr_rpm);
+    }
 
-    // mapping [0,1] -> [-1,1]
-    right_x_percent = (right_x_percent - 0.5) * 2;
+    uint64_t get_adjusted_upr(double right_x_percent){
+        return _fake_curr_upr;
+    }
+#endif
 
-    double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+#ifndef LIE_ABOUT_UPR
+    // gets microseconds per rotation
+    // lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
+    uint64_t get_adjusted_upr(double right_x_percent){
+        // get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
+        double x_gs = accelerometer_get_x();
 
-    double rpm = fabs(get_accel_force_g() - ACCEL_ZERO_G_OFFSET) * 89445.0f;
-    rpm = rpm / effective_radius_in_cm;
-    rpm = sqrt(rpm);
+        // mapping [0,1] -> [-1,1]
+        right_x_percent = (right_x_percent - 0.5) * 2;
 
-    uint64_t upr = (uint64_t) (60000000/rpm);
-    return upr;
-}
+        double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+
+        double rpm = fabs(get_accel_force_g() - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+        rpm = rpm / effective_radius_in_cm;
+        rpm = sqrt(rpm);
+
+        uint64_t upr;
+        if (rpm) {
+            upr = (uint64_t) (60000000/rpm);
+        } else {
+            upr = 0;
+        }
+        
+        return upr;
+    }
+#endif
 
 // goes from microseconds per rotation -> rpm
 uint16_t upr_to_rpm(uint64_t upr){
+    if (upr == 0) { return 0; }
     return (uint16_t) (60000000 / upr);
 }
 
@@ -86,7 +110,7 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 
     // if we aren't fast enough to translate, spin up as fast as possible
-    if (upr_rpm(us_per_rotation) < MIN_TRANSLATION_RPM){
+    if (upr_to_rpm(us_per_rotation) < MIN_TRANSLATION_RPM){
         handle_tank(bot_state, 1, 1, 0);
         led_set_and_update_state(1);
         return;
@@ -120,6 +144,7 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     if (time_elapsed_this_rotation_us >= us_per_rotation) {
         time_elapsed_this_rotation_us = 0;
         no_translation_state_counter = 1 - no_translation_state_counter;
+        bot_state->this_rotations_start_time_us = time_us_64();
     }
 }
 

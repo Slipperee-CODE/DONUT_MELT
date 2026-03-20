@@ -16,14 +16,31 @@ void repeat_update_bot_state_call_for_ms(bot_state_t* bot_state_ptr, double left
     }
 }
 
+void repeat_led_repeat_blink_call_for_ms(uint32_t ms){
+    uint32_t start_time = to_ms_since_boot(get_absolute_time());
+    while (to_ms_since_boot(get_absolute_time()) <= start_time + ms){
+        led_repeat_blink(2);
+    }
+}
+
+#define LIE_ABOUT_UPR
+
 #define MELTY_DRIVE_MELTY_LED_ONLY
 // #define MELTY_DRIVE_ONLY
 // #define TANK_DRIVE_ONLY
 
 void test_melty_led_only(){
-    while (1){
-        drive_update_bot_state(&bot_state, 1, 1, 0);
-    }
+    drive_set_fake_curr_upr_from_rpm(0);
+    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    drive_set_fake_curr_upr_from_rpm(100);
+    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    drive_set_fake_curr_upr_from_rpm(500);
+    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
 
     // continue testing here
 }
