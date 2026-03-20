@@ -22,6 +22,8 @@ typedef struct {
     uint32_t rpm;
 } bot_state_t;
 
+void donut_init_bot_state();
+
 uint8_t donut_is_throttle_zero();
 
 uint8_t donut_is_killswitch_active();

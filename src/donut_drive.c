@@ -142,7 +142,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
         return;
     }
-
+    
     if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
         handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
     } else {

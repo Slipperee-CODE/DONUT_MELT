@@ -8,7 +8,7 @@
 
 static bot_state_t bot_state;
 
-void init_bot_state(){
+void donut_init_bot_state(){
     bot_state.is_failsafed = 1;
     bot_state.require_zero_throttle = 1;
 
@@ -34,7 +34,7 @@ void when_flashing_motors(){
 void init_bot_systems(){
     stdio_init_all();
 
-    init_bot_state();
+    donut_init_bot_state();
 
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
 

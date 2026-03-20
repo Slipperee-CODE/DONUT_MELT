@@ -8,21 +8,10 @@
 
 static bot_state_t bot_state;
 
-void init_bot_state(){
-    bot_state.crsf_link_quality = 0;
-    bot_state.crsf_rssi = 0;
-    bot_state.crsf_snr = 0;
-    bot_state.crsf_tx_power = 0;
-
-    bot_state.is_failsafed = 1;
-    bot_state.require_zero_throttle = 1;
-
-    bot_state.rpm = 0;
-    bot_state.rotation_time_elapsed = 0;
-}
-
 int main() {
     stdio_init_all();
+
+    donut_init_bot_state();
 
     int start_wait_time = 5000;
     uint32_t start_time = to_ms_since_boot(get_absolute_time());
