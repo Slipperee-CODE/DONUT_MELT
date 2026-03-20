@@ -13,23 +13,25 @@ void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_p
 }
 
 // gets microseconds per rotation
-// lies about rpm depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
+// lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
 uint64_t get_adjusted_upr(double right_x_percent){
-    // get rpm from accel data along correct axis 
+    // get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
     double x_gs = accelerometer_get_x();
 
-    // (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR) term needs to be negative for stick left and positive for stick right
+    // mapping [0,1] -> [-1,1]
+    right_x_percent = (right_x_percent - 0.5) * 2;
+
     double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
 
-    // fix this: to actually give uprs instead of rpm
-    uint64_t upr = fabs(get_accel_force_g() - ACCEL_ZERO_G_OFFSET) * 89445.0f;
-    upr = upr / effective_radius_in_cm;
-    upr = sqrt(upr);
+    double rpm = fabs(get_accel_force_g() - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+    rpm = rpm / effective_radius_in_cm;
+    rpm = sqrt(rpm);
 
+    uint64_t upr = (uint64_t) (60000000/rpm);
     return upr;
 }
 
-// gets rpm from microseconds per rotation
+// goes from microseconds per rotation -> rpm
 uint16_t upr_to_rpm(uint64_t upr){
     return (uint16_t) (60000000 / upr);
 }
@@ -121,13 +123,18 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 }
 
-// this function probably needs fixing because right now:
-    // any percent < 0.5 goes backwards some weird amount (bc the ramping)
-    // any percent > 0.5 goes forward some weird amount (bc the ramping)
-// fix this: make sure this function behaves exactly as you intend (and is used in that way by rest of code)
 void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    motor_motor1_set_throttle(2000*left_y_percent);
-    motor_motor2_set_throttle(2000*right_y_percent);
+    // fixing ramping such that (0.5,1] increases throttle in one direction and [0.5,0] increases throttle in the other
+    if (left_y_percent < 0.5) {
+        left_y_percent = 0.499 - left_y_percent; // doing 0.499 so 0.0 is fullest throttle possible
+    } 
+
+    if (right_y_percent < 0.5) {
+        right_y_percent = 0.499 - right_y_percent;
+    } 
+
+    motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
+    motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
 }
 
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
@@ -141,7 +148,10 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     } else {
         led_repeat_blink(3);
 
-        // fix this: this current throttle limiting strategy might force the motor to only go in 1 direction even if throttle is for opposite direction
-        handle_tank(bot_state, fmax(left_y_percent, TANK_DRIVE_MAX_THROTTLE_PERCENT), fmax(right_y_percent, TANK_DRIVE_MAX_THROTTLE_PERCENT), right_x_percent);
+        // restricting allowed standard tank drive values so that robot can be more controlled hopefully
+        left_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, left_y_percent));
+        right_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, right_y_percent));
+
+        handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
     }
 }
