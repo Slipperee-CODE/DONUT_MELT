@@ -10,9 +10,7 @@
 
 void led_init(uint8_t pin);
 
-void led_reset();
-
-void led_time_blink_on_off(uint32_t millis_on, uint32_t millis_off);
+void led_set_and_update_state(uint8_t state);
 
 void led_time_blink(uint32_t millis);
 

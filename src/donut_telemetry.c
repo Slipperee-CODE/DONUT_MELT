@@ -25,34 +25,6 @@ void output_diagnostics(bot_state_t* bot_state){
         printf("KNOB_S2: %d \n\n", receiver_get_channel(KNOB_S2));
     #endif
 
-    #ifdef CRSF_DIAGNOSTICS
-        printf("--------CRSF INFO---------\n");
-        printf("crsf_link_quality: %d \n", bot_state.crsf_link_quality);
-        printf("crsf_rssi: %d \n", bot_state.crsf_rssi);
-        printf("crsf_snr: %d \n", bot_state.crsf_snr);
-        printf("crsf_tx_power: %d \n\n", bot_state.crsf_tx_power);
-    #endif
-
-    #ifdef MOTOR1_DIAGNOSTICS
-        printf("--------MOTOR1 TELEMETRY INFO---------\n");
-        printf("bidir_m1_erpm: %d | ", bot_state.bidir_m1_erpm);
-        printf("bidir_m1_voltage: %d | ", bot_state.bidir_m1_voltage);
-        printf("bidir_m1_current: %d \n", bot_state.bidir_m1_current);
-        printf("bidir_m1_temperature: %d | ", bot_state.bidir_m1_temperature);
-        printf("bidir_m1_status: %d | ", bot_state.bidir_m1_status);
-        printf("bidir_m1_stress: %d \n\n", bot_state.bidir_m1_stress);
-    #endif
-
-    #ifdef MOTOR2_DIAGNOSTICS
-        printf("--------MOTOR2 TELEMETRY INFO---------\n");
-        printf("bidir_m2_erpm: %d | ", bot_state.bidir_m2_erpm);
-        printf("bidir_m2_voltage: %d | ", bot_state.bidir_m2_voltage);
-        printf("bidir_m2_current: %d \n", bot_state.bidir_m2_current);
-        printf("bidir_m2_temperature: %d | ", bot_state.bidir_m2_temperature);
-        printf("bidir_m2_status: %d | ", bot_state.bidir_m2_status);
-        printf("bidir_m2_stress: %d \n\n", bot_state.bidir_m2_stress);
-    #endif
-
     #ifdef OTHER_DIAGNOSTICS
         printf("--------OTHER INFO---------\n");
         printf("is_failsafed: %d \n", bot_state->is_failsafed);

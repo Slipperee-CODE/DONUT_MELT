@@ -1,22 +1,18 @@
 #include "donut_config.h"
 #include "donut_drive.h"
 #include "donut_telemetry.h"
-
+#include "H3LIS331DL.h"
 #include "led_driver.h"
 #include "motor_driver.h"
 #include "receiver.h"
-// #include "H3LIS331DL.h"
 
 static bot_state_t bot_state;
 
 void init_bot_state(){
-    bot_state.crsf_link_quality = 0;
-    bot_state.crsf_rssi = 0;
-    bot_state.crsf_snr = 0;
-    bot_state.crsf_tx_power = 0;
-
     bot_state.is_failsafed = 1;
     bot_state.require_zero_throttle = 1;
+
+    bot_state.this_rotations_start_time_us = -1;
 
     bot_state.max_rpm = 0;
     bot_state.rpm = 0;
@@ -41,7 +37,9 @@ void init_bot_systems(){
     init_bot_state();
 
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-    // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+
+    accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
     led_init(HEADING_LIGHT_STRIP_PIN);
@@ -63,7 +61,12 @@ void when_failsafe_on(){
 }
 
 void when_failsafe_off(){
-    drive_update_bot_state(&bot_state);
+    drive_update_bot_state(
+        &bot_state, 
+        receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 
+        receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y), 
+        receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)
+    );
 
     // led_time_blink(FAST_BLINK);
 }

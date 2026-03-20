@@ -13,27 +13,10 @@
 #include <math.h>
 
 typedef struct {
-    uint32_t crsf_link_quality;
-    uint32_t crsf_rssi;
-    uint32_t crsf_snr;
-    uint32_t crsf_tx_power;
-
-    uint32_t bidir_m1_erpm;
-    uint32_t bidir_m1_voltage;
-    uint32_t bidir_m1_current;
-    uint32_t bidir_m1_temperature;
-    uint32_t bidir_m1_status;
-    uint32_t bidir_m1_stress;
-
-    uint32_t bidir_m2_erpm;
-    uint32_t bidir_m2_voltage;
-    uint32_t bidir_m2_current;
-    uint32_t bidir_m2_temperature;
-    uint32_t bidir_m2_status;
-    uint32_t bidir_m2_stress;
-
     uint8_t is_failsafed;
     uint8_t require_zero_throttle;
+
+    uint64_t this_rotations_start_time_us;
 
     uint32_t max_rpm;
     uint32_t rpm;
@@ -57,8 +40,13 @@ uint8_t donut_is_killswitch_active();
 #define ACCEL_MOUNT_RADIUS_CM 4.45                                     
 #define ACCEL_ZERO_G_OFFSET 1.5                                           
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
+
+#define MOTOR_ON_PERCENT_DURATION 0.5
 #define MIN_TRANSLATION_RPM 400
-#define LED_OFFSET_PERCENT 0.25 // This is just some random number I picked rn - Cai
+
+// #define LED_OFFSET_PERCENT 0.25 // I don't know what this number is for in OpenMelt - Cai
+#define MIN_LED_PERCENT_DURATION 0.25 
+#define MAX_LED_PERCENT_DURATION 0.75 
 
 #define TANK_DRIVE_MAX_THROTTLE_PERCENT 0.50
 
