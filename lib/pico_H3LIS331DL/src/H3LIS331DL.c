@@ -8,7 +8,7 @@ void write_to_register(uint8_t register_address, uint8_t register_value){
     i2c_write_blocking(I2C_PORT, ACCELEROMETER_ADDRESS, buffer, 2, false);
 }
 
-void accelerometer_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl){ //TODO: allow for scale selection, determines sensitivity factor
+void accelerometer_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl){
     I2C_PORT = i2c_port;
 
     i2c_init(I2C_PORT, 400*1000);
