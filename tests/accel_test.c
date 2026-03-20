@@ -1,7 +1,18 @@
+#include "../src/donut_config.h"
 #include "pico/stdlib.h"
+#include "stdio.h"
+#include "H3LIS331DL.h"
+
 
 int main() {
-    // yet to be implemented
+    accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+
+    while (1) {
+        double* accel_data = accelerometer_get_all_axis();
+        printf("X axis: %lf \n", accel_data[0]);
+        printf("Y axis: %lf \n", accel_data[1]);
+        printf("Z axis: %lf \n", accel_data[2]);
+    }
     
     return 0;
 }
