@@ -5,6 +5,8 @@
 
 
 int main() {
+    stdio_init_all();
+
     accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
 
     while (1) {
