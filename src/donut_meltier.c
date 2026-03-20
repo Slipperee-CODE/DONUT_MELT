@@ -18,16 +18,16 @@ void init_bot_state(){
     bot_state.is_failsafed = 1;
     bot_state.require_zero_throttle = 1;
 
+    bot_state.max_rpm = 0;
     bot_state.rpm = 0;
-    bot_state.rotation_time_elapsed = 0;
 }
 
 // need to make this function and is_killswitch_active accesible from donut_drive.c somehow
-uint8_t is_throttle_zero(){ 
+uint8_t donut_is_throttle_zero(){ 
     return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 10);
 }
 
-uint8_t is_killswitch_active(){
+uint8_t donut_is_killswitch_active(){
     return receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 10);
 }
 
@@ -55,7 +55,7 @@ void when_failsafe_on(){
 
     bot_state.require_zero_throttle = 1;
 
-    if (bot_state.is_failsafed == 0 && is_throttle_zero()){
+    if (bot_state.is_failsafed == 0 && donut_is_throttle_zero()){
         bot_state.require_zero_throttle = 0;
     }
 
@@ -94,7 +94,7 @@ int main(){
     init_bot_systems();
 
     while(1){
-        if (bot_state.is_failsafed || bot_state.require_zero_throttle || is_killswitch_active()){
+        if (bot_state.is_failsafed || bot_state.require_zero_throttle || donut_is_killswitch_active()){
             when_failsafe_on();
         } else {
             when_failsafe_off();

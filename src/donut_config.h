@@ -39,6 +39,10 @@ typedef struct {
     uint32_t rpm;
 } bot_state_t;
 
+uint8_t donut_is_throttle_zero();
+
+uint8_t donut_is_killswitch_active();
+
 //---------------LED SETTINGS---------------
 
 #define SLOW_BLINK 500

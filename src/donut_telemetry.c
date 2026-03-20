@@ -58,8 +58,8 @@ void output_diagnostics(bot_state_t* bot_state){
         printf("is_failsafed: %d \n", bot_state->is_failsafed);
         printf("require_zero_throttle: %d \n", bot_state->require_zero_throttle);
         printf("get_curr_drive_mode: %d \n", drive_get_curr_drive_mode());
-        printf("is_killswitch_active: %d \n", is_killswitch_active());
-        printf("is_throttle_zero: %d \n", is_throttle_zero());
+        printf("is_killswitch_active: %d \n", donut_is_killswitch_active());
+        printf("is_throttle_zero: %d \n", donut_is_throttle_zero());
         printf("left_stick_y_percent: %lf \n", receiver_get_percent_for_channel(LEFT_JOYSTICK_Y));
         printf("right_stick_y_percent: %lf \n\n", receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y));
     #endif
