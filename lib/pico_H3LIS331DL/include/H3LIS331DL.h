@@ -1,4 +1,5 @@
-#pragma once
+#ifndef H3LIS33DL_H
+#define H3LIS33DL_H
 
 #include <stdint.h>
 #include "pico/stdlib.h"
@@ -64,3 +65,5 @@ double accelerometer_get_y();
 double accelerometer_get_z();
 
 void pico_H3LIS331DL_is_library_accesible();
+
+#endif

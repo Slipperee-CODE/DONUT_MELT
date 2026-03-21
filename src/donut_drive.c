@@ -73,8 +73,8 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
 }
 
 void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time){
+    // pretty sure this is correct but could def be a source of problems - Cai
 
-    // fix this: it might not work as intended, it's attempting to turn on motors only on right side of "forward"/0 direction
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time){
         handle_tank(bot_state, left_y_percent, 0, 0);
@@ -84,16 +84,16 @@ void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t
     }
 }
 
+// like handle_spin_forwards but motors turn on and off in opposite order as handle_spin_forwards 
 void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time){
-
-    // fix this: this needs to be fixed to actually go backwards
-    // would need to turn motors on only on left side of "forward"/0 direction
+    // pretty sure this is correct but could def be a source of problems - Cai
+    
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time){
-        handle_tank(bot_state, left_y_percent, 0, 0);
+        handle_tank(bot_state, 0, left_y_percent, 0);
     } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
         time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time){
-        handle_tank(bot_state, 0, left_y_percent, 0);    
+        handle_tank(bot_state, left_y_percent, 0, 0);    
     }
 }
 
@@ -149,7 +149,7 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
 }
 
 void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    // fixing ramping such that (0.5,1] increases throttle in one direction and [0.5,0] increases throttle in the other
+    // fixing ramping such that (0.5,1] increases throttle in one direction and (0.5,0] increases throttle in the other
     if (left_y_percent < 0.5) {
         left_y_percent = 0.499 - left_y_percent; // doing 0.499 so 0.0 is fullest throttle possible
     } 
