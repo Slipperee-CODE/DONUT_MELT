@@ -129,7 +129,7 @@ uint8_t donut_is_killswitch_active();
 // #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
 // #define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
 
-#define RUNNING_A_TEST
+// #define RUNNING_A_TEST
 
 // #define MELTY_DRIVE_MELTY_LED_ONLY
 // #define MELTY_DRIVE_ONLY
