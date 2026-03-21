@@ -5,7 +5,7 @@ static bot_state_t* _user_bot_state;
 static crsf_instance _user_crsf_instance;
 
 void on_rc_channels(const uint16_t channels[16]){
-    printf("on_rc_channels was called \n");
+    // printf("on_rc_channels was called \n");
     for (int i = 0; i < 16; i++){
         _user_channels[i] = channels[i];
     }
@@ -20,7 +20,7 @@ uint8_t receiver_is_channel_near_value(Channel channel, uint16_t value, uint16_t
 }
 
 double receiver_get_percent_for_channel(Channel channel){
-    return fmin(1, fmax(0, (receiver_get_channel(channel) - RECEIVER_LOWEST_CHANNEL_VALUE) / RECEIVER_HIGHEST_CHANNEL_VALUE - RECEIVER_LOWEST_CHANNEL_VALUE));
+    return fmin(1.0, fmax(0.0, ((double)(receiver_get_channel(channel) - RECEIVER_LOWEST_CHANNEL_VALUE)) / ((double)RECEIVER_HIGHEST_CHANNEL_VALUE - RECEIVER_LOWEST_CHANNEL_VALUE)));
 }
 
 void on_link_stats(const link_statistics_t link_stats){

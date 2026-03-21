@@ -19,21 +19,31 @@ int main() {
 
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
-    while (!receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 10) && !receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
-        printf("WAITING FOR THROTTLE TO BE 0 AND SWITCH_E TO BE HIGH \n");
+    led_init(HEADING_LIGHT_STRIP_PIN);
+
+    sleep_ms(10000);
+
+    while (!receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 20) || !receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)){
+        printf("WAITING BEFORE ACTUALLY SPINNING \n");
+        printf("receiver_is_channel_near_value left_joystick_y %d \n", receiver_get_channel(LEFT_JOYSTICK_Y));
+        printf("receiver_is_channel_near_value switch_e %d \n", receiver_get_channel(SWITCH_E));
+
         receiver_update();
 
         led_time_blink(SLOW_BLINK);
     }
 
-    while (receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
-        motor_set_throttle_for_all((uint16_t) (2000*receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)));
+    while (receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)){ 
+        double t = (2000*receiver_get_percent_for_channel(LEFT_JOYSTICK_Y));
+        printf("motor throttle being provided %lf \n", t);
+        motor_set_throttle_for_all(t);
         receiver_update();
 
         led_time_blink(FAST_BLINK);
     }
 
     motor_set_throttle_for_all(0);
+    led_set_and_update_state(0);
 
     printf("FINISHED MOVING THROUGH ALL THROTTLES");
 

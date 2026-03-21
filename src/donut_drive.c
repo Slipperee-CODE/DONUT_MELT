@@ -87,9 +87,17 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
         right_y_percent = 0.499 - right_y_percent;
     } 
 
+    printf("FINAL TANK DRIVE LP %lf \n", left_y_percent);
+    printf("FINAL TANK DRIVE RP %lf \n", right_y_percent);
+
     #if !defined(NO_MOTOR_SPINNING) && !defined(MELTY_DRIVE_MELTY_LED_ONLY)
-        motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
-        motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
+        printf("SPINNING MOTORS \n");
+        uint16_t left_throttle = (uint16_t) 2000*left_y_percent;
+        uint16_t right_throttle = (uint16_t) 2000*right_y_percent;
+        printf("MOTOR THROTTLES ARE lt: %d, rt: %d \n", left_throttle, right_throttle);
+
+        motor_motor1_set_throttle(left_throttle);
+        motor_motor2_set_throttle(right_throttle);
     #endif
 }
 
@@ -196,10 +204,14 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
 
         #if defined(TANK_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
             led_repeat_blink(3);
+            printf("THIS IS ACTUALLY HAPPENING \n");
 
             // restricting allowed standard tank drive values so that robot can be more controlled hopefully
             left_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, left_y_percent));
             right_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, right_y_percent));
+
+            printf("TANK DRIVE LP %lf \n", left_y_percent);
+            printf("TANK DRIVE RP %lf \n", right_y_percent);
 
             handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif

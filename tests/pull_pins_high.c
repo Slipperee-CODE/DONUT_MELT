@@ -4,8 +4,8 @@
 int main() {
     stdio_init_all();
     
-    uint number_of_pins = 3;
-    uint pins[number_of_pins] = {9, 10, 22}
+    uint number_of_pins = 2;
+    uint pins[] = {6, 7};
 
     for (int i = 0; i < number_of_pins; i++){
         gpio_init(pins[i]);

@@ -54,5 +54,5 @@ void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_
     sleep_ms(1000);
 
     motor_set_throttle_for_all(0);
-    sleep_ms(1000);
+    sleep_ms(3000);
 }

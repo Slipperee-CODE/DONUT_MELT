@@ -5,6 +5,7 @@
 
 #include "../src/donut_config.h"
 #include "../src/donut_drive.h"
+#include "../src/motor_driver.h"
 #include "../src/led_driver.h"
 
 static bot_state_t bot_state;
@@ -12,6 +13,7 @@ static bot_state_t bot_state;
 void repeat_update_bot_state_call_for_ms(bot_state_t* bot_state_ptr, double left_y_percent, double right_y_percent, double right_x_percent, uint32_t ms){
     uint32_t start_time = to_ms_since_boot(get_absolute_time());
     while (to_ms_since_boot(get_absolute_time()) <= start_time + ms){
+        printf("UPDATING BOT STATE RN WITH %lf lp and %lf rp \n", left_y_percent, right_y_percent);
         drive_update_bot_state(bot_state_ptr, left_y_percent, right_y_percent, right_x_percent);
     }
 }
@@ -93,20 +95,26 @@ void test_tank_drive_only(){
     drive_set_fake_curr_upr_from_rpm(0);
 
     // both motors backwards
-    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.1, 0, 10000);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.3, 0.3, 0, 10000);
+    motor_stop_all();
     repeat_led_repeat_blink_call_for_ms(5000);
     
     // both one motor backwards, one motor forwards
-    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.6, 0, 10000);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.3, 0.7, 0, 10000);
+    motor_stop_all();
     repeat_led_repeat_blink_call_for_ms(5000);
 
     // both one motor forwards, one motor backwards (should be swapped from above)
-    repeat_update_bot_state_call_for_ms(&bot_state, 0.6, 0.1, 0, 10000);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.7, 0.3, 0, 10000);
+    motor_stop_all();
     repeat_led_repeat_blink_call_for_ms(5000);
     
     // both motors forwards
     repeat_update_bot_state_call_for_ms(&bot_state, 0.7, 0.7, 0, 10000);
+    motor_stop_all();
     repeat_led_repeat_blink_call_for_ms(5000);
+
+    led_set_and_update_state(0);
 
     // continue testing here
 }
@@ -115,7 +123,7 @@ int main() {
     stdio_init_all();
     donut_init_bot_state();
 
-    accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
     led_init(HEADING_LIGHT_STRIP_PIN);
 

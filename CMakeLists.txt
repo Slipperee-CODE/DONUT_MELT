@@ -27,27 +27,27 @@ project(donut_melt C CXX ASM)
 
 pico_sdk_init()
 
-# add_executable(donut_melt 
-#     src/donut_meltier.c 
-#     src/led_driver.c 
-#     src/receiver.c 
-#     src/motor_driver.c 
-#     src/donut_drive.c 
-#     src/donut_telemetry.c
-# )
+add_executable(donut_melt 
+    src/donut_meltier.c 
+    src/led_driver.c 
+    src/receiver.c 
+    src/motor_driver.c 
+    src/donut_drive.c 
+    src/donut_telemetry.c
+)
 
 #---------------TESTS---------------
 
-add_executable(donut_melt tests/pull_pins_high.c)
-# add_executable(donut_melt tests/just_blink_test.c) #n
-# add_executable(donut_melt tests/donut_blink_test.c src/led_driver.c) #n
+# add_executable(donut_melt tests/pull_pins_high.c) #y 
+# add_executable(donut_melt tests/just_blink_test.c) #y
+# add_executable(donut_melt tests/donut_blink_test.c src/led_driver.c) #y
 
 # add_executable(donut_melt tests/accel_test.c) #y
 
-# add_executable(donut_melt tests/rx_tx_test.c src/receiver.c src/donut_telemetry.c src/donut_meltier.c src/donut_drive.c) #n
+# add_executable(donut_melt tests/rx_tx_test.c src/receiver.c src/donut_telemetry.c src/donut_meltier.c src/donut_drive.c) #y
 
 # add_executable(donut_melt tests/dshot_ramp_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c) #y
-# add_executable(donut_melt tests/dshot_from_tx_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/receiver.c) #n
+# add_executable(donut_melt tests/dshot_from_tx_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/receiver.c) #y
 
 # add_executable(donut_melt tests/donut_drive_tests.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/donut_drive.c) #n
 

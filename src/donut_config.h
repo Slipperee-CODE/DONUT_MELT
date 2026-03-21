@@ -30,6 +30,8 @@ uint8_t donut_is_killswitch_active();
 
 //---------------LED SETTINGS---------------
 
+#define HEADING_LIGHT_STRIP_PIN	6 // Actual robot led was pin 22 (changed now), Onboard Pico2 led is pin 25
+
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
 #define REPEAT_BLINK 250
@@ -116,8 +118,6 @@ uint8_t donut_is_killswitch_active();
 
 //----------MISC----------
 
-#define HEADING_LIGHT_STRIP_PIN	22 // Actual robot led is pin 22, Onboard Pico2 led is pin 25
-
 #define WATCH_DOG_TIMEOUT_MS 500 // changed to prevent 200 microsecond delay from having any chance of triggering watchdog
 
 //----------END MISC----------
@@ -129,7 +129,7 @@ uint8_t donut_is_killswitch_active();
 // #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
 // #define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
 
-#define RUNNING_A_TEST
+// #define RUNNING_A_TEST
 
 // #define MELTY_DRIVE_MELTY_LED_ONLY
 // #define MELTY_DRIVE_ONLY

@@ -24,16 +24,16 @@ int main() {
     sleep_ms(3000);
 
     // low is 1, high is 999
-    for (int i = 1; i <= 500; i+=10){
+    for (int i = 1; i <= 250; i+=10){
         motor_set_throttle_for_all(i);
         sleep_ms(100);
     }
 
     motor_set_throttle_for_all(1001);
-    sleep_ms(20000);
+    sleep_ms(5000);
 
     // low is 1001, high is 2000
-    for (int i = 1001; i <= 1500; i+=10){
+    for (int i = 1001; i <= 1250; i+=10){
         motor_set_throttle_for_all(i);
         sleep_ms(100);
     }
