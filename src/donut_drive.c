@@ -109,19 +109,23 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
         bot_state->max_rpm = bot_state->rpm;
     }
 
-    // if we aren't fast enough to translate, spin up as fast as possible
-    if (upr_to_rpm(us_per_rotation) < MIN_TRANSLATION_RPM){
-        handle_tank(bot_state, 1, 1, 0);
-        led_set_and_update_state(1);
-        return;
-    }
+    // if we aren't fast enough to translate, spin up as fast as possible (can be bypassed)
+    #ifndef BYPASS_MIN_TRANSLATION_RPM
+        if (upr_to_rpm(us_per_rotation) < MIN_TRANSLATION_RPM){
+            handle_tank(bot_state, 1, 1, 0);
+            led_set_and_update_state(1);
+            return;
+        }
+    #endif
     
     if (bot_state->this_rotations_start_time_us == -1){
         bot_state->this_rotations_start_time_us = time_us_64();
     }
 
     uint64_t time_elapsed_this_rotation_us = time_us_64() - bot_state->this_rotations_start_time_us;
-    uint64_t led_on_us = fmin(MAX_LED_PERCENT_DURATION, fmax(MIN_LED_PERCENT_DURATION, (int64_t) (left_y_percent * us_per_rotation)));
+
+    // probably should just make it so that reversing spin direction is another button altogether, not just backwards throttle, oops - Cai
+    uint64_t led_on_us = fmin(MAX_LED_PERCENT_DURATION, fmax(MIN_LED_PERCENT_DURATION, (int64_t) (2*fabs(left_y_percent - 0.5) * us_per_rotation)));
 
     double half_rotation_time = (double) us_per_rotation/2;
     double motor_off_edge_time = (half_rotation_time - MOTOR_ON_PERCENT_DURATION*us_per_rotation)/2;
@@ -158,7 +162,7 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
         right_y_percent = 0.499 - right_y_percent;
     } 
 
-    #if !defined(MELTY_DRIVE_MELTY_LED_ONLY)
+    #if !defined(NO_MOTOR_SPINNING) && !defined(MELTY_DRIVE_MELTY_LED_ONLY)
         motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
         motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
     #endif

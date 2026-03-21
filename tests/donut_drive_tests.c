@@ -24,35 +24,97 @@ void repeat_led_repeat_blink_call_for_ms(uint32_t ms){
 }
 
 #define LIE_ABOUT_UPR
+#define NO_MOTOR_SPINNING
+#define BYPASS_MIN_TRANSLATION_RPM
 
 #define MELTY_DRIVE_MELTY_LED_ONLY
 // #define MELTY_DRIVE_ONLY
 // #define TANK_DRIVE_ONLY
 
 void test_melty_led_only(){
+    // led should just stay on if BYPASS_MIN_TRANSLATION_RPM is not defined for rpms under MIN_TRANSLATION_RPM from donut_config.h
+    // definitely should define BYPASS_MIN_TRANSLATION_RPM at some point to test LED pulsing for very slow spins 
+
+    // checking to see if 0 rpm breaks anything (it shouldn't)
     drive_set_fake_curr_upr_from_rpm(0);
-    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.5, 0, 0, 10000);
     repeat_led_repeat_blink_call_for_ms(5000);
 
-    drive_set_fake_curr_upr_from_rpm(100);
-    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    // changing throttle should change the amount of time the LED is on for
+    drive_set_fake_curr_upr_from_rpm(20);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0, 0, 10000);
     repeat_led_repeat_blink_call_for_ms(5000);
 
+    // this LED should be on just as long as the previous one because lower bound for LED on time is MIN_LED_PERCENT_DURATION from donut_config.h 
+    drive_set_fake_curr_upr_from_rpm(20);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.25, 0, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // this led should be on for a long time (not full time though because upper bound for LED on time is MAX_LED_PERCENT_DURATION from donut_config.h )
+    drive_set_fake_curr_upr_from_rpm(20);
+    repeat_update_bot_state_call_for_ms(&bot_state, 1, 0, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // this LED should be on just as long as the previous one because upper bound for LED on time is MAX_LED_PERCENT_DURATION
+    drive_set_fake_curr_upr_from_rpm(20);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.75, 0, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // pretending to spin faster so LED should toggle states more frequently
+    drive_set_fake_curr_upr_from_rpm(40);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // pretending to spin really fast so LED should toggle states way more frequently
     drive_set_fake_curr_upr_from_rpm(500);
-    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 0, 10000);
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0, 0, 10000);
     repeat_led_repeat_blink_call_for_ms(5000);
 
     // continue testing here
 }
 
 void test_melty_drive_only(){
-    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 1, 1000);
+    // low rpm so we can actually tell what's happening
+    drive_set_fake_curr_upr_from_rpm(20);
+
+    // low throttle, spin and translate backwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+    
+    // low throttle, spin and translate forwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.85, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // higher throttle, spin and translate backwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.6, 0.1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+    
+    // same higher throttle, spin and translate forwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.6, 0.85, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
 
     // continue testing here
 }
 
 void test_tank_drive_only(){
-    repeat_update_bot_state_call_for_ms(&bot_state, 1, 1, 1, 1000);
+    // rpm shouldn't matter for this test but doing this just in case fake_curr_upr needs to be initialized to a value
+    drive_set_fake_curr_upr_from_rpm(0);
+
+    // both motors backwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+    
+    // both one motor backwards, one motor forwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.1, 0.6, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+
+    // both one motor forwards, one motor backwards (should be swapped from above)
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.6, 0.1, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
+    
+    // both motors forwards
+    repeat_update_bot_state_call_for_ms(&bot_state, 0.7, 0.7, 0, 10000);
+    repeat_led_repeat_blink_call_for_ms(5000);
 
     // continue testing here
 }
