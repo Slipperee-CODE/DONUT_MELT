@@ -6,8 +6,8 @@
 #include "receiver.h"
 #include "stdint.h"
 
-void output_diagnostics(bot_state_t* bot_state);
+void telemetry_output_diagnostics(bot_state_t* bot_state);
 
-void send_telemetry(bot_state_t* bot_state);
+void telemetry_send_telemetry(bot_state_t* bot_state);
 
 #endif

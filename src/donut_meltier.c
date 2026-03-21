@@ -73,11 +73,11 @@ void when_failsafe_off(){
 
 void always(){
     #ifdef OUTPUT_DIAGNOSTICS
-        output_diagnostics(&bot_state);
+        telemetry_output_diagnostics(&bot_state);
     #endif
 
     #ifdef SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
-        send_telemetry(&bot_state);
+        telemetry_send_telemetry(&bot_state);
     #endif
 
     // motor_update_bot_state();
