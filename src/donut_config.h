@@ -45,7 +45,7 @@ uint8_t donut_is_killswitch_active();
 #define ACCEL_ZERO_G_OFFSET 2                                           
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
 
-#define MOTOR_ON_PERCENT_DURATION 0.5
+#define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
 
 // #define LED_OFFSET_PERCENT 0.25 // I don't know what this number is for in OpenMelt - Cai
@@ -103,7 +103,7 @@ uint8_t donut_is_killswitch_active();
 
 #define SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
 
-#define OUTPUT_DIAGNOSTICS
+// #define OUTPUT_DIAGNOSTICS
 
 #define TIME_SINCE_BOOT_DIAGNOSTICS
 #define FULL_CONTROLLER_DIAGNOSTICS

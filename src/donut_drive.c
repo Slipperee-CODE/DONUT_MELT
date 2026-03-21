@@ -6,7 +6,7 @@
 
 #ifndef RUNNING_TEST
     uint8_t drive_get_curr_drive_mode(){
-        if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
+        if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)){
             return DRIVE_MODE_TANK;
         }
         return DRIVE_MODE_MELTY;
@@ -178,6 +178,8 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
         no_translation_state_counter = 1 - no_translation_state_counter;
         bot_state->this_rotations_start_time_us = time_us_64();
     }
+
+    printf("SPINNING IS HAPPENING! \n");
 }
 
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
@@ -195,6 +197,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     #endif
 
         #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
+            printf("WE GOT HERE IN THE CODE!");
             handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif
 
