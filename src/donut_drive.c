@@ -31,8 +31,8 @@ void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_p
     // gets microseconds per rotation
     // lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
     uint64_t get_adjusted_upr(double right_x_percent){
-        // get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
-        double x_gs = accelerometer_get_x();
+        // fix this: get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
+        double x_gs = accelerometer_get_x() - ACCEL_ZERO_G_OFFSET;
 
         // mapping [0,1] -> [-1,1]
         right_x_percent = (right_x_percent - 0.5) * 2;
@@ -100,7 +100,6 @@ void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_
 void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     static uint8_t no_translation_state_counter = 0;
 
-    // don't do any real calculations or attempt translating if we haven't reached a good rpm yet
     uint64_t us_per_rotation = get_adjusted_upr(right_x_percent);
     bot_state->rpm = upr_to_rpm(us_per_rotation);
 

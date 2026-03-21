@@ -53,15 +53,15 @@ uint8_t get_telemetry_state(){
 void send_telemetry(bot_state_t* bot_state){
     switch(get_telemetry_state()){
         case TELEMETRY_MOTOR1:
-            printf("SENDING MOTOR1");
-            receiver_send_telemetry(1,1,1,1);
+            printf("SENDING TELEM1");
+            receiver_send_telemetry(receiver_get_channel(LEFT_JOYSTICK_Y),receiver_get_channel(RIGHT_JOYSTICK_Y),bot_state->rpm,1);
             break;
         case TELEMETRY_MOTOR2:
-            printf("SENDING MOTOR2");
-            receiver_send_telemetry(2,2,2,2);
+            printf("SENDING TELEM2");
+            receiver_send_telemetry(drive_get_curr_drive_mode(),donut_is_killswitch_active(),bot_state->max_rpm,2);
             break;
         case TELEMETRY_MAIN:
-            printf("SENDING MAIN");
+            printf("SENDING TELEM3");
             receiver_send_telemetry(bot_state->require_zero_throttle,bot_state->is_failsafed,get_seconds_since_boot(),3);
             break;
     }

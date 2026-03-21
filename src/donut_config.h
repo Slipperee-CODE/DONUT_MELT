@@ -39,8 +39,8 @@ uint8_t donut_is_killswitch_active();
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define ACCEL_MOUNT_RADIUS_CM 4.45                                     
-#define ACCEL_ZERO_G_OFFSET 1.5                                           
+#define ACCEL_MOUNT_RADIUS_CM 0.5                                     
+#define ACCEL_ZERO_G_OFFSET 2                                           
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
 
 #define MOTOR_ON_PERCENT_DURATION 0.5
