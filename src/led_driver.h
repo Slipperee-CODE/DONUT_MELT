@@ -8,7 +8,7 @@
 #include "hardware/gpio.h"
 #include "donut_config.h"
 
-void led_init(uint8_t pin);
+void led_init(uint8_t pin, uint8_t pin2);
 
 void led_set_and_update_state(uint8_t state);
 

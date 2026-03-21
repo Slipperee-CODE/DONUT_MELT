@@ -20,7 +20,7 @@ void donut_init_bot_state(){
 
 // need to make this function and is_killswitch_active accesible from donut_drive.c somehow
 uint8_t donut_is_throttle_zero(){ 
-    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 50);
+    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 300);
 }
 
 uint8_t donut_is_killswitch_active(){
