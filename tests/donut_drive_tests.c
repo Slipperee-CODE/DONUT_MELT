@@ -3,11 +3,19 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
+#define LIE_ABOUT_UPR // lets us bypass using accelerometer readings if defined
+#define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
+#define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
+
+#define MELTY_DRIVE_MELTY_LED_ONLY
+// #define MELTY_DRIVE_ONLY
+// #define TANK_DRIVE_ONLY
+
+#define RUNNING_A_TEST
+
 #include "../src/donut_config.h"
 #include "../src/donut_drive.h"
 #include "../src/led_driver.h"
-
-#define RUNNING_A_TEST
 
 static bot_state_t bot_state;
 
@@ -24,14 +32,6 @@ void repeat_led_repeat_blink_call_for_ms(uint32_t ms){
         led_repeat_blink(2);
     }
 }
-
-#define LIE_ABOUT_UPR // lets us bypass using accelerometer readings if defined
-#define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
-#define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
-
-#define MELTY_DRIVE_MELTY_LED_ONLY
-// #define MELTY_DRIVE_ONLY
-// #define TANK_DRIVE_ONLY
 
 void test_melty_led_only(){
     // led should just stay on if BYPASS_MIN_TRANSLATION_RPM is not defined for rpms under MIN_TRANSLATION_RPM from donut_config.h

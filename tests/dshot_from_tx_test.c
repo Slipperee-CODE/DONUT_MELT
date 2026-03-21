@@ -3,12 +3,12 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
+#define RUNNING_A_TEST
+
 #include "../src/donut_config.h"
 #include "../src/motor_driver.h"
 #include "../src/receiver.h"
 #include "../src/led_driver.h"
-
-#define RUNNING_A_TEST
 
 static bot_state_t bot_state;
 

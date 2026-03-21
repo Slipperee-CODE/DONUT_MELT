@@ -1,7 +1,5 @@
 #include "pico/stdlib.h"
 
-#define RUNNING_A_TEST
-
 int main() {
     // Specify the onboard LED pin (GPIO 25)
     const uint LED_PIN = 22;

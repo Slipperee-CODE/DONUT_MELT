@@ -1,9 +1,8 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
+
 #include "../src/led_driver.h"
 #include "../src/donut_config.h"
-
-#define RUNNING_A_TEST
 
 int main() {
     led_init(HEADING_LIGHT_STRIP_PIN);
