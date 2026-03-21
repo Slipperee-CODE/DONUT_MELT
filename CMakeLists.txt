@@ -43,10 +43,10 @@ pico_sdk_init()
 
 # add_executable(donut_melt tests/accel_test.c)
 
-add_executable(donut_melt tests/dshot_ramp_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c)
+# add_executable(donut_melt tests/dshot_ramp_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c)
 # add_executable(donut_melt tests/dshot_from_tx_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/receiver.c)
 
-# add_executable(donut_melt tests/donut_drive_tests.c src/donut_meltier.c src/motor_driver.c src/led_driver.c)
+add_executable(donut_melt tests/donut_drive_tests.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/donut_drive.c)
 
 #---------------END TESTS---------------
 

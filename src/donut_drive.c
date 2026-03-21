@@ -4,12 +4,14 @@
     static uint64_t _fake_curr_upr;
 #endif
 
-uint8_t drive_get_curr_drive_mode(){
-    if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
-        return DRIVE_MODE_TANK;
+#ifndef RUNNING_TEST
+    uint8_t drive_get_curr_drive_mode(){
+        if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 10)){
+            return DRIVE_MODE_TANK;
+        }
+        return DRIVE_MODE_MELTY;
     }
-    return DRIVE_MODE_MELTY;
-}
+#endif
 
 void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     led_repeat_blink(5);
@@ -170,26 +172,26 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     // I do a lot of macro shenanigans here to make testing different parts of the code easier in unit tests - Cai
 
-    #ifdef NOT_DEBUGGING_DRIVE
+    #ifndef RUNNING_A_TEST
         if (donut_is_throttle_zero()){
             handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
             return;
         }
     #endif
 
-    #ifdef NOT_DEBUGGING_DRIVE
+    #ifndef RUNNING_A_TEST
         if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
     #endif
 
-        #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || defined(NOT_DEBUGGING_DRIVE)
+        #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
             handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif
 
-    #ifdef NOT_DEBUGGING_DRIVE
+    #ifndef RUNNING_A_TEST
     } else {
     #endif
 
-        #if defined(TANK_DRIVE_ONLY) || defined(NOT_DEBUGGING_DRIVE)
+        #if defined(TANK_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
             led_repeat_blink(3);
 
             // restricting allowed standard tank drive values so that robot can be more controlled hopefully
@@ -198,7 +200,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
 
             handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif
-    #ifdef NOT_DEBUGGING_DRIVE
+    #ifndef RUNNING_A_TEST
     }
     #endif
 }
