@@ -23,10 +23,10 @@ double receiver_get_percent_for_channel(Channel channel){
 }
 
 void on_link_stats(const link_statistics_t link_stats){
-    _user_bot_state->crsf_link_quality = link_stats.link_quality;
-    _user_bot_state->crsf_link_quality = link_stats.rssi;
-    _user_bot_state->crsf_snr = link_stats.snr;
-    _user_bot_state->crsf_tx_power = link_stats.tx_power;
+    // _user_bot_state->crsf_link_quality = link_stats.link_quality;
+    // _user_bot_state->crsf_link_quality = link_stats.rssi;
+    // _user_bot_state->crsf_snr = link_stats.snr;
+    // _user_bot_state->crsf_tx_power = link_stats.tx_power;
 }
 
 void on_failsafe(const bool failsafe){

@@ -39,7 +39,7 @@ void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_p
 
         double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
 
-        double rpm = fabs(get_accel_force_g() - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+        double rpm = fabs(x_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
         rpm = rpm / effective_radius_in_cm;
         rpm = sqrt(rpm);
 
@@ -70,6 +70,22 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
     } else {
         led_set_and_update_state(0);
     }
+}
+
+void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
+    // fixing ramping such that (0.5,1] increases throttle in one direction and (0.5,0] increases throttle in the other
+    if (left_y_percent < 0.5) {
+        left_y_percent = 0.499 - left_y_percent; // doing 0.499 so 0.0 is fullest throttle possible
+    } 
+
+    if (right_y_percent < 0.5) {
+        right_y_percent = 0.499 - right_y_percent;
+    } 
+
+    #if !defined(NO_MOTOR_SPINNING) && !defined(MELTY_DRIVE_MELTY_LED_ONLY)
+        motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
+        motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
+    #endif
 }
 
 void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time){
@@ -151,22 +167,6 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 }
 
-void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    // fixing ramping such that (0.5,1] increases throttle in one direction and (0.5,0] increases throttle in the other
-    if (left_y_percent < 0.5) {
-        left_y_percent = 0.499 - left_y_percent; // doing 0.499 so 0.0 is fullest throttle possible
-    } 
-
-    if (right_y_percent < 0.5) {
-        right_y_percent = 0.499 - right_y_percent;
-    } 
-
-    #if !defined(NO_MOTOR_SPINNING) && !defined(MELTY_DRIVE_MELTY_LED_ONLY)
-        motor_motor1_set_throttle((uint16_t) 2000*left_y_percent);
-        motor_motor2_set_throttle((uint16_t) 2000*right_y_percent);
-    #endif
-}
-
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     // I do a lot of macro shenanigans here to make testing different parts of the code easier in unit tests - Cai
 
@@ -198,5 +198,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
 
             handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif
+    #ifdef NOT_DEBUGGING_DRIVE
     }
+    #endif
 }

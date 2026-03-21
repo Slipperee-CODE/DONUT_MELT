@@ -29,6 +29,20 @@ void accelerometer_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl){
     write_to_register(CTRL_REG4_REGISTER_ADDRESS, CTRL_REG4_REGISTER_VALUE); //Updates block data update type, endianness, and accel scale 
 }
 
+// THIS FUNCTION IS PURELY FROM CLAUDE - Cai
+bool is_data_ready_to_be_read()
+{
+    uint8_t status_reg = 0x27;
+    uint8_t status;
+    i2c_write_blocking(I2C_PORT, ACCELEROMETER_ADDRESS, &status_reg, 1, true);
+    i2c_read_blocking(I2C_PORT, ACCELEROMETER_ADDRESS, &status, 1, false);
+    if (status & 0x08) { // ZYXDA bit - all axes have new data
+    // read axis data
+        return true;
+    }
+    return false;
+}
+
 double* accelerometer_get_all_axis(){ //Maybe make a struct to store/access accelerometer data more easily 
     if (!is_data_ready_to_be_read()){
         return curr_readings;
@@ -50,20 +64,6 @@ double* accelerometer_get_all_axis(){ //Maybe make a struct to store/access acce
     curr_readings[2] = results[2];
 
     return curr_readings;
-}
-
-// THIS FUNCTION IS PURELY FROM CLAUDE - Cai
-bool is_data_ready_to_be_read()
-{
-    uint8_t status_reg = 0x27;
-    uint8_t status;
-    i2c_write_blocking(I2C_PORT, ACCELEROMETER_ADDRESS, &status_reg, 1, true);
-    i2c_read_blocking(I2C_PORT, ACCELEROMETER_ADDRESS, &status, 1, false);
-    if (status & 0x08) { // ZYXDA bit - all axes have new data
-    // read axis data
-        return true;
-    }
-    return false;
 }
 
 double accelerometer_get_x(){
