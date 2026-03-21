@@ -198,7 +198,9 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
 
         #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
             printf("WE GOT HERE IN THE CODE!");
-            handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
+            // handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
+            right_y_percent = 1 - left_y_percent;
+            handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
         #endif
 
     #ifndef RUNNING_A_TEST
