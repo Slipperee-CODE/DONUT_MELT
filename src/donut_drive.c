@@ -20,7 +20,10 @@ void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_p
 
 #ifdef LIE_ABOUT_UPR
     void drive_set_fake_curr_upr_from_rpm(uint64_t fake_curr_rpm){
-        if (fake_curr_rpm == 0) { return 0; }
+        if (fake_curr_rpm == 0) { 
+            _fake_curr_upr = 0; 
+            return; 
+        }
         _fake_curr_upr = (uint64_t) (60000000/fake_curr_rpm);
     }
 

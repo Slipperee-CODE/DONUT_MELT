@@ -3,8 +3,6 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
-#define RUNNING_A_TEST
-
 #include "../src/donut_config.h"
 #include "../src/motor_driver.h"
 #include "../src/receiver.h"

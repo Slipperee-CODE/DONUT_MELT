@@ -87,26 +87,26 @@ void always(){
     watchdog_update(); // keep watchdog happy
 }
 
-// #ifndef RUNNING_A_TEST
-//     int main(){
-//         #ifdef FLASHING_MOTORS
-//             while(1){
-//                 when_flashing_motors();
-//             }
-//         #endif
+#ifndef RUNNING_A_TEST
+    int main(){
+        #ifdef FLASHING_MOTORS
+            while(1){
+                when_flashing_motors();
+            }
+        #endif
 
-//         init_bot_systems();
+        init_bot_systems();
 
-//         while(1){
-//             if (bot_state.is_failsafed || bot_state.require_zero_throttle || donut_is_killswitch_active()){
-//                 when_failsafe_on();
-//             } else {
-//                 when_failsafe_off();
-//             }
+        while(1){
+            if (bot_state.is_failsafed || bot_state.require_zero_throttle || donut_is_killswitch_active()){
+                when_failsafe_on();
+            } else {
+                when_failsafe_off();
+            }
 
-//             always();
-//         }
+            always();
+        }
 
-//         return 0;
-//     }
-// #endif
+        return 0;
+    }
+#endif

@@ -3,16 +3,6 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
-#define LIE_ABOUT_UPR // lets us bypass using accelerometer readings if defined
-#define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
-#define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
-
-#define MELTY_DRIVE_MELTY_LED_ONLY
-// #define MELTY_DRIVE_ONLY
-// #define TANK_DRIVE_ONLY
-
-#define RUNNING_A_TEST
-
 #include "../src/donut_config.h"
 #include "../src/donut_drive.h"
 #include "../src/led_driver.h"
