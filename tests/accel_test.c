@@ -3,6 +3,7 @@
 #include "stdio.h"
 #include "H3LIS331DL.h"
 
+#define RUNNING_A_TEST
 
 int main() {
     stdio_init_all();

@@ -8,6 +8,8 @@
 #include "../src/receiver.h"
 #include "../src/led_driver.h"
 
+#define RUNNING_A_TEST
+
 static bot_state_t bot_state;
 
 int main() {

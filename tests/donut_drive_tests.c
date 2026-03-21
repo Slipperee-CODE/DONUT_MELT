@@ -7,6 +7,8 @@
 #include "../src/donut_drive.h"
 #include "../src/led_driver.h"
 
+#define RUNNING_A_TEST
+
 static bot_state_t bot_state;
 
 void repeat_update_bot_state_call_for_ms(bot_state_t* bot_state_ptr, double left_y_percent, double right_y_percent, double right_x_percent, uint32_t ms){

@@ -6,6 +6,8 @@
 #include "../src/donut_config.h"
 #include "../src/motor_driver.h"
 
+#define RUNNING_A_TEST
+
 static bot_state_t bot_state;
 
 int main() {
