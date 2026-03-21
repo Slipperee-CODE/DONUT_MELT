@@ -3,25 +3,20 @@
 
 int main() {
     stdio_init_all();
-    // Specify the onboard LED pin (GPIO 25)
-    const uint LED_PIN1 = 10;
-    const uint LED_PIN2 = 9;
-    const uint LED_PIN3 = 22;
+    
+    uint number_of_pins = 3;
+    uint pins[number_of_pins] = {9, 10, 22}
 
-    // Initialize GPIO
-    gpio_init(LED_PIN1);
-    gpio_set_dir(LED_PIN1, GPIO_OUT);
-
-    gpio_init(LED_PIN2);
-    gpio_set_dir(LED_PIN2, GPIO_OUT);
-
-    gpio_init(LED_PIN3);
-    gpio_set_dir(LED_PIN3, GPIO_OUT);
+    for (int i = 0; i < number_of_pins; i++){
+        gpio_init(pins[i]);
+        gpio_set_dir(pins[i], GPIO_OUT);
+    }
     
     while (true) {
-        gpio_put(LED_PIN1, 1);
-        gpio_put(LED_PIN2, 1); 
-        gpio_put(LED_PIN3, 1); 
+        for (int i = 0; i < number_of_pins; i++){
+            gpio_put(pins[i], 1);
+        }
+    
         printf("LOOPING TO POWER ALL LEDS \n");
     }
 }
