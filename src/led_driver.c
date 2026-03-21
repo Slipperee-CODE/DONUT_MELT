@@ -4,10 +4,17 @@ static uint8_t LED_PIN;
 static uint32_t prev_time;
 static uint8_t led_state;
 
-void led_init(uint8_t pin){
+static uint8_t LED_PIN2;
+
+void led_init(uint8_t pin, uint8_t pin2){
     LED_PIN = pin;
+    LED_PIN2 = pin2;
+
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+
+    gpio_init(LED_PIN2);
+    gpio_set_dir(LED_PIN2, GPIO_OUT);
 
     prev_time = 0;
     led_set_and_update_state(0);
@@ -20,6 +27,7 @@ void set_state(uint8_t state){
 void led_set_and_update_state(uint8_t state){
     set_state(state);
     gpio_put(LED_PIN, led_state);
+    gpio_put(LED_PIN2, led_state);
 }
 
 void led_time_blink(uint32_t millis){
@@ -27,6 +35,7 @@ void led_time_blink(uint32_t millis){
 
     if (curr_time - prev_time >= millis){
         gpio_put(LED_PIN, led_state);
+        gpio_put(LED_PIN2, led_state);
         led_state = 1 - led_state;
 
         prev_time = curr_time;
@@ -51,6 +60,7 @@ void led_repeat_blink(uint8_t repeats){
 
     if (curr_time - prev_time >= time_to_wait_before_next_state_change){
         gpio_put(LED_PIN, led_state);
+        gpio_put(LED_PIN2, led_state);
         led_state = 1 - led_state;
         led_state_changes += 1;
 

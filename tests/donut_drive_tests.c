@@ -125,7 +125,7 @@ int main() {
 
     // accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
-    led_init(HEADING_LIGHT_STRIP_PIN);
+    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
 
     #ifdef MELTY_DRIVE_MELTY_LED_ONLY
         test_melty_led_only();

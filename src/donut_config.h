@@ -30,7 +30,9 @@ uint8_t donut_is_killswitch_active();
 
 //---------------LED SETTINGS---------------
 
-#define HEADING_LIGHT_STRIP_PIN	6 // Actual robot led was pin 22 (changed now), Onboard Pico2 led is pin 25
+#define HEADING_LIGHT_STRIP_PIN	6 // Onboard Pico2 led is pin 25
+#define HEADING_LIGHT_STRIP_PIN2 7 
+
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50

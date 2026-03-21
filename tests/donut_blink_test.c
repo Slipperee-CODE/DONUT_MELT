@@ -5,7 +5,7 @@
 #include "../src/donut_config.h"
 
 int main() {
-    led_init(HEADING_LIGHT_STRIP_PIN);
+    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
 
     uint32_t start_time;
 
