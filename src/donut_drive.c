@@ -77,6 +77,18 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
     }
 }
 
+// takes a percent from 0..1, maps it to a percent from -1..1, maps it to a throttle num 48-2047 
+// might need to adjust what this does to match dshot's weird ramping behavior
+// might be forwards where 48 is least and 1047 is most 
+// and backwards where 1048 is least and 2047 is most
+double percentThrottleToThrottleCommand(double percent_throttle){
+    percent_throttle = percent_throttle * 2; // 0..2
+    percent_throttle = percent_throttle - 1; // -1..1
+    uint16_t throttle = 1047 + 1000*percent_throttle; // 47..2047
+
+    return fmin(fmax(48, throttle), 2047); // 48..2047, the fmin is for sanity
+}
+
 void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     // fixing ramping such that (0.5,1] increases throttle in one direction and (0.5,0] increases throttle in the other
     if (left_y_percent < 0.5) {
