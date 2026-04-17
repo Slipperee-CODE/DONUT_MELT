@@ -119,7 +119,8 @@ uint8_t donut_is_killswitch_active();
 
 //----------DEBUG SETTINGS----------
 
-// #define LIE_ABOUT_RPM // lets us bypass using accelerometer readings if defined
+// #define LIE_ABOUT_RPM
+#define FAKE_RPM 10
 // #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
 // #define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
 

@@ -23,5 +23,5 @@ double get_rpm(double right_x_percent) {
 }
 
 double get_fake_rpm(double right_x_percent) {
-    return 10;
+    return FAKE_RPM;
 }
