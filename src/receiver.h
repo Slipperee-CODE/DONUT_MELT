@@ -1,14 +1,8 @@
 #ifndef RECEIVER_H
 #define RECEIVER_H
 
-// Used in header file and c file
-#include <stdint.h>
-#include "hardware/uart.h"
-
-// Used in c file
 #include "donut_config.h"
 #include "crsf.h"
-#include "math.h"
 
 typedef enum {
     RIGHT_JOYSTICK_X,

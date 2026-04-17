@@ -1,16 +1,7 @@
 #ifndef DONUT_CONFIG_H
 #define DONUT_CONFIG_H
 
-// Used in this header file and donut_melt.c
-#include "hardware/uart.h"
-#include "hardware/i2c.h"
-#include "hardware/pio.h"
-
-// Used in donut_melt.c
-#include <stdio.h>
-#include "pico/stdlib.h"
-#include "hardware/watchdog.h"
-#include <math.h>
+#include "donut_dependencies.h"
 
 typedef struct {
     uint8_t is_failsafed;
@@ -76,6 +67,7 @@ uint8_t donut_is_killswitch_active();
 
 #define RECEIVER_LOWEST_CHANNEL_VALUE 222 // actual lowest is 172 for knobs and 212 for joysticks
 #define RECEIVER_HIGHEST_CHANNEL_VALUE 1780 // actual highest is 1790
+#define RECEIVER_MIDDLEST_CHANNEL_VALUE 1001 // (222 + 1780)/2 = 1001
 
 //----------END REICEVER SETTINGS----------
 
@@ -127,15 +119,9 @@ uint8_t donut_is_killswitch_active();
 
 //----------DEBUG SETTINGS----------
 
-// #define LIE_ABOUT_UPR // lets us bypass using accelerometer readings if defined
+// #define LIE_ABOUT_RPM // lets us bypass using accelerometer readings if defined
 // #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
 // #define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
-
-// #define RUNNING_A_TEST
-
-// #define MELTY_DRIVE_MELTY_LED_ONLY
-// #define MELTY_DRIVE_ONLY
-// #define TANK_DRIVE_ONLY
 
 //----------END DEBUG----------
 

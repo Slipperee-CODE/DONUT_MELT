@@ -1,10 +1,4 @@
 #include "donut_config.h"
-#include "donut_drive.h"
-#include "donut_telemetry.h"
-#include "H3LIS331DL.h"
-#include "led_driver.h"
-#include "motor_driver.h"
-#include "receiver.h"
 
 static bot_state_t bot_state;
 
@@ -20,11 +14,15 @@ void donut_init_bot_state(){
 
 // need to make this function and is_killswitch_active accesible from donut_drive.c somehow
 uint8_t donut_is_throttle_zero(){ 
-    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 300);
+    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
 }
 
 uint8_t donut_is_killswitch_active(){
     return receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50);
+}
+
+double smoothing_func(double input){
+    return pow(input, 3);
 }
 
 void when_flashing_motors(){
@@ -38,7 +36,7 @@ void init_bot_systems(){
 
     receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
 
-    accelerometer_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
@@ -63,12 +61,15 @@ void when_failsafe_on(){
 void when_failsafe_off(){
     drive_update_bot_state(
         &bot_state, 
-        receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 
-        receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y), 
-        receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)
+        smoothing_func(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
+        smoothing_func(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
+        smoothing_func(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
+        #ifdef LIE_ABOUT_RPM
+            get_fake_rpm
+        #else 
+            get_rpm
+        #endif
     );
-
-    // led_time_blink(FAST_BLINK);
 }
 
 void always(){
@@ -87,26 +88,24 @@ void always(){
     watchdog_update(); // keep watchdog happy
 }
 
-#ifndef RUNNING_A_TEST
-    int main(){
-        #ifdef FLASHING_MOTORS
-            while(1){
-                when_flashing_motors();
-            }
-        #endif
-
-        init_bot_systems();
-
+int main(){
+    #ifdef FLASHING_MOTORS
         while(1){
-            if (bot_state.is_failsafed || bot_state.require_zero_throttle || donut_is_killswitch_active()){
-                when_failsafe_on();
-            } else {
-                when_failsafe_off();
-            }
+            when_flashing_motors();
+        }
+    #endif
 
-            always();
+    init_bot_systems();
+
+    while(1){
+        if (bot_state.is_failsafed || bot_state.require_zero_throttle || donut_is_killswitch_active()){
+            when_failsafe_on();
+        } else {
+            when_failsafe_off();
         }
 
-        return 0;
+        always();
     }
-#endif
+
+    return 0;
+}

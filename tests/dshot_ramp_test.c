@@ -1,10 +1,6 @@
 #include <stdio.h>
-#include "stdint.h"
-#include "pico/stdlib.h"
-#include "pico/time.h"
-
 #include "../src/donut_config.h"
-#include "../src/motor_driver.h"
+
 
 static bot_state_t bot_state;
 

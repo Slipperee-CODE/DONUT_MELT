@@ -1,68 +1,63 @@
 #include "donut_drive.h"
 
-#ifdef LIE_ABOUT_UPR
-    static uint64_t _fake_curr_upr;
-#endif
-
-#ifndef RUNNING_TEST
-    uint8_t drive_get_curr_drive_mode(){
-        if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)){
-            return DRIVE_MODE_TANK;
-        }
-        return DRIVE_MODE_MELTY;
+uint8_t drive_get_curr_drive_mode(){
+    if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)){
+        return DRIVE_MODE_TANK;
     }
-#endif
+    return DRIVE_MODE_MELTY;
+}
+
+// takes into account curr_drive_mode whereas donut_is_throttle_zero does not 
+uint8_t drive_is_throttle_zero(){
+    if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
+        return donut_is_throttle_zero();
+    }
+
+    if (drive_get_curr_drive_mode() == DRIVE_MODE_TANK) {
+        return donut_is_throttle_zero() && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+    }
+}
+
+// goes from rpm -> microseconds per rotation
+double rpm_to_upr(double rpm){
+    if (rpm == 0) {
+        return 0; 
+    }
+    return (uint64_t) 60000000.0 / rpm;
+}
+
+double percentThrottleToThrottleCommand(double percent_throttle){
+    percent_throttle = percent_throttle * 2; // 0..2
+    percent_throttle = percent_throttle - 1; // -1..1
+
+    uint16_t throttle;
+
+    // -1..0 -> 1047..0 AND 0..1 -> 1049..2047
+    // 0 percent_throttle becomes a 0 throttle command
+    if (percent_throttle > 0) {
+        throttle = 1049 + 998*percent_throttle;
+    } else if (percent_throttle < 0) {
+        throttle = -1047*percent_throttle;
+    } else {
+        throttle = 0;
+    }
+
+    return throttle;
+}
 
 void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
     led_repeat_blink(5);
     motor_stop_all();
 }
 
-#ifdef LIE_ABOUT_UPR
-    void drive_set_fake_curr_upr_from_rpm(uint64_t fake_curr_rpm){
-        if (fake_curr_rpm == 0) { 
-            _fake_curr_upr = 0; 
-            return; 
-        }
-        _fake_curr_upr = (uint64_t) (60000000/fake_curr_rpm);
-    }
+void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
+    uint16_t left_throttle = percentThrottleToThrottleCommand(left_y_percent);
+    uint16_t right_throttle = percentThrottleToThrottleCommand(right_y_percent);
 
-    uint64_t get_adjusted_upr(double right_x_percent){
-        return _fake_curr_upr;
-    }
-#endif
-
-#ifndef LIE_ABOUT_UPR
-    // gets microseconds per rotation
-    // lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
-    uint64_t get_adjusted_upr(double right_x_percent){
-        // fix this: get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
-        double x_gs = accelerometer_get_x() - ACCEL_ZERO_G_OFFSET;
-
-        // mapping [0,1] -> [-1,1]
-        right_x_percent = (right_x_percent - 0.5) * 2;
-
-        double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
-
-        double rpm = fabs(x_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
-        rpm = rpm / effective_radius_in_cm;
-        rpm = sqrt(rpm);
-
-        uint64_t upr;
-        if (rpm) {
-            upr = (uint64_t) (60000000/rpm);
-        } else {
-            upr = 0;
-        }
-        
-        return upr;
-    }
-#endif
-
-// goes from microseconds per rotation -> rpm
-uint16_t upr_to_rpm(uint64_t upr){
-    if (upr == 0) { return 0; }
-    return (uint16_t) (60000000 / upr);
+    #ifndef NO_MOTOR_SPINNING
+        motor_motor1_set_throttle(left_throttle);
+        motor_motor2_set_throttle(right_throttle);
+    #endif
 }
 
 void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us){
@@ -75,44 +70,6 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
     } else {
         led_set_and_update_state(0);
     }
-}
-
-// takes a percent from 0..1, maps it to a percent from -1..1, maps it to a throttle num 48-2047 
-// might need to adjust what this does to match dshot's weird ramping behavior
-// might be forwards where 48 is least and 1047 is most 
-// and backwards where 1048 is least and 2047 is most
-double percentThrottleToThrottleCommand(double percent_throttle){
-    percent_throttle = percent_throttle * 2; // 0..2
-    percent_throttle = percent_throttle - 1; // -1..1
-    uint16_t throttle = 1047 + 1000*percent_throttle; // 47..2047
-
-    return fmin(fmax(48, throttle), 2047); // 48..2047, the fmin is for sanity
-}
-
-void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    // fixing ramping such that (0.5,1] increases throttle in one direction and (0.5,0] increases throttle in the other
-    if (left_y_percent < 0.5) {
-        left_y_percent = 0.499 - left_y_percent; // doing 0.499 so 0.0 is fullest throttle possible
-    } 
-
-    if (right_y_percent < 0.5) {
-        right_y_percent = 0.499 - right_y_percent;
-    } 
-
-    printf("FINAL TANK DRIVE LP %lf \n", left_y_percent);
-    printf("FINAL TANK DRIVE RP %lf \n", right_y_percent);
-
-    uint16_t left_throttle = (uint16_t) 2000*left_y_percent;
-    uint16_t right_throttle = (uint16_t) 2000*right_y_percent;
-
-    printf("MOTOR THROTTLES ARE lt: %d, rt: %d \n", left_throttle, right_throttle);
-
-    #if !defined(NO_MOTOR_SPINNING) && !defined(MELTY_DRIVE_MELTY_LED_ONLY)
-        printf("SPINNING MOTORS \n");
-
-        motor_motor1_set_throttle(left_throttle);
-        motor_motor2_set_throttle(right_throttle);
-    #endif
 }
 
 void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time){
@@ -140,7 +97,7 @@ void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_
     }
 }
 
-void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
+void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)){
     static uint8_t no_translation_state_counter = 0;
 
     uint64_t us_per_rotation = get_adjusted_upr(right_x_percent);
@@ -196,58 +153,20 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     printf("SPINNING IS HAPPENING! \n");
 }
 
-void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent){
-    // I do a lot of macro shenanigans here to make testing different parts of the code easier in unit tests - Cai
-
-    #ifndef RUNNING_A_TEST
-        if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY && donut_is_throttle_zero()){
-            handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
-            return;
-        } else if (drive_get_curr_drive_mode() == DRIVE_MODE_TANK && donut_is_throttle_zero() && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 300)) {
-            handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
-            return;
-        }
-
-        // implement this better later - Cai
-        if (donut_is_throttle_zero()){
-            left_y_percent = 0.5;
-        }
-
-        if (receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, (uint16_t) ((double) (RECEIVER_HIGHEST_CHANNEL_VALUE + RECEIVER_LOWEST_CHANNEL_VALUE) / 2), 300)){
-            right_y_percent = 0.5;
-        }
-    #endif
-
-    #ifndef RUNNING_A_TEST
-        if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
-    #endif
-
-        #if defined(MELTY_DRIVE_MELTY_LED_ONLY) || defined(MELTY_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
-            led_time_blink(FAST_BLINK);
-            printf("WE GOT HERE IN THE CODE!");
-            // handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent);
-            right_y_percent = 1 - left_y_percent;
-            handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
-        #endif
-
-    #ifndef RUNNING_A_TEST
-    } else {
-    #endif
-
-        #if defined(TANK_DRIVE_ONLY) || !defined(RUNNING_A_TEST)
-            led_repeat_blink(3);
-            printf("THIS IS ACTUALLY HAPPENING \n");
-
-            // restricting allowed standard tank drive values so that robot can be more controlled hopefully
-            left_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, left_y_percent));
-            right_y_percent = fmin(0.5 + TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, fmax(0.5 - TANK_DRIVE_THROTTLE_MAX_REGISTERED_DEVIATION_FROM_CENTER, right_y_percent));
-
-            printf("TANK DRIVE LP %lf \n", left_y_percent);
-            printf("TANK DRIVE RP %lf \n", right_y_percent);
-
-            handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
-        #endif
-    #ifndef RUNNING_A_TEST
+void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)){
+    if(drive_is_throttle_zero()) {
+        handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
     }
-    #endif
+
+    if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY){
+        led_time_blink(FAST_BLINK);
+        handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent, get_rpm);
+        return;
+    } 
+    
+    if (drive_get_curr_drive_mode() == DRIVE_MODE_TANK) {
+        led_repeat_blink(3);
+        handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        return;
+    }
 }

@@ -1,7 +1,3 @@
-#include "pico/stdlib.h"
-#include "pico/time.h"
-
-#include "../src/led_driver.h"
 #include "../src/donut_config.h"
 
 int main() {

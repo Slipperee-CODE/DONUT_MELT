@@ -1,11 +1,5 @@
-#include "pico/stdlib.h"
-#include "pico/time.h"
-#include "stdio.h"
-
+#include <stdio.h>
 #include "../src/donut_config.h"
-#include "../src/donut_telemetry.h"
-#include "../src/donut_drive.h"
-#include "../src/receiver.h"
 
 static bot_state_t bot_state;
 

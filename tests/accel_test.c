@@ -1,7 +1,6 @@
-#include "../src/donut_config.h"
-#include "pico/stdlib.h"
-#include "stdio.h"
+#include <stdio.h>
 #include "H3LIS331DL.h"
+#include "../src/donut_config.h"
 
 int main() {
     stdio_init_all();
