@@ -2,7 +2,7 @@
 
 static bot_state_t bot_state;
 
-void donut_init_bot_state(){
+void donut_init_bot_state() {
     bot_state.is_failsafed = 1;
     bot_state.require_zero_throttle = 1;
 
@@ -13,23 +13,23 @@ void donut_init_bot_state(){
 }
 
 // need to make this function and is_killswitch_active accesible from donut_drive.c somehow
-uint8_t donut_is_throttle_zero(){ 
+uint8_t donut_is_throttle_zero() { 
     return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
 }
 
-uint8_t donut_is_killswitch_active(){
+uint8_t donut_is_killswitch_active() {
     return receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50);
 }
 
-double smoothing_func(double input){
+double smoothing_func(double input) {
     return pow(input, 3);
 }
 
-void when_flashing_motors(){
+void when_flashing_motors() {
     led_repeat_blink(3);
 }
 
-void init_bot_systems(){
+void init_bot_systems() {
     stdio_init_all();
 
     donut_init_bot_state();
@@ -46,7 +46,7 @@ void init_bot_systems(){
 }
 
 // a just connected or just powered on bot starts here, this is also where failsafed bots go
-void when_failsafe_on(){
+void when_failsafe_on() {
     motor_stop_all();
 
     bot_state.require_zero_throttle = 1;
@@ -58,7 +58,7 @@ void when_failsafe_on(){
     led_time_blink(SLOW_BLINK);
 }
 
-void when_failsafe_off(){
+void when_failsafe_off() {
     drive_update_bot_state(
         &bot_state, 
         smoothing_func(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
@@ -72,7 +72,7 @@ void when_failsafe_off(){
     );
 }
 
-void always(){
+void always() {
     #ifdef OUTPUT_DIAGNOSTICS
         telemetry_output_diagnostics(&bot_state);
     #endif
@@ -88,7 +88,7 @@ void always(){
     watchdog_update(); // keep watchdog happy
 }
 
-int main(){
+int main() {
     #ifdef FLASHING_MOTORS
         while(1){
             when_flashing_motors();

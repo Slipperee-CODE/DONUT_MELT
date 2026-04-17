@@ -1,10 +1,10 @@
 #include "donut_telemetry.h"
 
-uint32_t get_seconds_since_boot(){
+uint32_t get_seconds_since_boot() {
     return to_ms_since_boot(get_absolute_time()) / 1000.0;
 }
 
-void telemetry_output_diagnostics(bot_state_t* bot_state){
+void telemetry_output_diagnostics(bot_state_t* bot_state) {
     printf("\n---------DIAGNOSTICS START-------------\n\n");
 
     #ifdef TIME_SINCE_BOOT_DIAGNOSTICS
@@ -40,7 +40,7 @@ void telemetry_output_diagnostics(bot_state_t* bot_state){
 }
 
 // this function and send_telemetry work together to switch between different sets of telemetry to send to transmitter 
-uint8_t get_telemetry_state(){
+uint8_t get_telemetry_state() {
     if (receiver_get_channel(SWITCH_F) >= RECEIVER_HIGHEST_CHANNEL_VALUE){
         return TELEMETRY_MOTOR1;
     } else if (receiver_get_channel(SWITCH_F) <= RECEIVER_LOWEST_CHANNEL_VALUE){
@@ -50,7 +50,7 @@ uint8_t get_telemetry_state(){
     }
 }
 
-void telemetry_send_telemetry(bot_state_t* bot_state){
+void telemetry_send_telemetry(bot_state_t* bot_state) {
     switch(get_telemetry_state()){
         case TELEMETRY_MOTOR1:
             // printf("SENDING TELEM1 \n");

@@ -10,7 +10,7 @@ static bot_state_t* _user_bot_state;
 
 static struct repeating_timer set_throttle_timer;
 
-bool set_throttle_callback(struct repeating_timer *t){
+bool set_throttle_callback(struct repeating_timer *t) {
     BidirDShotX1_sendThrottle(MOTOR1, MOTOR1_throttle);
     BidirDShotX1_sendThrottle(MOTOR2, MOTOR2_throttle);
     // led_toggle();
@@ -18,24 +18,24 @@ bool set_throttle_callback(struct repeating_timer *t){
 }
 
 // throttle range is 0-2000, 0 in 3D mode (forward-backward) is stopped
-void motor_motor1_set_throttle(uint16_t throttle){
+void motor_motor1_set_throttle(uint16_t throttle) {
     MOTOR1_throttle = throttle;
 }
 
-void motor_motor2_set_throttle(uint16_t throttle){
+void motor_motor2_set_throttle(uint16_t throttle) {
     MOTOR2_throttle = throttle;
 }
 
-void motor_set_throttle_for_all(uint16_t throttle){
+void motor_set_throttle_for_all(uint16_t throttle) {
     motor_motor1_set_throttle(throttle);
     motor_motor2_set_throttle(throttle);
 }
 
-void motor_stop_all(){
+void motor_stop_all() {
     motor_set_throttle_for_all(0);
 }
 
-void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio, bot_state_t* user_bot_state){
+void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio, bot_state_t* user_bot_state) {
     MOTOR1 = BidirDShotX1_constructor(motor1_pin, dshot_speed, motor1_pio, -1);
     MOTOR2 = BidirDShotX1_constructor(motor2_pin, dshot_speed, motor2_pio, -1);
 
