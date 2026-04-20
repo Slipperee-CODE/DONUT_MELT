@@ -22,6 +22,7 @@ int main() {
     // low is 1, high is 999
     for (int i = 1; i <= 250; i+=10) {
         motor_set_throttle_for_all(i);
+        printf("SENDING FORWARD THROTTLE %d\n", i);
         sleep_ms(100);
     }
 
@@ -31,6 +32,7 @@ int main() {
     // low is 1001, high is 2000
     for (int i = 1001; i <= 1250; i+=10) {
         motor_set_throttle_for_all(i);
+        printf("SENDING BACKWARD THROTTLE %d\n", i);
         sleep_ms(100);
     }
 

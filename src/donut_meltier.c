@@ -120,6 +120,7 @@ void always() {
     watchdog_update(); // keep watchdog happy
 }
 
+#ifndef RUNNING_A_TEST
 int main() {
     #ifdef FLASHING_MOTORS
         while(1){
@@ -141,3 +142,4 @@ int main() {
 
     return 0;
 }
+#endif

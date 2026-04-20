@@ -14,6 +14,8 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DEBUG SETTINGS----------
 
+#define RUNNING_A_TEST
+
 #define FAKE_RPM 10
 
 #define LIE_ABOUT_INPUT // fakes receiver and RPM data

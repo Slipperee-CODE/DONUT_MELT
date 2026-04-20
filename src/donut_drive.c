@@ -26,12 +26,12 @@ double rpm_to_upr(double rpm) {
 double percentThrottleToThrottleCommand(double percent_throttle) {
     uint16_t throttle;
 
-    // -1..0 -> 1000..0 AND 0..1 -> 1002..2000
+    // -1..0 -> 999..0 AND 0..1 -> 1001..2000
     // 0 percent_throttle or 0.5 percent_throttle becomes a 0 throttle command
     if (percent_throttle > 0) {
-        throttle = 1002 + 998*percent_throttle;
+        throttle = 1001 + 999*percent_throttle;
     } else if (percent_throttle < 0) {
-        throttle = -1000*percent_throttle;
+        throttle = -999*percent_throttle;
     } else {
         throttle = 0;
     }
