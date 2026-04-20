@@ -14,11 +14,11 @@ void donut_init_bot_state() {
 
 #ifdef LIE_ABOUT_INPUT
     uint8_t donut_is_throttle_zero() { 
-        return 1;
+        return 0;
     }
 
     uint8_t donut_is_killswitch_active() {
-        return 0;
+        return 1;
     }
 
     uint8_t donut_get_curr_drive_mode() {
