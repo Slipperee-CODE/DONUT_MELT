@@ -1,19 +1,12 @@
 #include "donut_drive.h"
 
-uint8_t drive_get_curr_drive_mode() {
-    if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)) {
-        return DRIVE_MODE_TANK;
-    }
-    return DRIVE_MODE_MELTY;
-}
-
 // takes into account curr_drive_mode whereas donut_is_throttle_zero does not 
 uint8_t drive_is_throttle_zero() {
-    if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
+    if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
         return donut_is_throttle_zero();
     }
 
-    if (drive_get_curr_drive_mode() == DRIVE_MODE_TANK) {
+    if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         return donut_is_throttle_zero() && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
     }
 }
@@ -31,13 +24,10 @@ double rpm_to_upr(double rpm) {
 }
 
 double percentThrottleToThrottleCommand(double percent_throttle) {
-    percent_throttle = percent_throttle * 2; // 0..2
-    percent_throttle = percent_throttle - 1; // -1..1
-
     uint16_t throttle;
 
     // -1..0 -> 1047..0 AND 0..1 -> 1049..2047
-    // 0 percent_throttle becomes a 0 throttle command
+    // 0 percent_throttle or 0.5 percent_throttle becomes a 0 throttle command
     if (percent_throttle > 0) {
         throttle = 1049 + 998*percent_throttle;
     } else if (percent_throttle < 0) {
@@ -162,13 +152,13 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
         return;
     }
 
-    if (drive_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
+    if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
         led_time_blink(FAST_BLINK);
         handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent, get_rpm);
         return;
     } 
     
-    if (drive_get_curr_drive_mode() == DRIVE_MODE_TANK) {
+    if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
         handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
         return;

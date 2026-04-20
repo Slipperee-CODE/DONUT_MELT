@@ -12,17 +12,40 @@ void donut_init_bot_state() {
     bot_state.rpm = 0;
 }
 
-// need to make this function and is_killswitch_active accesible from donut_drive.c somehow
-uint8_t donut_is_throttle_zero() { 
-    return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
-}
+#ifdef LIE_ABOUT_INPUT
+    uint8_t donut_is_throttle_zero() { 
+        return 1;
+    }
 
-uint8_t donut_is_killswitch_active() {
-    return receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50);
-}
+    uint8_t donut_is_killswitch_active() {
+        return 0;
+    }
 
-double smoothing_func(double input) {
-    return pow(input, 3);
+    uint8_t donut_get_curr_drive_mode() {
+        return DRIVE_MODE_MELTY;
+    }
+#else 
+    uint8_t donut_is_throttle_zero() { 
+        return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+    }
+
+    uint8_t donut_is_killswitch_active() {
+        return receiver_is_channel_near_value(SWITCH_E, RECEIVER_HIGHEST_CHANNEL_VALUE, 50);
+    }
+
+    uint8_t donut_get_curr_drive_mode() {
+        if (receiver_is_channel_near_value(SWITCH_C, RECEIVER_HIGHEST_CHANNEL_VALUE, 50)) {
+            return DRIVE_MODE_TANK;
+        }
+        return DRIVE_MODE_MELTY;
+    }
+#endif
+
+// takes 0..1 to -1..1 (cubed for smoothing)
+double input_remapping(double input) {
+    input = input * 2; // 0..2
+    input = input - 1; // -1..1
+    return pow(input, 3); // still -1..1 but smoothed now
 }
 
 void when_flashing_motors() {
@@ -34,9 +57,10 @@ void init_bot_systems() {
 
     donut_init_bot_state();
 
-    receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-
-    accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    #ifndef LIE_ABOUT_INPUT
+        receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
+        accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+    #endif
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
@@ -58,32 +82,40 @@ void when_failsafe_on() {
     led_time_blink(SLOW_BLINK);
 }
 
-void when_failsafe_off() {
-    drive_update_bot_state(
-        &bot_state, 
-        smoothing_func(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
-        smoothing_func(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
-        smoothing_func(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
-        #ifdef LIE_ABOUT_RPM
+#ifdef LIE_ABOUT_INPUT
+    void when_failsafe_off() {
+        drive_update_bot_state(
+            &bot_state, 
+            input_remapping(1),
+            input_remapping(0),
+            input_remapping(0),
             get_fake_rpm
-        #else 
+        );
+    }
+#else
+    void when_failsafe_off() {
+        drive_update_bot_state(
+            &bot_state, 
+            input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
+            input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
+            input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
             get_rpm
-        #endif
-    );
-}
+        );
+    }
+#endif
 
 void always() {
-    #ifdef OUTPUT_DIAGNOSTICS
-        telemetry_output_diagnostics(&bot_state);
+    #ifndef LIE_ABOUT_INPUT
+        #ifdef OUTPUT_DIAGNOSTICS
+            telemetry_output_diagnostics(&bot_state);
+        #endif
+
+        #ifdef SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
+            telemetry_send_telemetry(&bot_state);
+        #endif
+
+        receiver_update();
     #endif
-
-    #ifdef SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
-        telemetry_send_telemetry(&bot_state);
-    #endif
-
-    // motor_update_bot_state();
-
-    receiver_update();
 
     watchdog_update(); // keep watchdog happy
 }

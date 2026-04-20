@@ -9,11 +9,27 @@ uint8_t donut_is_throttle_zero();
 
 uint8_t donut_is_killswitch_active();
 
+uint8_t donut_get_curr_drive_mode();
+
+
+//----------DEBUG SETTINGS----------
+
+#define FAKE_RPM 10
+
+#define LIE_ABOUT_INPUT // fakes receiver and RPM data
+#define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
+#define BYPASS_MIN_TRANSLATION_RPM // lets us attempt to translate under MIN_TRANSLATION_RPM if defined
+
+//----------END DEBUG----------
+
+
 //---------------LED SETTINGS---------------
 
-#define HEADING_LIGHT_STRIP_PIN	6 // Onboard Pico2 led is pin 25
+// Onboard Pico2 led is on pin 25
+// Our usual top led is on pin 6
+// Our usual bottom led is on pin 7
+#define HEADING_LIGHT_STRIP_PIN	25
 #define HEADING_LIGHT_STRIP_PIN2 7 
-
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
@@ -106,14 +122,5 @@ uint8_t donut_is_killswitch_active();
 
 //----------END MISC----------
 
-
-//----------DEBUG SETTINGS----------
-
-// #define LIE_ABOUT_RPM
-#define FAKE_RPM 10
-// #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
-// #define BYPASS_MIN_TRANSLATION_RPM // lets us bypass MIN_TRANSLATION_RPM if defined
-
-//----------END DEBUG----------
 
 #endif

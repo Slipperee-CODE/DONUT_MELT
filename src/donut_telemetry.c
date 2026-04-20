@@ -58,7 +58,7 @@ void telemetry_send_telemetry(bot_state_t* bot_state) {
             break;
         case TELEMETRY_MOTOR2:
             // printf("SENDING TELEM2 \n");
-            receiver_send_telemetry(drive_get_curr_drive_mode(),donut_is_killswitch_active(),bot_state->max_rpm,2);
+            receiver_send_telemetry(donut_get_curr_drive_mode(),donut_is_killswitch_active(),bot_state->max_rpm,2);
             break;
         case TELEMETRY_MAIN:
             // printf("SENDING TELEM3 \n");
