@@ -14,9 +14,9 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DEBUG SETTINGS----------
 
-#define RUNNING_A_TEST
+// #define RUNNING_A_TEST
 
-#define FAKE_RPM 10
+#define FAKE_RPM 3600
 
 #define LIE_ABOUT_INPUT // fakes receiver and RPM data
 #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined

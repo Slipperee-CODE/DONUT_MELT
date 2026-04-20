@@ -3,8 +3,13 @@
 static bot_state_t bot_state;
 
 void donut_init_bot_state() {
-    bot_state.is_failsafed = 1;
-    bot_state.require_zero_throttle = 1;
+    #ifdef LIE_ABOUT_INPUT
+        bot_state.is_failsafed = 0;
+        bot_state.require_zero_throttle = 0;
+    #else
+        bot_state.is_failsafed = 1;
+        bot_state.require_zero_throttle = 1;
+    #endif
 
     bot_state.this_rotations_start_time_us = -1;
 
@@ -18,7 +23,7 @@ void donut_init_bot_state() {
     }
 
     uint8_t donut_is_killswitch_active() {
-        return 1;
+        return 0;
     }
 
     uint8_t donut_get_curr_drive_mode() {
@@ -86,8 +91,8 @@ void when_failsafe_on() {
     void when_failsafe_off() {
         drive_update_bot_state(
             &bot_state, 
-            input_remapping(1),
-            input_remapping(0),
+            0.25,
+            0.25,
             input_remapping(0),
             get_fake_rpm
         );

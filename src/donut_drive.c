@@ -54,6 +54,39 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
     #endif
 }
 
+void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
+    // pretty sure this is correct but could def be a source of problems - Cai
+
+    // printf("SPINNING FORWARD | ");
+
+    if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
+        time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
+        // printf("LEFT MOTOR ON | ");
+        handle_tank(bot_state, left_y_percent, 0, 0);
+    } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
+        time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
+        // printf("RIGHT MOTOR ON | ");
+        handle_tank(bot_state, 0, left_y_percent, 0);    
+    }
+}
+
+// like handle_spin_forwards but motors turn on and off in opposite order as handle_spin_forwards 
+void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
+    // pretty sure this is correct but could def be a source of problems - Cai
+
+    // printf("SPINNING BACKWARD | ");
+
+    if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
+        time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
+        // printf("RIGHT MOTOR ON | ");
+        handle_tank(bot_state, 0, left_y_percent, 0);
+    } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
+        time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
+        // printf("LEFT MOTOR ON | ");
+        handle_tank(bot_state, left_y_percent, 0, 0);    
+    }
+}
+
 void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us) {
     // time_elapsed_this_rotation_us == 0 is "forward" for the sake of spin led purposes
 
@@ -63,31 +96,6 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
         led_set_and_update_state(1);
     } else {
         led_set_and_update_state(0);
-    }
-}
-
-void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    // pretty sure this is correct but could def be a source of problems - Cai
-
-    if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        handle_tank(bot_state, left_y_percent, 0, 0);
-    } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        handle_tank(bot_state, 0, left_y_percent, 0);    
-    }
-}
-
-// like handle_spin_forwards but motors turn on and off in opposite order as handle_spin_forwards 
-void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    // pretty sure this is correct but could def be a source of problems - Cai
-    
-    if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        handle_tank(bot_state, 0, left_y_percent, 0);
-    } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        handle_tank(bot_state, left_y_percent, 0, 0);    
     }
 }
 
@@ -119,22 +127,27 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     double time_elapsed_this_rotation_us = time_us_64() - bot_state->this_rotations_start_time_us;
 
     // probably should just make it so that reversing spin direction is another button altogether, not just backwards throttle, oops - Cai
-    double led_on_us = fmin(MAX_LED_PERCENT_DURATION, fmax(MIN_LED_PERCENT_DURATION, (int64_t) (2*fabs(left_y_percent - 0.5) * us_per_rotation)));
+    double led_on_us = fmin(MAX_LED_PERCENT_DURATION, fmax(MIN_LED_PERCENT_DURATION, fabs(left_y_percent))) * us_per_rotation;
 
-    double half_rotation_time = (double) us_per_rotation/2;
+    double half_rotation_time = us_per_rotation/2;
     double motor_off_edge_time = (half_rotation_time - MOTOR_ON_PERCENT_DURATION*us_per_rotation)/2;
 
-    if (is_close_enough(right_y_percent, 0.5, 0.25)) {
+    if (is_close_enough(right_y_percent, 0, 0.125)) {
         if (no_translation_state_counter){
             handle_spin_forward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
         } else {
             handle_spin_backward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
         }
     } else {
-        handle_spin_forward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
+        if (right_y_percent > 0) {
+            handle_spin_forward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
+        } else {
+            handle_spin_backward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
+        }
     }
 
     handle_spin_led(time_elapsed_this_rotation_us, us_per_rotation, led_on_us);
+    // printf("TIME ELAPSED THIS ROTATION: %lf \n", time_elapsed_this_rotation_us / 1000000.0);
 
     // if we have completed a rotation, get ready for next rotation
     if (time_elapsed_this_rotation_us >= us_per_rotation) {
@@ -153,7 +166,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        led_time_blink(FAST_BLINK);
+        // led_time_blink(FAST_BLINK);
         handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent, get_rpm);
         return;
     } 

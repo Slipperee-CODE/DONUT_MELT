@@ -27,17 +27,17 @@ project(donut_melt C CXX ASM)
 
 pico_sdk_init()
 
-# add_executable(donut_melt 
-#     src/led_driver.c
-#     src/motor_driver.c
-#     src/receiver.c
+add_executable(donut_melt 
+    src/led_driver.c
+    src/motor_driver.c
+    src/receiver.c
 
-#     src/donut_accel.c
-#     src/donut_drive.c
-#     src/donut_telemetry.c
+    src/donut_accel.c
+    src/donut_drive.c
+    src/donut_telemetry.c
 
-#     src/donut_meltier.c
-# )
+    src/donut_meltier.c
+)
 
 #---------------TESTS---------------
 
@@ -49,7 +49,7 @@ pico_sdk_init()
 
 # add_executable(donut_melt tests/rx_tx_test.c src/receiver.c src/donut_telemetry.c src/donut_meltier.c src/donut_drive.c)
 
-add_executable(donut_melt tests/dshot_ramp_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c)
+# add_executable(donut_melt tests/dshot_ramp_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c)
 # add_executable(donut_melt tests/dshot_from_tx_test.c src/donut_meltier.c src/motor_driver.c src/led_driver.c src/receiver.c)
 
 #---------------END TESTS---------------
