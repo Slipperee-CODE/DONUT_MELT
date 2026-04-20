@@ -3,16 +3,6 @@
 
 #include "donut_dependencies.h"
 
-typedef struct {
-    uint8_t is_failsafed;
-    uint8_t require_zero_throttle;
-
-    uint64_t this_rotations_start_time_us;
-
-    uint32_t max_rpm;
-    uint32_t rpm;
-} bot_state_t;
-
 void donut_init_bot_state();
 
 uint8_t donut_is_throttle_zero();

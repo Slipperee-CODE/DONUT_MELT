@@ -28,14 +28,15 @@ project(donut_melt C CXX ASM)
 pico_sdk_init()
 
 add_executable(donut_melt 
-    src/donut_meltier.c
+    src/led_driver.c
+    src/motor_driver.c
+    src/receiver.c
+
     src/donut_accel.c
     src/donut_drive.c
     src/donut_telemetry.c
 
-    src/led_driver.c
-    src/motor_driver.c
-    src/receiver.c
+    src/donut_meltier.c
 )
 
 #---------------TESTS---------------
