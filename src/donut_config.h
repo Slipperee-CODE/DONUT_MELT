@@ -16,9 +16,10 @@ uint8_t donut_get_curr_drive_mode();
 
 // #define RUNNING_A_TEST
 
-#define FAKE_RPM 3600
+#define FAKE_RPM 60
 
-#define LIE_ABOUT_INPUT // fakes receiver and RPM data
+#define LIE_ABOUT_RPM // fakes RPM data
+// #define LIE_ABOUT_INPUT // fakes receiver 
 #define NO_MOTOR_SPINNING // prevents motors from spinning up if defined
 #define BYPASS_MIN_TRANSLATION_RPM // lets us attempt to translate under MIN_TRANSLATION_RPM if defined
 
@@ -103,7 +104,7 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------TELEMETRY SETTINGS----------
 
-#define SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
+// #define SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
 
 // #define OUTPUT_DIAGNOSTICS
 

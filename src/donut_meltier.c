@@ -87,27 +87,26 @@ void when_failsafe_on() {
     led_time_blink(SLOW_BLINK);
 }
 
-#ifdef LIE_ABOUT_INPUT
-    void when_failsafe_off() {
-        drive_update_bot_state(
-            &bot_state, 
+void when_failsafe_off() {
+    drive_update_bot_state(
+        &bot_state, 
+        #ifdef LIE_ABOUT_INPUT
             0.25,
             0.25,
             input_remapping(0),
-            get_fake_rpm
-        );
-    }
-#else
-    void when_failsafe_off() {
-        drive_update_bot_state(
-            &bot_state, 
+        #else 
             input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
+        #endif
+
+        #ifdef LIE_ABOUT_RPM
+            get_fake_rpm
+        #else
             get_rpm
-        );
-    }
-#endif
+        #endif
+    );
+}
 
 void always() {
     #ifndef LIE_ABOUT_INPUT

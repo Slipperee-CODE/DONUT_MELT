@@ -7,7 +7,8 @@ uint8_t drive_is_throttle_zero() {
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
-        return donut_is_throttle_zero() && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+        return donut_is_throttle_zero() 
+        && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
     }
 }
 
@@ -61,13 +62,14 @@ void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t
 
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        // printf("LEFT MOTOR ON | ");
+        // printf("LEFT MOTOR ON");
         handle_tank(bot_state, left_y_percent, 0, 0);
     } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
         time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        // printf("RIGHT MOTOR ON | ");
+        // printf("RIGHT MOTOR ON");
         handle_tank(bot_state, 0, left_y_percent, 0);    
     }
+    printf("\n");
 }
 
 // like handle_spin_forwards but motors turn on and off in opposite order as handle_spin_forwards 
@@ -78,13 +80,14 @@ void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_
 
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        // printf("RIGHT MOTOR ON | ");
+        // printf("RIGHT MOTOR ON");
         handle_tank(bot_state, 0, left_y_percent, 0);
     } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
         time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        // printf("LEFT MOTOR ON | ");
+        // printf("LEFT MOTOR ON");
         handle_tank(bot_state, left_y_percent, 0, 0);    
     }
+    printf("\n");
 }
 
 void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us) {
@@ -155,18 +158,20 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
         no_translation_state_counter = 1 - no_translation_state_counter;
         bot_state->this_rotations_start_time_us = time_us_64();
     }
-
-    // printf("SPINNING IS HAPPENING! \n");
 }
 
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) {
+    // printf("left_y_percent=%lf | ", left_y_percent);
+    // printf("right_y_percent=%lf | ", right_y_percent);
+    // printf("right_x_percent=%lf | ", right_x_percent);
+    // printf("rpm=%lf \n", get_rpm(right_x_percent));
+    
     if(drive_is_throttle_zero()) {
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
         return;
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        // led_time_blink(FAST_BLINK);
         handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent, get_rpm);
         return;
     } 
