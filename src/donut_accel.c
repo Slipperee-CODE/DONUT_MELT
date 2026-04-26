@@ -11,7 +11,6 @@ void accel_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl, bot_stat
 // gets microseconds per rotation
 // lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
 double get_rpm(double right_x_percent) {
-    // fix this: get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
     double gs = accelerometer_get_y() - ACCEL_ZERO_G_OFFSET;
     _user_bot_state->accel_g_value = (uint16_t) (gs * 100);
 

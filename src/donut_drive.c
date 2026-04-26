@@ -156,6 +156,10 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
 
 // -1..1 -> -max..max
 double rescalePercentThrottle(double percentThrottle, double max) {
+    // temp fix, please find the proper %s in the future - Cai
+    if (percentThrottle >= -0.5 && percentThrottle <= 0.5) {
+        return 0;
+    }
     return percentThrottle * max;
 }
 
@@ -186,7 +190,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
-        handle_tank(bot_state, rescalePercentThrottle(left_y_percent, 0.5), rescalePercentThrottle(right_y_percent, 0.5), right_x_percent);
+        handle_tank(bot_state, rescalePercentThrottle(left_y_percent, TANK_DRIVE_MAX_THROTTLE), -rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), right_x_percent);
         return;
     }
 }
