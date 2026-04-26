@@ -12,15 +12,15 @@ void accel_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl, bot_stat
 // lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
 double get_rpm(double right_x_percent) {
     // fix this: get rpm from accel data along correct axis, WILL PROBABLY NEED TO CHANGE THE AXIS LATER
-    double x_gs = accelerometer_get_x() - ACCEL_ZERO_G_OFFSET;
-    _user_bot_state->accel_g_value = (uint16_t) (x_gs * 100);
+    double gs = accelerometer_get_y() - ACCEL_ZERO_G_OFFSET;
+    _user_bot_state->accel_g_value = (uint16_t) (gs * 100);
 
     // mapping [0,1] -> [-1,1]
     right_x_percent = (right_x_percent*2) - 1;
 
     double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
 
-    double rpm = fabs(x_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+    double rpm = fabs(gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
     rpm = rpm / effective_radius_in_cm;
     rpm = sqrt(rpm);
 
