@@ -54,7 +54,7 @@ double input_remapping(double input) {
 }
 
 void when_flashing_motors() {
-    led_repeat_blink(3);
+    led_repeat_blink(10);
 }
 
 void init_bot_systems() {

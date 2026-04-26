@@ -160,12 +160,13 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 }
 
-void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) {
-    // printf("left_y_percent=%lf | ", left_y_percent);
-    // printf("right_y_percent=%lf | ", right_y_percent);
-    // printf("right_x_percent=%lf | ", right_x_percent);
-    // printf("rpm=%lf \n", get_rpm(right_x_percent));
-    
+// -1..1 -> -max..max
+double rescalePercentThrottle(double percentThrottle, double max) {
+    return percentThrottle * max;
+}
+
+// assumes all percents given are -1..1
+void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) {    
     if(drive_is_throttle_zero()) {
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
         return;
@@ -178,7 +179,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
-        handle_tank(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        handle_tank(bot_state, rescalePercentThrottle(left_y_percent, 0.5), rescalePercentThrottle(right_y_percent, 0.5), right_x_percent);
         return;
     }
 }
