@@ -159,7 +159,7 @@ double rescalePercentThrottle(double percentThrottle, double max) {
     // the if statement is a temp fix for the problem that if one stick is not quite zero but within it's zero
     // deadzone and the other stick is used, it also supplies a nonzero throttle to the barely nonzero stick's motor
     // please find the proper %s in the future - Cai
-    if (percentThrottle >= -0.125 && percentThrottle <= 0.125) {
+    if (percentThrottle >= -0.05 && percentThrottle <= 0.05) {
         return 0;
     }
     return percentThrottle * max;
