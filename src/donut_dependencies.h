@@ -13,6 +13,9 @@ typedef struct {
 
     uint32_t max_rpm;
     uint32_t rpm;
+
+    // raw_accel_g_value * 100 with the decimals cut off
+    uint16_t accel_g_value;
 } bot_state_t;
 
 #include "hardware/uart.h"

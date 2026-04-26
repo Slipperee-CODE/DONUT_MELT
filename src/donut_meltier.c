@@ -15,6 +15,7 @@ void donut_init_bot_state() {
 
     bot_state.max_rpm = 0;
     bot_state.rpm = 0;
+    bot_state.accel_g_value = 0;
 }
 
 #ifdef LIE_ABOUT_INPUT
@@ -64,7 +65,7 @@ void init_bot_systems() {
 
     #ifndef LIE_ABOUT_INPUT
         receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-        accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL);
+        accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL, &bot_state);
     #endif
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);

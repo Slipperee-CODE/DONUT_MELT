@@ -54,7 +54,7 @@ void telemetry_send_telemetry(bot_state_t* bot_state) {
     switch(get_telemetry_state()){
         case TELEMETRY_MOTOR1:
             // printf("SENDING TELEM1 \n");
-            receiver_send_telemetry(99,99,bot_state->rpm,1);
+            receiver_send_telemetry(99,bot_state->accel_g_value,bot_state->rpm,1);
             break;
         case TELEMETRY_MOTOR2:
             // printf("SENDING TELEM2 \n");
