@@ -45,7 +45,7 @@ uint8_t donut_get_curr_drive_mode();
 
 #define ACCEL_MOUNT_RADIUS_CM 2.4                                     
 #define ACCEL_ZERO_G_OFFSET 2                                           
-#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 1.5
+#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.75
 
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400

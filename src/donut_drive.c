@@ -162,8 +162,12 @@ double rescalePercentThrottle(double percentThrottle, double max) {
 // assumes all percents given are -1..1
 void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) { 
     // getting rpm
-    double rpm = get_rpm(right_x_percent);
-    bot_state->rpm = rpm;
+    #ifdef LIE_ABOUT_RPM
+        double raw_rpm = get_rpm(right_x_percent);
+    #else 
+        double raw_rpm = get_rpm(0);
+    #endif
+    bot_state->rpm = raw_rpm;
 
     // keeping track of max rpm
     if (bot_state->rpm > bot_state->max_rpm) {
