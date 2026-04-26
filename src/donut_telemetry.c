@@ -73,7 +73,7 @@ void telemetry_send_telemetry(bot_state_t* bot_state) {
             receiver_send_telemetry(donut_get_curr_drive_mode()*10,donut_is_killswitch_active()*10,bot_state->max_rpm,2);
             break;
         case TELEMETRY_MAIN:
-            receiver_send_telemetry(bot_state->require_zero_throttle*10,bot_state->is_failsafed*10,(uint32_t) (bot_state->accel_offset_cm*10000),3);
+            receiver_send_telemetry(bot_state->is_failsafed*10,(bot_state->accel_offset_cm < 0)*10,(uint32_t) fabs(bot_state->accel_offset_cm*10000),3);
             break;
     }
 }
