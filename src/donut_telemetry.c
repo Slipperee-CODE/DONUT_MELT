@@ -53,16 +53,21 @@ uint8_t get_telemetry_state() {
 void telemetry_send_telemetry(bot_state_t* bot_state) {
     switch(get_telemetry_state()){
         case TELEMETRY_MOTOR1:
-            // printf("SENDING TELEM1 \n");
-            receiver_send_telemetry(99,bot_state->accel_g_value,bot_state->rpm,1);
+
+            #ifdef LIE_ABOUT_RPM
+                int areWeLyingAboutRPM = 10;
+            #else
+                int areWeLyingAboutRPM = 0;
+            #endif
+
+            receiver_send_telemetry(areWeLyingAboutRPM,bot_state->accel_g_value,bot_state->rpm,1);
             break;
         case TELEMETRY_MOTOR2:
-            // printf("SENDING TELEM2 \n");
-            receiver_send_telemetry(donut_get_curr_drive_mode(),donut_is_killswitch_active(),bot_state->max_rpm,2);
+            // multiplying by 10 to get the numbers to show up as 1.0, 2.0, etc. on the transmitter
+            receiver_send_telemetry(donut_get_curr_drive_mode()*10,donut_is_killswitch_active()*10,bot_state->max_rpm,2);
             break;
         case TELEMETRY_MAIN:
-            // printf("SENDING TELEM3 \n");
-            receiver_send_telemetry(bot_state->require_zero_throttle,bot_state->is_failsafed,get_seconds_since_boot(),3);
+            receiver_send_telemetry(bot_state->require_zero_throttle*10,bot_state->is_failsafed*10,get_seconds_since_boot(),3);
             break;
     }
 }
