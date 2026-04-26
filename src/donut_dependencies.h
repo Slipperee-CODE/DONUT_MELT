@@ -16,6 +16,7 @@ typedef struct {
 
     // raw_accel_g_value * 100 with the decimals cut off
     uint16_t accel_g_value;
+    double accel_offset_cm;
 } bot_state_t;
 
 #include "hardware/uart.h"

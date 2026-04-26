@@ -43,16 +43,19 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define ACCEL_MOUNT_RADIUS_CM 2.4                                     
-#define ACCEL_ZERO_G_OFFSET 2                                           
-#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.75
+#define CAN_ADJUST_ACCEL_MOUNT_RADIUS
+#define ACCEL_OFFSET_SENSITIVITY 0.0001
+
+#define ACCEL_MOUNT_RADIUS_CM 2.4
+#define ACCEL_ZERO_G_OFFSET 2
+#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.15
 
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
 
 // #define LED_OFFSET_PERCENT 0.25 // I don't know what this number is for in OpenMelt - Cai
-#define MIN_LED_PERCENT_DURATION 0.25 
-#define MAX_LED_PERCENT_DURATION 0.75 
+#define MIN_LED_PERCENT_DURATION 0.25
+#define MAX_LED_PERCENT_DURATION 0.75
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
 
@@ -108,8 +111,9 @@ uint8_t donut_get_curr_drive_mode();
 
 // #define OUTPUT_DIAGNOSTICS
 
-#define TIME_SINCE_BOOT_DIAGNOSTICS
-#define FULL_CONTROLLER_DIAGNOSTICS
+// #define TIME_SINCE_BOOT_DIAGNOSTICS
+#define ACCEL_DIAGNOSTICS
+// #define FULL_CONTROLLER_DIAGNOSTICS
 // #define OTHER_DIAGNOSTICS
 
 #define TELEMETRY_MOTOR1 0

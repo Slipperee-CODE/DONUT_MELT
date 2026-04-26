@@ -102,10 +102,10 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
     }
 }
 
-void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) {
+void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) {
     static uint8_t no_translation_state_counter = 0;
 
-    double rpm = get_rpm(right_x_percent);
+    double rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
 
     // if we aren't fast enough to translate, spin up as fast as possible (can be bypassed)
     #ifndef BYPASS_MIN_TRANSLATION_RPM
@@ -166,12 +166,21 @@ double rescalePercentThrottle(double percentThrottle, double max) {
 }
 
 // assumes all percents given are -1..1
-void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double)) { 
+void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double left_x_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) { 
+    #ifdef CAN_ADJUST_ACCEL_MOUNT_RADIUS
+        if (left_x_percent <= -0.25 || left_x_percent >= 0.25) {
+            bot_state->accel_offset_cm = bot_state->accel_offset_cm + ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
+            if (ACCEL_MOUNT_RADIUS_CM + bot_state->accel_offset_cm <= 0) {
+                bot_state->accel_offset_cm = bot_state->accel_offset_cm - ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
+            }
+        }
+    #endif
+    
     // getting rpm
     #ifdef LIE_ABOUT_RPM
-        double raw_rpm = get_rpm(right_x_percent);
+        double raw_rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
     #else 
-        double raw_rpm = get_rpm(0);
+        double raw_rpm = get_rpm(0, bot_state->accel_offset_cm);
     #endif
     bot_state->rpm = raw_rpm;
 

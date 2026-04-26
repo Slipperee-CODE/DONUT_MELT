@@ -8,18 +8,24 @@ void accel_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl, bot_stat
     _user_bot_state = user_bot_state;
 }
 
-// gets microseconds per rotation
-// lies about upr depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
-double get_rpm(double right_x_percent) {
-    double gs = accelerometer_get_y() - ACCEL_ZERO_G_OFFSET;
-    _user_bot_state->accel_g_value = (uint16_t) (gs * 100);
+// gets rpm
+// lies about rpm depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
+double get_rpm(double right_x_percent, double accel_offset_cm) {
+    double raw_gs = accelerometer_get_y();
 
-    // mapping [0,1] -> [-1,1]
-    right_x_percent = (right_x_percent*2) - 1;
+    // attempts to store 2 decimal places worth of raw_gs into a uint16_t
+    _user_bot_state->accel_g_value = (uint16_t) (raw_gs * 100);
 
-    double effective_radius_in_cm = ACCEL_MOUNT_RADIUS_CM + (ACCEL_MOUNT_RADIUS_CM * right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+    // Reasoning behind the negative sign on "right_x_percent":
+    // Centripetal acceleration formula is ac = w^2 * r, meaning w = sqrt(ac/r). 
+    // When right_x_percent is negative, you add to the effective radius. 
+    // A larger radius results in a smaller calculated software RPM. 
+    // A smaller software RPM increases the calculated us_per_rotation, 
+    // causing the LED to trigger later in the physical spin (shifting it left).
+    double offset_accel_mount_radius_cm = ACCEL_MOUNT_RADIUS_CM + accel_offset_cm;
+    double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
 
-    double rpm = fabs(gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+    double rpm = fabs(raw_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
     rpm = rpm / effective_radius_in_cm;
     rpm = sqrt(rpm);
 
@@ -27,6 +33,28 @@ double get_rpm(double right_x_percent) {
 }
 
 // returns a fake rpm from 0..2*FAKE_RPM, defaults to FAKE_RPM when right_x_percent == 0
-double get_fake_rpm(double right_x_percent) {
-    return FAKE_RPM*right_x_percent + FAKE_RPM;
+// double get_fake_rpm(double right_x_percent, double accel_offset_cm) {
+//     return FAKE_RPM*right_x_percent + FAKE_RPM;
+// }
+
+double get_fake_rpm(double right_x_percent, double accel_offset_cm) {
+    double raw_gs = 200;
+
+    // attempts to store 2 decimal places worth of raw_gs into a uint16_t
+    _user_bot_state->accel_g_value = (uint16_t) (raw_gs * 100);
+
+    // Reasoning behind the negative sign on "right_x_percent":
+    // Centripetal acceleration formula is ac = w^2 * r, meaning w = sqrt(ac/r). 
+    // When right_x_percent is negative, you add to the effective radius. 
+    // A larger radius results in a smaller calculated software RPM. 
+    // A smaller software RPM increases the calculated us_per_rotation, 
+    // causing the LED to trigger later in the physical spin (shifting it left).
+    double offset_accel_mount_radius_cm = ACCEL_MOUNT_RADIUS_CM + accel_offset_cm;
+    double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+
+    double rpm = fabs(raw_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
+    rpm = rpm / effective_radius_in_cm;
+    rpm = sqrt(rpm);
+
+    return rpm;
 }

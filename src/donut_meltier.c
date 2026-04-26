@@ -16,6 +16,7 @@ void donut_init_bot_state() {
     bot_state.max_rpm = 0;
     bot_state.rpm = 0;
     bot_state.accel_g_value = 0;
+    bot_state.accel_offset_cm = 0;
 }
 
 #ifdef LIE_ABOUT_INPUT
@@ -98,9 +99,11 @@ void when_failsafe_off() {
         #ifdef LIE_ABOUT_INPUT
             0.25,
             0.25,
+            0.25,
             input_remapping(0),
         #else 
             input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
+            input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_X)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
         #endif

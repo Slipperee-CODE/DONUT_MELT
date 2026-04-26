@@ -11,6 +11,12 @@ void telemetry_output_diagnostics(bot_state_t* bot_state) {
         printf("DIAGNOSTICS AT %d SECS SINCE BOOT \n\n", get_seconds_since_boot());
     #endif
 
+    #ifdef ACCEL_DIAGNOSTICS
+        printf("rpm: %d | ", bot_state->rpm);
+        printf("accel_g_value: %d | ", bot_state->accel_g_value);
+        printf("accel_offset_cm: %lf \n\n", bot_state->accel_offset_cm);
+    #endif
+
     #ifdef FULL_CONTROLLER_DIAGNOSTICS
         printf("--------FULL CONTROLLER INFO---------\n");
         printf("RIGHT_JOYSTICK_X: %d | ", receiver_get_channel(RIGHT_JOYSTICK_X));
@@ -55,7 +61,7 @@ void telemetry_send_telemetry(bot_state_t* bot_state) {
         case TELEMETRY_MOTOR1:
 
             #ifdef LIE_ABOUT_RPM
-                int areWeLyingAboutRPM = 10;
+                int areWeLyingAboutRPM = 1*10; // the *10 is so it shows up as 1.0 on the transmitter
             #else
                 int areWeLyingAboutRPM = 0;
             #endif
@@ -67,7 +73,7 @@ void telemetry_send_telemetry(bot_state_t* bot_state) {
             receiver_send_telemetry(donut_get_curr_drive_mode()*10,donut_is_killswitch_active()*10,bot_state->max_rpm,2);
             break;
         case TELEMETRY_MAIN:
-            receiver_send_telemetry(bot_state->require_zero_throttle*10,bot_state->is_failsafed*10,get_seconds_since_boot(),3);
+            receiver_send_telemetry(bot_state->require_zero_throttle*10,bot_state->is_failsafed*10,(uint32_t) (bot_state->accel_offset_cm*10000),3);
             break;
     }
 }
