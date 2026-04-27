@@ -90,7 +90,7 @@ uint8_t donut_get_curr_drive_mode();
 // ESC pins are connected as follows:
 // MOTOR1_PIN was 2, MOTOR2_PIN was 3
 
-// #define FLASHING_MOTORS 
+#define FLASHING_MOTORS 
 
 #define MOTOR1_PIN 2 
 #define MOTOR2_PIN 3

@@ -71,8 +71,6 @@ void init_bot_systems() {
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
 
-    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
-
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
 }
 
@@ -134,6 +132,9 @@ void always() {
 
 #ifndef RUNNING_A_TEST
 int main() {
+    // calling led_init() early so when_flashing_motors() can use it
+    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
+
     #ifdef FLASHING_MOTORS
         while(1){
             when_flashing_motors();
