@@ -12,8 +12,8 @@ void telemetry_output_diagnostics(bot_state_t* bot_state) {
     #endif
 
     #ifdef ACCEL_DIAGNOSTICS
-        // printf("rpm: %d | ", bot_state->rpm);
-        // printf("accel_g_value: %d | ", bot_state->accel_g_value);
+        printf("rpm: %d | ", bot_state->rpm);
+        printf("accel_g_value: %d | ", bot_state->accel_g_value);
         printf("accel_offset_cm: %lf \n\n", bot_state->accel_offset_cm);
     #endif
 
