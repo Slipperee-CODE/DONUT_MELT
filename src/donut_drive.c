@@ -216,7 +216,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
-        handle_one_stick_tank(bot_state, rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), rescalePercentThrottle(right_x_percent, TANK_DRIVE_MAX_THROTTLE));
+        handle_one_stick_tank(bot_state, rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), rescalePercentThrottle(right_x_percent, TANK_DRIVE_TURNING_MAX_THROTTLE));
         return;
     }
 }

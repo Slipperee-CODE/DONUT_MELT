@@ -58,6 +58,7 @@ uint8_t donut_get_curr_drive_mode();
 #define MAX_LED_PERCENT_DURATION 0.75
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
+#define TANK_DRIVE_TURNING_MAX_THROTTLE 0.0625
 #define MELTY_MAX_THROTTLE 0.3
 
 //----------END DONUT DRIVE SETTINGS---------
