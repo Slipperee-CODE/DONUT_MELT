@@ -48,7 +48,7 @@ uint8_t donut_get_curr_drive_mode();
 
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
 #define ACCEL_ZERO_G_OFFSET 2
-#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.05
+#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
 
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
