@@ -105,7 +105,16 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
 void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) {
     static uint8_t no_translation_state_counter = 0;
 
-    double rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
+    // we only want to calculate RPM once per rotation
+    // Accordingly, there's technically some other stuff 
+    // we could avoid recalculating but it's mostly just 
+    // math calls so I am gonna ignore it for now! - Cai
+    static double rpm; 
+    
+    if (bot_state->this_rotations_start_time_us == -1) {
+        rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
+        bot_state->this_rotations_start_time_us = time_us_64();
+    }
 
     // if we aren't fast enough to translate, spin up as fast as possible (can be bypassed)
     #ifndef BYPASS_MIN_TRANSLATION_RPM
@@ -115,10 +124,6 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
             return;
         }
     #endif
-    
-    if (bot_state->this_rotations_start_time_us == -1) {
-        bot_state->this_rotations_start_time_us = time_us_64();
-    }
 
     double us_per_rotation = rpm_to_upr(rpm);
     double time_elapsed_this_rotation_us = time_us_64() - bot_state->this_rotations_start_time_us;
@@ -144,13 +149,14 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 
     handle_spin_led(time_elapsed_this_rotation_us, us_per_rotation, led_on_us);
-    // printf("TIME ELAPSED THIS ROTATION: %lf \n", time_elapsed_this_rotation_us / 1000000.0);
 
     // if we have completed a rotation, get ready for next rotation
     if (time_elapsed_this_rotation_us >= us_per_rotation) {
-        time_elapsed_this_rotation_us = 0;
-        no_translation_state_counter = 1 - no_translation_state_counter;
+        // doing more expensive calls before resetting time_elapsed_this_rotation_us
         bot_state->this_rotations_start_time_us = time_us_64();
+        rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
+
+        no_translation_state_counter = 1 - no_translation_state_counter;
     }
 }
 
