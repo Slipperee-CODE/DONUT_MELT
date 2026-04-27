@@ -85,7 +85,11 @@ void when_failsafe_on() {
     bot_state.rpm = 0;
     bot_state.max_rpm = 0;
     bot_state.accel_g_value = 0;
-    bot_state.accel_offset_cm = 0;
+
+    #ifdef OUTPUT_DIAGNOSTICS
+        telemetry_output_diagnostics(&bot_state);
+    #endif
+    
 
     if (bot_state.is_failsafed == 0 && donut_is_throttle_zero()){
         bot_state.require_zero_throttle = 0;
@@ -119,9 +123,9 @@ void when_failsafe_off() {
 
 void always() {
     #ifndef LIE_ABOUT_INPUT
-        #ifdef OUTPUT_DIAGNOSTICS
-            telemetry_output_diagnostics(&bot_state);
-        #endif
+        // #ifdef OUTPUT_DIAGNOSTICS
+        //     telemetry_output_diagnostics(&bot_state);
+        // #endif
 
         #ifdef SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
             telemetry_send_telemetry(&bot_state);

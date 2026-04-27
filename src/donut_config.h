@@ -110,7 +110,7 @@ uint8_t donut_get_curr_drive_mode();
 
 #define SHOULD_SEND_TELEMETRY_TO_TRANSMITTER
 
-// #define OUTPUT_DIAGNOSTICS
+#define OUTPUT_DIAGNOSTICS
 
 // #define TIME_SINCE_BOOT_DIAGNOSTICS
 #define ACCEL_DIAGNOSTICS
