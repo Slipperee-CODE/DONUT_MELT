@@ -60,8 +60,6 @@ void when_flashing_motors() {
 }
 
 void init_bot_systems() {
-    stdio_init_all();
-
     donut_init_bot_state();
 
     #ifndef LIE_ABOUT_INPUT
@@ -132,6 +130,8 @@ void always() {
 
 #ifndef RUNNING_A_TEST
 int main() {
+    stdio_init_all();
+
     // calling led_init() early so when_flashing_motors() can use it
     led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
 
