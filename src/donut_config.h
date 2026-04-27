@@ -46,7 +46,7 @@ uint8_t donut_get_curr_drive_mode();
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
 
-#define ACCEL_MOUNT_RADIUS_CM 2.4
+#define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset
 #define ACCEL_ZERO_G_OFFSET 2
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.15
 
