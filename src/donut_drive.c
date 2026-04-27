@@ -195,7 +195,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        handle_spin(bot_state, left_y_percent, right_y_percent, right_x_percent, get_rpm);
+        handle_spin(bot_state, rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE), right_y_percent, right_x_percent, get_rpm);
         return;
     } 
     
