@@ -55,6 +55,15 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
     #endif
 }
 
+void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, double right_x_percent) {
+    if (right_y_percent != 0) {
+        handle_tank(bot_state, right_y_percent, right_y_percent, right_x_percent);
+        return;
+    } 
+
+    handle_tank(bot_state, right_x_percent, -right_x_percent, right_x_percent);
+}
+
 void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
     // pretty sure this is correct but could def be a source of problems - Cai
 
@@ -207,7 +216,7 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
-        handle_tank(bot_state, rescalePercentThrottle(left_y_percent, TANK_DRIVE_MAX_THROTTLE), -rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), right_x_percent);
+        handle_one_stick_tank(bot_state, rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), rescalePercentThrottle(right_x_percent, TANK_DRIVE_MAX_THROTTLE));
         return;
     }
 }
