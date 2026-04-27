@@ -57,9 +57,16 @@ uint8_t donut_get_curr_drive_mode();
 #define MIN_LED_PERCENT_DURATION 0.25
 #define MAX_LED_PERCENT_DURATION 0.75
 
+// this is a number from 0..1 which represents how different 
+// the throttle sent to each motor can be during a half-rotation
+// 1 = very different
+// 0 = can't differ at all
+#define MELTY_MAX_TRANSLATION_AGGRESSION 0.75  
+#define MELTY_MAX_THROTTLE 0.3
+
 #define TANK_DRIVE_MAX_THROTTLE 0.125
 #define TANK_DRIVE_TURNING_MAX_THROTTLE 0.0625
-#define MELTY_MAX_THROTTLE 0.3
+
 
 //----------END DONUT DRIVE SETTINGS---------
 
