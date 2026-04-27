@@ -1,15 +1,15 @@
 #ifndef LED_DRIVER_H
 #define LED_DRIVER_H
 
-// Used in header file and c file
-#include <stdint.h>
-
-// Used in c file
-#include "hardware/gpio.h"
 #include "donut_config.h"
+#include "hardware/gpio.h"
 
-void led_init(uint8_t pin);
+void led_init(uint8_t pin, uint8_t pin2);
 
-void led_time_blink(int millis);
+void led_set_and_update_state(uint8_t state);
+
+void led_time_blink(uint32_t millis);
+
+void led_repeat_blink(uint8_t repeats);
 
 #endif

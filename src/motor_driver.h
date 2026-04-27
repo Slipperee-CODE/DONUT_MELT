@@ -1,28 +1,19 @@
 #ifndef MOTOR_DRIVER_H
 #define MOTOR_DRIVER_H
 
-// Used in header file and c file
-// #include "c_pico_dshot.h"
-// #include "hardware/pio.h"
-#include "pico/stdlib.h"
-#include "hardware/pwm.h"
-#include "hardware/clocks.h"
+#include "c_pico_dshot.h"
+#include "donut_config.h"
 
-/*
-extern DShotEncoderInstance* MOTOR1;
-extern DShotEncoderInstance* MOTOR2;
+void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio, bot_state_t* user_bot_state);
 
-void motor_init_all(int motor1_pin, pio_hw_t* motor1_pio, int motor2_pin, pio_hw_t* motor2_pio);
+void motor_motor1_set_throttle(uint16_t throttle);
+
+void motor_motor2_set_throttle(uint16_t throttle);
+
+void motor_set_throttle_for_all(uint16_t throttle);
 
 void motor_stop_all();
 
-void motor_send_throttle(DShotEncoderInstance* motor, double t);
-*/
-
-void motor_init_all(int motor1_pin, int motor2_pin);
-
-void motor_stop_all();
-
-void motor_send_throttle(int motor_pin, double t);
+void motor_update_bot_state();
 
 #endif

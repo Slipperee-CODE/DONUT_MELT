@@ -1,61 +1,58 @@
 #include "motor_driver.h"
 
-/*
-DShotEncoderInstance* MOTOR1;
-DShotEncoderInstance* MOTOR2;
+static BidirDShotX1* MOTOR1;
+static BidirDShotX1* MOTOR2;
 
-void motor_init_all(int motor1_pin, pio_hw_t* motor1_pio, int motor2_pin, pio_hw_t* motor2_pio){
-    MOTOR1 = DShotEncoder_create(motor1_pin, motor1_pio);
-    MOTOR2 = DShotEncoder_create(motor2_pin, motor2_pio);
-    DShotEncoder_init(MOTOR1, true);
-    DShotEncoder_init(MOTOR2, true);
-    motor_stop_all(); // stopping all motors for sanity
+volatile uint16_t MOTOR1_throttle;
+volatile uint16_t MOTOR2_throttle;
+
+static bot_state_t* _user_bot_state;
+
+static struct repeating_timer set_throttle_timer;
+
+bool set_throttle_callback(struct repeating_timer *t) {
+    BidirDShotX1_sendThrottle(MOTOR1, MOTOR1_throttle);
+    BidirDShotX1_sendThrottle(MOTOR2, MOTOR2_throttle);
+    // led_toggle();
+    return true;
 }
 
-void motor_stop_all(){
-    motor_send_throttle(MOTOR1, 0.5);
-    motor_send_throttle(MOTOR2, 0.5);
+// throttle range is 0-2000, 0 in 3D mode (forward-backward) is stopped
+void motor_motor1_set_throttle(uint16_t throttle) {
+    MOTOR1_throttle = throttle;
 }
 
-void motor_send_throttle(DShotEncoderInstance* motor, double t){
-    DShotEncoder_sendThrottle(motor, t);
-}
-*/
-
-static int INNER_MOTOR1_PIN;
-static int INNER_MOTOR2_PIN;
-
-const uint16_t PWM_WRAP = 20000;
-
-void motor_init_all(int motor1_pin, int motor2_pin){
-    INNER_MOTOR1_PIN = motor1_pin;
-    INNER_MOTOR2_PIN = motor2_pin;
-
-    float sys_clk = (float) clock_get_hz(clk_sys);
-    float global_clkdiv = sys_clk / 1000000.0f;
-
-    gpio_set_function(INNER_MOTOR1_PIN, GPIO_FUNC_PWM);
-    gpio_set_function(INNER_MOTOR2_PIN, GPIO_FUNC_PWM);
-
-    uint slice1 = pwm_gpio_to_slice_num(INNER_MOTOR1_PIN);
-    uint slice2 = pwm_gpio_to_slice_num(INNER_MOTOR2_PIN);
-
-    pwm_config config = pwm_get_default_config();
-    pwm_config_set_clkdiv(&config, global_clkdiv);
-    pwm_config_set_wrap(&config, PWM_WRAP);
-
-    pwm_init(slice1, &config, true);
-    pwm_init(slice2, &config, true);
-
-    motor_stop_all(); // stopping all motors for sanity
+void motor_motor2_set_throttle(uint16_t throttle) {
+    MOTOR2_throttle = throttle;
 }
 
-void motor_stop_all(){
-    motor_send_throttle(INNER_MOTOR1_PIN, 0.5); 
-    motor_send_throttle(INNER_MOTOR2_PIN, 0.5);
+void motor_set_throttle_for_all(uint16_t throttle) {
+    motor_motor1_set_throttle(throttle);
+    motor_motor2_set_throttle(throttle);
 }
 
-void motor_send_throttle(int motor_pin, double t){
-    uint16_t level = 1000 + (uint16_t)(t * 1000.0);
-    pwm_set_gpio_level(motor_pin, level);
+void motor_stop_all() {
+    motor_set_throttle_for_all(0);
+}
+
+void motor_init_all(int dshot_speed, int motor1_pin, PIO motor1_pio, int motor2_pin, PIO motor2_pio, bot_state_t* user_bot_state) {
+    MOTOR1 = BidirDShotX1_constructor(motor1_pin, dshot_speed, motor1_pio, -1);
+    MOTOR2 = BidirDShotX1_constructor(motor2_pin, dshot_speed, motor2_pio, -1);
+
+    _user_bot_state = user_bot_state;
+
+    motor_stop_all();
+
+    // negative time means that the callback is called at a consistent rate regardless of time taken during callback call
+    add_repeating_timer_us(-200, set_throttle_callback, NULL, &set_throttle_timer);
+
+    // initing escs by going 0 - 1000 - 0 for some reason, it shouldn't work like this but it does
+    motor_set_throttle_for_all(0);
+    sleep_ms(1000);
+
+    motor_set_throttle_for_all(1000);
+    sleep_ms(1000);
+
+    motor_set_throttle_for_all(0);
+    sleep_ms(3000);
 }
