@@ -7,7 +7,7 @@ uint8_t drive_is_throttle_zero() {
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
-        return donut_is_throttle_zero() 
+        return receiver_is_channel_near_value(RIGHT_JOYSTICK_X, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300)
         && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
     }
 }
@@ -57,11 +57,11 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
 
 void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, double right_x_percent) {
     if (right_y_percent != 0) {
-        handle_tank(bot_state, right_y_percent, right_y_percent, right_x_percent);
+        handle_tank(bot_state, right_y_percent, -right_y_percent, right_x_percent);
         return;
     } 
 
-    handle_tank(bot_state, right_x_percent, -right_x_percent, right_x_percent);
+    handle_tank(bot_state, right_x_percent, right_x_percent, right_x_percent);
 }
 
 void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
