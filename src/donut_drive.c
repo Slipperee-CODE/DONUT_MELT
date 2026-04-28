@@ -76,8 +76,8 @@ void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right
     double more_motor_percent_throttle = left_y_percent + distance_to_edge * right_y_percent;
     double less_motor_percent_throttle = left_y_percent + distance_to_edge * -right_y_percent;
 
-    printf("more_motor_percent_throttle=%lf | ", more_motor_percent_throttle);
-    printf("less_motor_percent_throttle=%lf \n", less_motor_percent_throttle);
+    // printf("more_motor_percent_throttle=%lf | ", more_motor_percent_throttle);
+    // printf("less_motor_percent_throttle=%lf \n", less_motor_percent_throttle);
 
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
@@ -139,7 +139,7 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 
     // the led thinks it's some amount in the future because of LED_OFFSET_PERCENT
-    handle_spin_led((time_elapsed_this_rotation_us+LED_OFFSET_PERCENT*us_per_rotation) % us_per_rotation, us_per_rotation, led_on_us);
+    handle_spin_led(fmod(time_elapsed_this_rotation_us+LED_OFFSET_PERCENT*us_per_rotation, us_per_rotation), us_per_rotation, led_on_us);
 
     // if we have completed a rotation, get ready for next rotation
     if (time_elapsed_this_rotation_us >= us_per_rotation) {

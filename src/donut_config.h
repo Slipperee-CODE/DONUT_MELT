@@ -61,8 +61,8 @@ uint8_t donut_get_curr_drive_mode();
 // the throttle sent to each motor can be during a half-rotation
 // 1 = very different
 // 0 = can't differ at all
-#define MELTY_MAX_TRANSLATION_AGGRESSION 0.75  
-#define MELTY_MAX_THROTTLE 0.3
+#define MELTY_MAX_TRANSLATION_AGGRESSION 0.5  
+#define MELTY_MAX_THROTTLE 0.5
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
 #define TANK_DRIVE_TURNING_MAX_THROTTLE 0.0625
