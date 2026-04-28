@@ -53,7 +53,7 @@ uint8_t donut_get_curr_drive_mode();
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
 
-#define LED_OFFSET_PERCENT 0.5
+#define LED_OFFSET_PERCENT 0.25
 #define MIN_LED_PERCENT_DURATION 0.25
 #define MAX_LED_PERCENT_DURATION 0.5
 
