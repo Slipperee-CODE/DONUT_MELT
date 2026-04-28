@@ -1,23 +1,28 @@
 #include "donut_config.h"
 
-static bot_state_t bot_state;
-
-void donut_init_bot_state() {
+static bot_state_t bot_state = {
     #ifdef LIE_ABOUT_INPUT
-        bot_state.is_failsafed = 0;
-        bot_state.require_zero_throttle = 0;
+        .is_failsafed = 0,
+        .require_zero_throttle = 0,
     #else
-        bot_state.is_failsafed = 1;
-        bot_state.require_zero_throttle = 1;
+        .is_failsafed = 1,
+        .require_zero_throttle = 1,
     #endif
 
-    bot_state.this_rotations_start_time_us = -1;
+    .this_rotations_start_time_us = -1,
+    .max_rpm = 0,
+    .rpm = 0,
+    .accel_g_value = 0,
+    .accel_offset_cm = 0
+};
 
-    bot_state.max_rpm = 0;
-    bot_state.rpm = 0;
-    bot_state.accel_g_value = 0;
-    bot_state.accel_offset_cm = 0;
-}
+static pdc_state_t throttle_pdc_state = {
+    .curr_target = 0,
+    .curr_value = 0,
+    .P = THROTTLE_PDC_P,
+    .D = THROTTLE_PDC_D,
+    .last_error = 0
+};
 
 #ifdef LIE_ABOUT_INPUT
     uint8_t donut_is_throttle_zero() { 
@@ -60,8 +65,6 @@ void when_flashing_motors() {
 }
 
 void init_bot_systems() {
-    donut_init_bot_state();
-
     #ifndef LIE_ABOUT_INPUT
         receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
         accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL, &bot_state);
@@ -92,6 +95,7 @@ void when_failsafe_on() {
 void when_failsafe_off() {
     drive_update_bot_state(
         &bot_state, 
+        &throttle_pdc_state,
         #ifdef LIE_ABOUT_INPUT
             0.25,
             0.25,
