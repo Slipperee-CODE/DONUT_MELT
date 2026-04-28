@@ -75,7 +75,10 @@ void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right
     // and reversed in the case of moving backwards
     double more_motor_percent_throttle = left_y_percent + distance_to_full * right_y_percent;
     double less_motor_percent_throttle = left_y_percent + distance_to_full * -right_y_percent;
-    
+
+    printf("more_motor_percent_throttle=%lf | ", more_motor_percent_throttle);
+    printf("less_motor_percent_throttle=%lf \n", less_motor_percent_throttle);
+
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
         handle_tank(bot_state, more_motor_percent_throttle, less_motor_percent_throttle, 0);
