@@ -65,7 +65,7 @@ void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, doubl
 }
 
 void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    double distance_to_full = 1 - fabs(left_y_percent)  
+    double distance_to_edge = fmin(1 - fabs(left_y_percent), fabs(left_y_percent));  
 
     // here's a desmos link for what the calculated motor throttles 
     // look like for various values of left_y_percent and right_y_percent
@@ -73,8 +73,8 @@ void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right
 
     // the names "more" and "less" are true in the case of moving forwards 
     // and reversed in the case of moving backwards
-    double more_motor_percent_throttle = left_y_percent + distance_to_full * right_y_percent;
-    double less_motor_percent_throttle = left_y_percent + distance_to_full * -right_y_percent;
+    double more_motor_percent_throttle = left_y_percent + distance_to_edge * right_y_percent;
+    double less_motor_percent_throttle = left_y_percent + distance_to_edge * -right_y_percent;
 
     printf("more_motor_percent_throttle=%lf | ", more_motor_percent_throttle);
     printf("less_motor_percent_throttle=%lf \n", less_motor_percent_throttle);
