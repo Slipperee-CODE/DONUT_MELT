@@ -53,7 +53,7 @@ uint8_t donut_get_curr_drive_mode();
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
 
-#define LED_OFFSET_PERCENT 0.25
+#define LED_OFFSET_PERCENT 0.5
 #define MIN_LED_PERCENT_DURATION 0.25
 #define MAX_LED_PERCENT_DURATION 0.75
 
@@ -61,8 +61,8 @@ uint8_t donut_get_curr_drive_mode();
 // the throttle sent to each motor can be during a half-rotation
 // 1 = very different
 // 0 = can't differ at all
-#define MELTY_MAX_TRANSLATION_AGGRESSION 0.5  
-#define MELTY_MAX_THROTTLE 0.5
+#define MELTY_MAX_TRANSLATION_AGGRESSION 0.75  
+#define MELTY_MAX_THROTTLE 0.75
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
 #define TANK_DRIVE_TURNING_MAX_THROTTLE 0.0625
