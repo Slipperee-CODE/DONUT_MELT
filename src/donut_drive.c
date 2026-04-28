@@ -138,7 +138,7 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
         handle_all_spin(bot_state, left_y_percent, right_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
     }
 
-    handle_spin_led(time_elapsed_this_rotation_us, us_per_rotation, led_on_us);
+    handle_spin_led((time_elapsed_this_rotation_us+LED_OFFSET_PERCENT*us_per_rotation) % us_per_rotation, us_per_rotation, led_on_us);
 
     // if we have completed a rotation, get ready for next rotation
     if (time_elapsed_this_rotation_us >= us_per_rotation) {
