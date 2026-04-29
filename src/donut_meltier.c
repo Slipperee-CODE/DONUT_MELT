@@ -55,11 +55,12 @@ static pc_state_t throttle_pdc_state = {
         return DRIVE_MODE_MELTY;
     }
 
+    // there's a chance this should be "counter_clockwise" - Cai
     uint8_t donut_should_spin_clockwise() {
         if (receiver_is_channel_near_value(SWITCH_B, RECEIVER_LOWEST_CHANNEL_VALUE, 50)) {
-            return 1;
+            return 0;
         }
-        return 0;
+        return 1;
     }
 #endif
 
