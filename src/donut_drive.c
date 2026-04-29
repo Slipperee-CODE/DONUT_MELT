@@ -7,8 +7,8 @@ uint8_t drive_is_throttle_zero() {
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
-        return receiver_is_channel_near_value(RIGHT_JOYSTICK_X, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300)
-        && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+        return receiver_is_channel_near_value(RIGHT_JOYSTICK_X, RECEIVER_MIDDLEST_CHANNEL_VALUE, 150)
+        && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 150);
     }
 }
 
@@ -65,8 +65,6 @@ void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, doubl
 }
 
 void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    printf("left_y_percent=%lf \n",left_y_percent);
-    
     double distance_to_edge = fmin(1 - fabs(left_y_percent), fabs(left_y_percent));  
 
     // here's a desmos link for what the calculated motor throttles 
@@ -163,7 +161,12 @@ double rescalePercentThrottle(double percentThrottle, double max) {
 }
 
 // assumes all percents given are -1..1
-void drive_update_bot_state(bot_state_t* bot_state, pdc_state_t* throttle_pdc_state, double left_y_percent, double left_x_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) { 
+void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_state, double left_y_percent, double left_x_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) { 
+    static uint64_t last_loop = 0;
+
+    // printf("throttle_pc_state->curr_value=%lf \n",throttle_pc_state->curr_value);
+    pc_update_pc_state(throttle_pc_state, time_us_64() - last_loop);
+
     #ifdef CAN_ADJUST_ACCEL_MOUNT_RADIUS
         if (left_x_percent <= -0.25 || left_x_percent >= 0.25) {
             bot_state->accel_offset_cm = bot_state->accel_offset_cm + ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
@@ -187,20 +190,23 @@ void drive_update_bot_state(bot_state_t* bot_state, pdc_state_t* throttle_pdc_st
     }
 
     if(drive_is_throttle_zero()) {
-        throttle_pdc_state->curr_target = 0;
+        throttle_pc_state->curr_target = 0;
+        throttle_pc_state->curr_value = 0;
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        last_loop = time_us_64();
         return;
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        throttle_pdc_state->curr_target = rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE);
+        throttle_pc_state->curr_target = rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE);
         handle_spin(
             bot_state, 
-            pdc_get_pdc_output(throttle_pdc_state, SHOULD_ONLY_SMOOTH_UP), 
+            throttle_pc_state->curr_value, 
             rescalePercentThrottle(right_y_percent, MELTY_MAX_TRANSLATION_AGGRESSION), 
             right_x_percent, 
             get_rpm
         );
+        last_loop = time_us_64();
         return;
     } 
     
@@ -211,6 +217,7 @@ void drive_update_bot_state(bot_state_t* bot_state, pdc_state_t* throttle_pdc_st
             rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), 
             rescalePercentThrottle(right_x_percent, TANK_DRIVE_TURNING_MAX_THROTTLE)
         );
+        last_loop = time_us_64();
         return;
     }
 }

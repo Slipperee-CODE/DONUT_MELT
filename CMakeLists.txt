@@ -32,7 +32,7 @@ add_executable(donut_melt
     src/motor_driver.c
     src/receiver.c
 
-    src/donut_pdc.c
+    src/donut_pc.c
     src/donut_accel.c
     src/donut_drive.c
     src/donut_telemetry.c

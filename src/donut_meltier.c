@@ -16,11 +16,10 @@ static bot_state_t bot_state = {
     .accel_offset_cm = 0
 };
 
-static pdc_state_t throttle_pdc_state = {
+static pc_state_t throttle_pdc_state = {
     .curr_target = 0,
     .curr_value = 0,
-    .P = THROTTLE_PDC_P,
-    .D = THROTTLE_PDC_D,
+    .P = THROTTLE_PC_P,
     .last_error = 0
 };
 
@@ -38,7 +37,7 @@ static pdc_state_t throttle_pdc_state = {
     }
 #else 
     uint8_t donut_is_throttle_zero() { 
-        return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+        return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 150);
     }
 
     uint8_t donut_is_killswitch_active() {
@@ -102,7 +101,7 @@ void when_failsafe_off() {
             0.25,
             input_remapping(0),
         #else 
-            input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
+            pow(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 3), 
             input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_X)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),

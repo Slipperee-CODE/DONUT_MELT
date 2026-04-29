@@ -43,9 +43,7 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define SHOULD_ONLY_SMOOTH_UP 0 // 1 is yes, 0 is no
-#define THROTTLE_PDC_P 0.85
-#define THROTTLE_PDC_D 0.1
+#define THROTTLE_PC_P 0.5
 
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
