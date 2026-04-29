@@ -35,6 +35,10 @@ static pc_state_t throttle_pdc_state = {
     uint8_t donut_get_curr_drive_mode() {
         return DRIVE_MODE_MELTY;
     }
+
+    uint8_t donut_should_spin_clockwise() {
+        return 0;
+    }
 #else 
     uint8_t donut_is_throttle_zero() { 
         return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 150);
@@ -49,6 +53,13 @@ static pc_state_t throttle_pdc_state = {
             return DRIVE_MODE_TANK;
         }
         return DRIVE_MODE_MELTY;
+    }
+
+    uint8_t donut_should_spin_clockwise() {
+        if (receiver_is_channel_near_value(SWITCH_B, RECEIVER_LOWEST_CHANNEL_VALUE, 50)) {
+            return 1;
+        }
+        return 0;
     }
 #endif
 
@@ -92,6 +103,11 @@ void when_failsafe_on() {
 }
 
 void when_failsafe_off() {
+    int8_t direction = 1;
+    if (donut_should_spin_clockwise()) {
+        direction = -1;
+    }
+
     drive_update_bot_state(
         &bot_state, 
         &throttle_pdc_state,
@@ -101,7 +117,7 @@ void when_failsafe_off() {
             0.25,
             input_remapping(0),
         #else 
-            pow(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 3), 
+            direction * pow(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 3), 
             input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_X)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
