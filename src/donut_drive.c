@@ -65,6 +65,8 @@ void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, doubl
 }
 
 void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
+    printf("left_y_percent=%lf \n",left_y_percent);
+    
     double distance_to_edge = fmin(1 - fabs(left_y_percent), fabs(left_y_percent));  
 
     // here's a desmos link for what the calculated motor throttles 
@@ -185,6 +187,7 @@ void drive_update_bot_state(bot_state_t* bot_state, pdc_state_t* throttle_pdc_st
     }
 
     if(drive_is_throttle_zero()) {
+        throttle_pdc_state->curr_target = 0;
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
         return;
     }
