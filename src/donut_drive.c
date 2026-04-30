@@ -150,8 +150,11 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
 }
 
 // -1..1 -> -max..max
-double rescalePercentThrottle(double percentThrottle, double max) {
-    return percentThrottle * max;
+double rescalePercentThrottle(double percent_throttle, double max, bool use_deadzone) {
+    if (use_deadzone && percent_throttle >= -0.05 && percent_throttle <= 0.05) {
+        return 0;
+    }
+    return percent_throttle * max;
 }
 
 // assumes all percents given are -1..1
@@ -192,11 +195,11 @@ void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_stat
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        throttle_pc_state->curr_target = rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE);
+        throttle_pc_state->curr_target = rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE, false);
         handle_spin(
             bot_state, 
             throttle_pc_state->curr_value, 
-            rescalePercentThrottle(right_y_percent, MELTY_MAX_TRANSLATION_AGGRESSION), 
+            rescalePercentThrottle(right_y_percent, MELTY_MAX_TRANSLATION_AGGRESSION, true), 
             right_x_percent, 
             get_rpm
         );
@@ -208,8 +211,8 @@ void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_stat
         led_repeat_blink(3);
         handle_one_stick_tank(
             bot_state, 
-            rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), 
-            rescalePercentThrottle(right_x_percent, TANK_DRIVE_TURNING_MAX_THROTTLE)
+            rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE, true), 
+            rescalePercentThrottle(right_x_percent, TANK_DRIVE_TURNING_MAX_THROTTLE, true)
         );
         last_loop = time_us_64();
         return;

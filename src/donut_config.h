@@ -29,10 +29,18 @@ uint8_t donut_get_curr_drive_mode();
 //---------------LED SETTINGS---------------
 
 // Onboard Pico2 led is on pin 25
-// Our usual top led is on pin 6
-// Our usual bottom led is on pin 7
+// For 1lb:
+//  Our usual top led is on pin 6 
+//  Our usual bottom led is on pin 7
+// For 3lb:
+//  Our usual top AND bottom led pin is 20
 #define HEADING_LIGHT_STRIP_PIN	25
-#define HEADING_LIGHT_STRIP_PIN2 7 
+
+// 1lb
+// #define HEADING_LIGHT_STRIP_PIN2 7
+
+// 3lb
+#define HEADING_LIGHT_STRIP_PIN2 20
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
@@ -43,7 +51,7 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
-// #define USE_3LB_ACCEL_SETUP
+#define USE_3LB_ACCEL_SETUP
 
 #define THROTTLE_PC_P 0.5
 
