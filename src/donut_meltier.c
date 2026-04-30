@@ -127,7 +127,11 @@ void when_failsafe_off() {
         #ifdef LIE_ABOUT_RPM
             get_fake_rpm
         #else
-            get_rpm
+            #ifdef USE_3LB_ACCEL_SETUP
+                get_rpm_diag_accel
+            #else
+                get_rpm
+            #endif
         #endif
     );
 }
