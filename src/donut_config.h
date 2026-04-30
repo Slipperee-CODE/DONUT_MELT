@@ -37,10 +37,10 @@ uint8_t donut_get_curr_drive_mode();
 #define HEADING_LIGHT_STRIP_PIN	25
 
 // 1lb
-// #define HEADING_LIGHT_STRIP_PIN2 7
+#define HEADING_LIGHT_STRIP_PIN2 7
 
 // 3lb
-#define HEADING_LIGHT_STRIP_PIN2 20
+// #define HEADING_LIGHT_STRIP_PIN2 20
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
@@ -51,7 +51,7 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define USE_3LB_ACCEL_SETUP
+// #define USE_3LB_ACCEL_SETUP
 
 #define THROTTLE_PC_P 0.5
 
@@ -59,6 +59,7 @@ uint8_t donut_get_curr_drive_mode();
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
 
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
+
 #define ACCEL_ZERO_G_OFFSET 2
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
 
