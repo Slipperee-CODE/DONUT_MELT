@@ -5,6 +5,14 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 
+typedef struct { 
+    uint8_t accelerometer_address;
+    i2c_inst_t* i2c_port;
+    uint8_t i2c_sda;
+    uint8_t i2c_scl;
+    double _curr_readings[3];
+} accelerometer_t;
+
 #define ACCELEROMETER_ADDRESS 0b0011000
 
 #define LSB_X_REGISTER_ADDRESS 0x28
@@ -54,16 +62,16 @@
 #define CTRL_REG1_REGISTER_VALUE POWER_MODE | DATA_OUTPUT_RATE | 0b00000111 //Last or is to make sure all axis are enabled 
 #define CTRL_REG4_REGISTER_VALUE BLOCK_DATA_UPDATE_TYPE | ENDIANNESS_OF_DATA_SELECTION | ACCEL_SCALE //write these values to their appropriate registers right after i2c init
 
-void accelerometer_init(i2c_inst_t* i2c_port, uint8_t i2c_sda, uint8_t i2c_scl);
+void accelerometer_init(accelerometer_t* user_accel_1, accelerometer_t* user_accel_2);
 
-double* accelerometer_get_all_axis();
+double* accelerometer_get_all_axis(accelerometer_t* accel);
 
-double accelerometer_get_x();
+double accelerometer_get_x(accelerometer_t* accel);
 
-double accelerometer_get_y();
+double accelerometer_get_y(accelerometer_t* accel);
 
-double accelerometer_get_z();
+double accelerometer_get_z(accelerometer_t* accel);
 
-void pico_H3LIS331DL_is_library_accesible();
+// void pico_H3LIS331DL_is_library_accesible();
 
 #endif

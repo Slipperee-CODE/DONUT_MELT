@@ -86,9 +86,13 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------ACCELEROMETER SETTINGS----------
 
-#define ACCEL_I2C_PORT i2c0
-#define ACCEL_I2C_SDA 4
-#define ACCEL_I2C_SCL 5
+#define ACCEL_1_I2C_PORT i2c0
+#define ACCEL_1_I2C_SDA 4
+#define ACCEL_1_I2C_SCL 5
+
+#define ACCEL_2_I2C_PORT i2c1
+#define ACCEL_2_I2C_SDA 10
+#define ACCEL_2_I2C_SCL 11
 
 //----------END ACCELEROMETER SETTINGS----------
 
