@@ -29,10 +29,18 @@ uint8_t donut_get_curr_drive_mode();
 //---------------LED SETTINGS---------------
 
 // Onboard Pico2 led is on pin 25
-// Our usual top led is on pin 6
-// Our usual bottom led is on pin 7
+// For 1lb:
+//  Our usual top led is on pin 6 
+//  Our usual bottom led is on pin 7
+// For 3lb:
+//  Our usual top AND bottom led pin is 20
 #define HEADING_LIGHT_STRIP_PIN	25
-#define HEADING_LIGHT_STRIP_PIN2 7 
+
+// 1lb
+#define HEADING_LIGHT_STRIP_PIN2 7
+
+// 3lb
+// #define HEADING_LIGHT_STRIP_PIN2 20
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
@@ -43,22 +51,35 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
+// #define USE_3LB_ACCEL_SETUP
+
+#define THROTTLE_PC_P 0.5
+
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
 
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
+
 #define ACCEL_ZERO_G_OFFSET 2
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
 
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
 #define MIN_TRANSLATION_RPM 400
 
-// #define LED_OFFSET_PERCENT 0.25 // I don't know what this number is for in OpenMelt - Cai
+#define LED_OFFSET_PERCENT 0.25
 #define MIN_LED_PERCENT_DURATION 0.25
-#define MAX_LED_PERCENT_DURATION 0.75
+#define MAX_LED_PERCENT_DURATION 0.5
+
+// this is a number from 0..1 which represents how different 
+// the throttle sent to each motor can be during a half-rotation
+// 1 = very different
+// 0 = can't differ at all
+#define MELTY_MAX_TRANSLATION_AGGRESSION 0.75  
+#define MELTY_MAX_THROTTLE 1
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
-#define MELTY_MAX_THROTTLE 0.4
+#define TANK_DRIVE_TURNING_MAX_THROTTLE 0.0625
+
 
 //----------END DONUT DRIVE SETTINGS---------
 

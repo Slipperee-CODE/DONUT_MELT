@@ -7,8 +7,8 @@ uint8_t drive_is_throttle_zero() {
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
-        return donut_is_throttle_zero() 
-        && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+        return receiver_is_channel_near_value(RIGHT_JOYSTICK_X, RECEIVER_MIDDLEST_CHANNEL_VALUE, 150)
+        && receiver_is_channel_near_value(RIGHT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 150);
     }
 }
 
@@ -55,39 +55,37 @@ void handle_tank(bot_state_t* bot_state, double left_y_percent, double right_y_p
     #endif
 }
 
-void handle_spin_forward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    // pretty sure this is correct but could def be a source of problems - Cai
+void handle_one_stick_tank(bot_state_t* bot_state, double right_y_percent, double right_x_percent) {
+    if (right_y_percent != 0) {
+        handle_tank(bot_state, right_y_percent, -right_y_percent, right_x_percent);
+        return;
+    } 
 
-    // printf("SPINNING FORWARD | ");
-
-    if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        // printf("LEFT MOTOR ON");
-        handle_tank(bot_state, left_y_percent, 0, 0);
-    } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
-        time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        // printf("RIGHT MOTOR ON");
-        handle_tank(bot_state, 0, left_y_percent, 0);    
-    }
-    printf("\n");
+    handle_tank(bot_state, -right_x_percent, -right_x_percent, right_x_percent);
 }
 
-// like handle_spin_forwards but motors turn on and off in opposite order as handle_spin_forwards 
-void handle_spin_backward(bot_state_t* bot_state, double left_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
-    // pretty sure this is correct but could def be a source of problems - Cai
+void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, double half_rotation_time, double motor_off_edge_time) {
+    double distance_to_edge = fmin(1 - fabs(left_y_percent), fabs(left_y_percent));  
 
-    // printf("SPINNING BACKWARD | ");
+    // here's a desmos link for what the calculated motor throttles 
+    // look like for various values of left_y_percent and right_y_percent
+    // link here: https://www.desmos.com/calculator/iwp9mwik4o
+
+    // the names "more" and "less" are true in the case of moving forwards 
+    // and reversed in the case of moving backwards
+    double more_motor_percent_throttle = left_y_percent + distance_to_edge * right_y_percent;
+    double less_motor_percent_throttle = left_y_percent + distance_to_edge * -right_y_percent;
+
+    // printf("more_motor_percent_throttle=%lf | ", more_motor_percent_throttle);
+    // printf("less_motor_percent_throttle=%lf \n", less_motor_percent_throttle);
 
     if (time_elapsed_this_rotation_us >= motor_off_edge_time &&
         time_elapsed_this_rotation_us <= half_rotation_time - motor_off_edge_time) {
-        // printf("RIGHT MOTOR ON");
-        handle_tank(bot_state, 0, left_y_percent, 0);
+        handle_tank(bot_state, more_motor_percent_throttle, less_motor_percent_throttle, 0);
     } else if (time_elapsed_this_rotation_us >= half_rotation_time + motor_off_edge_time &&
         time_elapsed_this_rotation_us <= us_per_rotation - motor_off_edge_time) {
-        // printf("LEFT MOTOR ON");
-        handle_tank(bot_state, left_y_percent, 0, 0);    
+        handle_tank(bot_state, less_motor_percent_throttle, more_motor_percent_throttle, 0);    
     }
-    printf("\n");
 }
 
 void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us) {
@@ -103,8 +101,6 @@ void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rot
 }
 
 void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) {
-    static uint8_t no_translation_state_counter = 0;
-
     // we only want to calculate RPM once per rotation
     // Accordingly, there's technically some other stuff 
     // we could avoid recalculating but it's mostly just 
@@ -135,44 +131,39 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     double motor_off_edge_time = (half_rotation_time - MOTOR_ON_PERCENT_DURATION*us_per_rotation)/2;
 
     if (is_close_enough(right_y_percent, 0, 0.125)) {
-        if (no_translation_state_counter){
-            handle_spin_forward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
-        } else {
-            handle_spin_backward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
-        }
+        // this should just fully spin in circles
+        handle_all_spin(bot_state, left_y_percent, 0, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
     } else {
-        if (right_y_percent > 0) {
-            handle_spin_forward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
-        } else {
-            handle_spin_backward(bot_state, left_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
-        }
+        // this should translate in the direction dictated by right_y_percent
+        handle_all_spin(bot_state, left_y_percent, right_y_percent, time_elapsed_this_rotation_us, us_per_rotation, half_rotation_time, motor_off_edge_time);
     }
 
-    handle_spin_led(time_elapsed_this_rotation_us, us_per_rotation, led_on_us);
+    // the led thinks it's some amount in the future because of LED_OFFSET_PERCENT
+    handle_spin_led(fmod(time_elapsed_this_rotation_us+LED_OFFSET_PERCENT*us_per_rotation, us_per_rotation), us_per_rotation, led_on_us);
 
     // if we have completed a rotation, get ready for next rotation
     if (time_elapsed_this_rotation_us >= us_per_rotation) {
         // doing more expensive calls before resetting time_elapsed_this_rotation_us
         bot_state->this_rotations_start_time_us = time_us_64();
         rpm = get_rpm(right_x_percent, bot_state->accel_offset_cm);
-
-        no_translation_state_counter = 1 - no_translation_state_counter;
     }
 }
 
 // -1..1 -> -max..max
-double rescalePercentThrottle(double percentThrottle, double max) {
-    // the if statement is a temp fix for the problem that if one stick is not quite zero but within it's zero
-    // deadzone and the other stick is used, it also supplies a nonzero throttle to the barely nonzero stick's motor
-    // please find the proper %s in the future - Cai
-    if (percentThrottle >= -0.05 && percentThrottle <= 0.05) {
+double rescalePercentThrottle(double percent_throttle, double max, bool use_deadzone) {
+    if (use_deadzone && percent_throttle >= -0.05 && percent_throttle <= 0.05) {
         return 0;
     }
-    return percentThrottle * max;
+    return percent_throttle * max;
 }
 
 // assumes all percents given are -1..1
-void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, double left_x_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) { 
+void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_state, double left_y_percent, double left_x_percent, double right_y_percent, double right_x_percent, double (*get_rpm)(double, double)) { 
+    static uint64_t last_loop = 0;
+
+    // printf("throttle_pc_state->curr_value=%lf \n",throttle_pc_state->curr_value);
+    pc_update_pc_state(throttle_pc_state, time_us_64() - last_loop);
+
     #ifdef CAN_ADJUST_ACCEL_MOUNT_RADIUS
         if (left_x_percent <= -0.25 || left_x_percent >= 0.25) {
             bot_state->accel_offset_cm = bot_state->accel_offset_cm + ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
@@ -196,18 +187,34 @@ void drive_update_bot_state(bot_state_t* bot_state, double left_y_percent, doubl
     }
 
     if(drive_is_throttle_zero()) {
+        throttle_pc_state->curr_target = 0;
+        throttle_pc_state->curr_value = 0;
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
+        last_loop = time_us_64();
         return;
     }
 
     if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
-        handle_spin(bot_state, rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE), right_y_percent, right_x_percent, get_rpm);
+        throttle_pc_state->curr_target = rescalePercentThrottle(left_y_percent, MELTY_MAX_THROTTLE, false);
+        handle_spin(
+            bot_state, 
+            throttle_pc_state->curr_value, 
+            rescalePercentThrottle(right_y_percent, MELTY_MAX_TRANSLATION_AGGRESSION, true), 
+            right_x_percent, 
+            get_rpm
+        );
+        last_loop = time_us_64();
         return;
     } 
     
     if (donut_get_curr_drive_mode() == DRIVE_MODE_TANK) {
         led_repeat_blink(3);
-        handle_tank(bot_state, rescalePercentThrottle(left_y_percent, TANK_DRIVE_MAX_THROTTLE), -rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE), right_x_percent);
+        handle_one_stick_tank(
+            bot_state, 
+            rescalePercentThrottle(right_y_percent, TANK_DRIVE_MAX_THROTTLE, true), 
+            rescalePercentThrottle(right_x_percent, TANK_DRIVE_TURNING_MAX_THROTTLE, true)
+        );
+        last_loop = time_us_64();
         return;
     }
 }
