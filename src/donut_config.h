@@ -40,7 +40,7 @@ uint8_t donut_get_curr_drive_mode();
 #define HEADING_LIGHT_STRIP_PIN2 7
 
 // 3lb
-// #define HEADING_LIGHT_STRIP_PIN2 20
+#define HEADING_LIGHT_STRIP_PIN2 20
 
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
@@ -51,13 +51,14 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------DONUT DRIVE SETTINGS---------
 
-// #define USE_3LB_ACCEL_SETUP
+#define USE_3LB_ACCEL_SETUP
 
-#define THROTTLE_PC_P 0.5
+#define THROTTLE_PC_P 1 // was 0.5 for working translation test with 1lb on 4/29/26 - Cai
 
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
 
+// Doesn't do anything on the 3lb because of the dual accel math - Cai
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
 
 #define ACCEL_ZERO_G_OFFSET 2
