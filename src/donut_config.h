@@ -53,7 +53,7 @@ uint8_t donut_get_curr_drive_mode();
 
 // #define USE_3LB_ACCEL_SETUP
 
-#define THROTTLE_PC_P 3 // doubled from 1.5
+#define THROTTLE_PC_P 5 // increased from 3
 
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
@@ -74,7 +74,7 @@ uint8_t donut_get_curr_drive_mode();
 // the throttle sent to each motor can be during a half-rotation
 // 1 = very different
 // 0 = can't differ at all
-#define MELTY_MAX_TRANSLATION_AGGRESSION 0.75  
+#define MELTY_MAX_TRANSLATION_AGGRESSION 0.65  
 #define MELTY_MAX_THROTTLE 1
 
 #define TANK_DRIVE_MAX_THROTTLE 0.125
