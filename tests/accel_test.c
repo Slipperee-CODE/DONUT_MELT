@@ -24,14 +24,14 @@ int main() {
 
     while (1) {
         double* accel_1_data = accelerometer_get_all_axis(&accel_1);
-        printf("accel_1 X axis: %lf \n", accel_1_data[0]-ACCEL_ZERO_G_OFFSET);
-        printf("accel_1 Y axis: %lf \n", accel_1_data[1]-ACCEL_ZERO_G_OFFSET);
-        printf("accel_1 Z axis: %lf \n\n", accel_1_data[2]-ACCEL_ZERO_G_OFFSET);
+        printf("accel_1 X axis: %lf \n", accel_1_data[0]-ACCEL_1_X_OFFSET);
+        printf("accel_1 Y axis: %lf \n", accel_1_data[1]-ACCEL_1_Y_OFFSET);
+        printf("accel_1 Z axis: %lf \n\n", accel_1_data[2]);
 
         double* accel_2_data = accelerometer_get_all_axis(&accel_1);
-        printf("accel_2 X axis: %lf \n", accel_2_data[0]-ACCEL_ZERO_G_OFFSET);
-        printf("accel_2 Y axis: %lf \n", accel_2_data[1]-ACCEL_ZERO_G_OFFSET);
-        printf("accel_2 Z axis: %lf \n\n", accel_2_data[2]-ACCEL_ZERO_G_OFFSET);
+        printf("accel_2 X axis: %lf \n", accel_2_data[0]-ACCEL_2_X_OFFSET);
+        printf("accel_2 Y axis: %lf \n", accel_2_data[1]-ACCEL_2_Y_OFFSET);
+        printf("accel_2 Z axis: %lf \n\n", accel_2_data[2]);
     }
     
     return 0;

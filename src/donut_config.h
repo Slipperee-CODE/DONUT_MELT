@@ -54,11 +54,11 @@ uint8_t donut_get_curr_drive_mode();
 #define USE_3LB_ACCEL_SETUP
 #define RPM_MULTIPLIER_MAX 2
 
-#define ACCEL_1_X_OFFSET 0.0
-#define ACCEL_1_Y_OFFSET 0.0
+#define ACCEL_1_X_OFFSET -7
+#define ACCEL_1_Y_OFFSET -5
 
-#define ACCEL_2_X_OFFSET 0.0
-#define ACCEL_2_Y_OFFSET 0.0
+#define ACCEL_2_X_OFFSET -7
+#define ACCEL_2_Y_OFFSET -5
 
 
 #define THROTTLE_PC_P 1 // was 0.5 for working translation test with 1lb on 4/29/26 - Cai
