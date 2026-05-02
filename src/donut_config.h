@@ -53,7 +53,7 @@ uint8_t donut_get_curr_drive_mode();
 
 // #define USE_3LB_ACCEL_SETUP
 
-#define THROTTLE_PC_P 0.5
+#define THROTTLE_PC_P 0.85
 
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
