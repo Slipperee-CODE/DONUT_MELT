@@ -37,7 +37,7 @@ uint8_t donut_get_curr_drive_mode();
 #define HEADING_LIGHT_STRIP_PIN	25
 
 // 1lb
-#define HEADING_LIGHT_STRIP_PIN2 7
+// #define HEADING_LIGHT_STRIP_PIN2 7
 
 // 3lb
 #define HEADING_LIGHT_STRIP_PIN2 20
@@ -52,6 +52,14 @@ uint8_t donut_get_curr_drive_mode();
 //----------DONUT DRIVE SETTINGS---------
 
 #define USE_3LB_ACCEL_SETUP
+#define RPM_MULTIPLIER_MAX 2
+
+#define ACCEL_1_X_OFFSET 0.0
+#define ACCEL_1_Y_OFFSET 0.0
+
+#define ACCEL_2_X_OFFSET 0.0
+#define ACCEL_2_Y_OFFSET 0.0
+
 
 #define THROTTLE_PC_P 1 // was 0.5 for working translation test with 1lb on 4/29/26 - Cai
 
@@ -61,6 +69,7 @@ uint8_t donut_get_curr_drive_mode();
 // Doesn't do anything on the 3lb because of the dual accel math - Cai
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
 
+// for 1lb
 #define ACCEL_ZERO_G_OFFSET 2
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
 
