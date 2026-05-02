@@ -53,12 +53,12 @@ uint8_t donut_get_curr_drive_mode();
 
 // #define USE_3LB_ACCEL_SETUP
 
-#define THROTTLE_PC_P 0.85
+#define THROTTLE_PC_P 3 // doubled from 1.5
 
 #define CAN_ADJUST_ACCEL_MOUNT_RADIUS
 #define ACCEL_OFFSET_SENSITIVITY 0.0001
 
-#define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
+#define ACCEL_MOUNT_RADIUS_CM 2.4 - 0.2081 // 0.3559 - 0.564 is manually measured offset - Cai
 
 #define ACCEL_ZERO_G_OFFSET 2
 #define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
