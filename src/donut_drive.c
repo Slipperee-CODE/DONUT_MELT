@@ -12,8 +12,8 @@ uint8_t drive_is_throttle_zero() {
     }
 }
 
-uint8_t is_close_enough(double num1, double num2, double tolerance) {
-    return fabs(num1 - num2) <= tolerance;
+uint8_t is_close_enough(double num, double target, double tolerance) {
+    return fabs(num - target) <= tolerance;
 }
 
 // goes from rpm -> microseconds per rotation
