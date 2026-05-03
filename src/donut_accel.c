@@ -96,11 +96,8 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
     Accel2Data.y = Accel2RawData[1];
 
     // subtract the offsets 
-    // Replace this with actual code when accelerometer struct/storage is set up.
-    double xoffset = 0.0;
-    double yoffset = 0.0;
-    Vector2D Accel1Offsets = {xoffset, yoffset};
-    Vector2D Accel2Offsets = {xoffset, yoffset};
+    Vector2D Accel1Offsets = {ACCEL_1_X_OFFSET, ACCEL_1_Y_OFFSET};
+    Vector2D Accel2Offsets = {ACCEL_2_X_OFFSET, ACCEL_2_Y_OFFSET};
 
     Accel1Data = vec_subtract(Accel1Data, Accel1Offsets);
     Accel2Data = vec_subtract(Accel2Data, Accel2Offsets);
@@ -125,5 +122,8 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
     // 89445f converts from Gs to RPM using gravity and angular acceleration.
     double rpm = sqrtf((mag_delta_A / mag_delta_Pos) * 89445.0f); // Gemini is telling me to make everything floats for optimization purposes
 
+    // allows manual adjustment of the perceived rpm with left_stick_x if need be  
+    // if something's wrong check this first
+    // return RPM_MULTIPLIER_MAX * fabs(accel_offset_cm+1) * rpm;
     return rpm;
 }
