@@ -56,7 +56,7 @@ DONUT_MELT depends on three libraries, included in the `lib/` directory:
 
 **`lib/pico_crsf`** - [link](https://github.com/britannio/pico_crsf) - CRSF (Crossfire Serial Protocol) receiver library for the Pico. Decodes the CRSF serial stream from a CRSF-compatible RC receiver.
 
-**`lib/pico_H3LIS331DL`** - Driver library for the H3LIS331DL high-g accelerometer over I2C.
+**`lib/pico_H3LIS331DL`** - [link](https://github.com/Slipperee-CODE/pico_H3LIS331DL) - Driver library for the H3LIS331DL high-g accelerometer over I2C.
 
 ---
 
