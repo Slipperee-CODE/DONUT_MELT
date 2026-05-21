@@ -11,6 +11,13 @@ uint8_t donut_is_killswitch_active();
 
 uint8_t donut_get_curr_drive_mode();
 
+//----------BOT TYPE----------
+
+#include "donut_1lb_config.h"
+// #include "donut_3lb_config.h"
+
+//----------END BOT TYPE----------
+
 
 //----------DEBUG SETTINGS----------
 
@@ -28,12 +35,6 @@ uint8_t donut_get_curr_drive_mode();
 
 //---------------LED SETTINGS---------------
 
-// Onboard Pico2 led is on pin 25
-// Our usual top led is on pin 6
-// Our usual bottom led is on pin 7
-#define HEADING_LIGHT_STRIP_PIN	25
-#define HEADING_LIGHT_STRIP_PIN2 7 
-
 #define SLOW_BLINK 500
 #define FAST_BLINK 50
 #define REPEAT_BLINK 250
@@ -41,33 +42,15 @@ uint8_t donut_get_curr_drive_mode();
 //---------------END LED SETTINGS---------------
 
 
-//----------DONUT DRIVE SETTINGS---------
-
-#define CAN_ADJUST_ACCEL_MOUNT_RADIUS
-#define ACCEL_OFFSET_SENSITIVITY 0.0001
-
-#define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
-#define ACCEL_ZERO_G_OFFSET 2
-#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
-
-#define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai
-#define MIN_TRANSLATION_RPM 400
-
-// #define LED_OFFSET_PERCENT 0.25 // I don't know what this number is for in OpenMelt - Cai
-#define MIN_LED_PERCENT_DURATION 0.25
-#define MAX_LED_PERCENT_DURATION 0.75
-
-#define TANK_DRIVE_MAX_THROTTLE 0.125
-#define MELTY_MAX_THROTTLE 0.4
-
-//----------END DONUT DRIVE SETTINGS---------
-
-
 //----------ACCELEROMETER SETTINGS----------
 
-#define ACCEL_I2C_PORT i2c0
-#define ACCEL_I2C_SDA 4
-#define ACCEL_I2C_SCL 5
+#define ACCEL_1_I2C_PORT i2c0
+#define ACCEL_1_I2C_SDA 4
+#define ACCEL_1_I2C_SCL 5
+
+#define ACCEL_2_I2C_PORT i2c1
+#define ACCEL_2_I2C_SDA 10
+#define ACCEL_2_I2C_SCL 11
 
 //----------END ACCELEROMETER SETTINGS----------
 

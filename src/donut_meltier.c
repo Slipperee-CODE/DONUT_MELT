@@ -1,23 +1,41 @@
 #include "donut_config.h"
 
-static bot_state_t bot_state;
-
-void donut_init_bot_state() {
+static bot_state_t bot_state = {
     #ifdef LIE_ABOUT_INPUT
-        bot_state.is_failsafed = 0;
-        bot_state.require_zero_throttle = 0;
+        .is_failsafed = 0,
+        .require_zero_throttle = 0,
     #else
-        bot_state.is_failsafed = 1;
-        bot_state.require_zero_throttle = 1;
+        .is_failsafed = 1,
+        .require_zero_throttle = 1,
     #endif
 
-    bot_state.this_rotations_start_time_us = -1;
+    .this_rotations_start_time_us = -1,
+    .max_rpm = 0,
+    .rpm = 0,
+    .accel_g_value = 0,
+    .accel_offset_cm = 0
+};
 
-    bot_state.max_rpm = 0;
-    bot_state.rpm = 0;
-    bot_state.accel_g_value = 0;
-    bot_state.accel_offset_cm = 0;
-}
+static pc_state_t throttle_pdc_state = {
+    .curr_target = 0,
+    .curr_value = 0,
+    .P = THROTTLE_PC_P,
+    .last_error = 0
+};
+
+static accelerometer_t accel_1 = {
+    .accelerometer_address = ACCELEROMETER_ADDRESS,
+    .i2c_port = ACCEL_1_I2C_PORT,
+    .i2c_sda = ACCEL_1_I2C_SDA,
+    .i2c_scl = ACCEL_1_I2C_SCL
+};
+
+static accelerometer_t accel_2 = {
+    .accelerometer_address = ACCELEROMETER_ADDRESS,
+    .i2c_port = ACCEL_2_I2C_PORT,
+    .i2c_sda = ACCEL_2_I2C_SDA,
+    .i2c_scl = ACCEL_2_I2C_SCL
+};
 
 #ifdef LIE_ABOUT_INPUT
     uint8_t donut_is_throttle_zero() { 
@@ -31,9 +49,13 @@ void donut_init_bot_state() {
     uint8_t donut_get_curr_drive_mode() {
         return DRIVE_MODE_MELTY;
     }
+
+    uint8_t donut_should_spin_clockwise() {
+        return 0;
+    }
 #else 
     uint8_t donut_is_throttle_zero() { 
-        return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_MIDDLEST_CHANNEL_VALUE, 300);
+        return receiver_is_channel_near_value(LEFT_JOYSTICK_Y, RECEIVER_LOWEST_CHANNEL_VALUE, 150);
     }
 
     uint8_t donut_is_killswitch_active() {
@@ -45,6 +67,14 @@ void donut_init_bot_state() {
             return DRIVE_MODE_TANK;
         }
         return DRIVE_MODE_MELTY;
+    }
+
+    // there's a chance this should be "counter_clockwise" - Cai
+    uint8_t donut_should_spin_clockwise() {
+        if (receiver_is_channel_near_value(SWITCH_B, RECEIVER_LOWEST_CHANNEL_VALUE, 50)) {
+            return 0;
+        }
+        return 1;
     }
 #endif
 
@@ -60,18 +90,12 @@ void when_flashing_motors() {
 }
 
 void init_bot_systems() {
-    stdio_init_all();
-
-    donut_init_bot_state();
-
     #ifndef LIE_ABOUT_INPUT
         receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-        accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL, &bot_state);
+        accel_init(&accel_1, &accel_2, &bot_state);
     #endif
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
-
-    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
 
     watchdog_enable(WATCH_DOG_TIMEOUT_MS, 0);
 }
@@ -94,15 +118,21 @@ void when_failsafe_on() {
 }
 
 void when_failsafe_off() {
+    int8_t direction = 1;
+    if (donut_should_spin_clockwise()) {
+        direction = -1;
+    }
+
     drive_update_bot_state(
         &bot_state, 
+        &throttle_pdc_state,
         #ifdef LIE_ABOUT_INPUT
-            0.25,
-            0.25,
-            0.25,
+            1,
+            0.0,
+            0.0,
             input_remapping(0),
         #else 
-            input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y)), 
+            direction * pow(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 3), 
             input_remapping(receiver_get_percent_for_channel(LEFT_JOYSTICK_X)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_Y)), 
             input_remapping(receiver_get_percent_for_channel(RIGHT_JOYSTICK_X)),
@@ -111,7 +141,11 @@ void when_failsafe_off() {
         #ifdef LIE_ABOUT_RPM
             get_fake_rpm
         #else
-            get_rpm
+            #ifdef USE_3LB_ACCEL_SETUP
+                get_rpm_2accel
+            #else
+                get_rpm
+            #endif
         #endif
     );
 }
@@ -134,6 +168,11 @@ void always() {
 
 #ifndef RUNNING_A_TEST
 int main() {
+    stdio_init_all();
+
+    // calling led_init() early so when_flashing_motors() can use it
+    led_init(HEADING_LIGHT_STRIP_PIN, HEADING_LIGHT_STRIP_PIN2);
+
     #ifdef FLASHING_MOTORS
         while(1){
             when_flashing_motors();

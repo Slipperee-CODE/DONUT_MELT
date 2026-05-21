@@ -19,6 +19,14 @@ typedef struct {
     double accel_offset_cm;
 } bot_state_t;
 
+typedef struct {
+    double curr_target;
+    double curr_value;
+    double P;
+    double D;
+    double last_error;
+} pc_state_t;
+
 #include "hardware/uart.h"
 #include "hardware/i2c.h"
 #include "hardware/pio.h"
@@ -33,6 +41,7 @@ typedef struct {
 #include "motor_driver.h"
 #include "receiver.h"
 
+#include "donut_pc.h"
 #include "donut_accel.h"
 #include "donut_drive.h"
 #include "donut_telemetry.h"
