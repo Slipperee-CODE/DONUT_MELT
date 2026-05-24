@@ -23,6 +23,20 @@ static pc_state_t throttle_pdc_state = {
     .last_error = 0
 };
 
+static accelerometer_t accel_1 = {
+    .accelerometer_address = ACCELEROMETER_ADDRESS,
+    .i2c_port = ACCEL_1_I2C_PORT,
+    .i2c_sda = ACCEL_1_I2C_SDA,
+    .i2c_scl = ACCEL_1_I2C_SCL
+};
+
+static accelerometer_t accel_2 = {
+    .accelerometer_address = ACCELEROMETER_ADDRESS,
+    .i2c_port = ACCEL_2_I2C_PORT,
+    .i2c_sda = ACCEL_2_I2C_SDA,
+    .i2c_scl = ACCEL_2_I2C_SCL
+};
+
 #ifdef LIE_ABOUT_INPUT
     uint8_t donut_is_throttle_zero() { 
         return 0;
@@ -78,7 +92,7 @@ void when_flashing_motors() {
 void init_bot_systems() {
     #ifndef LIE_ABOUT_INPUT
         receiver_init(RECEIVER_UART_ID, RECEIVER_UART_TX_PIN, RECEIVER_UART_RX_PIN, 70, 105, &bot_state);
-        accel_init(ACCEL_I2C_PORT, ACCEL_I2C_SDA, ACCEL_I2C_SCL, &bot_state);
+        accel_init(&accel_1, &accel_2, &bot_state);
     #endif
     
     motor_init_all(DSHOT_SPEED, MOTOR1_PIN, MOTOR1_PIO, MOTOR2_PIN, MOTOR2_PIO, &bot_state);
@@ -113,9 +127,9 @@ void when_failsafe_off() {
         &bot_state, 
         &throttle_pdc_state,
         #ifdef LIE_ABOUT_INPUT
-            0.25,
-            0.25,
-            0.25,
+            1,
+            0.0,
+            0.0,
             input_remapping(0),
         #else 
             direction * pow(receiver_get_percent_for_channel(LEFT_JOYSTICK_Y), 3), 
@@ -128,7 +142,7 @@ void when_failsafe_off() {
             get_fake_rpm
         #else
             #ifdef USE_3LB_ACCEL_SETUP
-                get_rpm_diag_accel
+                get_rpm_2accel
             #else
                 get_rpm
             #endif
