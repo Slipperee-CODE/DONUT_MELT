@@ -18,6 +18,7 @@
 
 #define USE_3LB_ACCEL_SETUP
 #define RPM_MULTIPLIER_MAX 2
+#define ACCEL_MOUNT_RADIUS_CM 0 // only exists to hold current rpm_multiplier
 
 #define ACCEL_1_X_OFFSET -7
 #define ACCEL_1_Y_OFFSET -5
@@ -52,3 +53,6 @@
 
 
 //----------END DONUT DRIVE SETTINGS---------
+
+
+#endif

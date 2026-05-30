@@ -13,8 +13,8 @@ uint8_t donut_get_curr_drive_mode();
 
 //----------BOT TYPE----------
 
-#include "donut_1lb_config.h"
-// #include "donut_3lb_config.h"
+// #include "donut_1lb_config.h"
+#include "donut_3lb_config.h"
 
 //----------END BOT TYPE----------
 
