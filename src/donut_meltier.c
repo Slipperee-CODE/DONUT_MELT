@@ -16,7 +16,7 @@ static bot_state_t bot_state = {
     .accel_offset_cm = 0
 };
 
-static pc_state_t throttle_pdc_state = {
+static pc_state_t throttle_pc_state = {
     .curr_target = 0,
     .curr_value = 0,
     .P = THROTTLE_PC_P,
@@ -125,7 +125,7 @@ void when_failsafe_off() {
 
     drive_update_bot_state(
         &bot_state, 
-        &throttle_pdc_state,
+        &throttle_pc_state,
         #ifdef LIE_ABOUT_INPUT
             1,
             0.0,
