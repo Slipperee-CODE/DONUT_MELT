@@ -78,7 +78,7 @@ The VS Code Pico extension is also supported. The `.vscode/` directory contains 
 
 #### Tests
 
-A set of standalone test executables is included in the `tests/` directory and listed (commented out) in `CMakeLists.txt`. To run a specific test, uncomment the relevant `add_executable` line and comment out the main executable. Tests cover:
+A set of standalone test executables are included in the `tests/` directory and listed (commented out) in `CMakeLists.txt`. To run a specific test, uncomment the relevant `add_executable` line and comment out the main executable. Tests cover:
 
 - Basic LED blink
 - Accelerometer readout
