@@ -90,7 +90,7 @@ A set of standalone test executables are included in the `tests/` directory and 
 
 ## Telemetry / Debugging
 
-With the motor battery **disconnected**, connect the Pico 2 via USB. While the throttle channel is at 0%, DONUT_MELT streams diagnostic data over USB serial. Open any serial terminal to view RC channel values, accelerometer G readings, calculated RPM, and active config parameters.
+With the motor battery **disconnected**, connect the Pico 2 via USB. If activated in the donut_config.h file, DONUT_MELT streams diagnostic data over USB serial. Open any serial terminal to view RC channel values, accelerometer G readings, calculated RPM, and active config parameters.
 
 > ⚠️ **Warning:** Do not connect USB while the motor battery is connected unless you are certain the robot cannot spin up. Always verify fail-safe is configured on your RC transmitter and receiver.
 
