@@ -22,10 +22,11 @@
 // left_stick_x "perma" adjusts the rpm say the accelerometer reading is 75% 
 // of what it should be you could bump it up to use 1.25 times what it is reading 
 
-// RPM_MULTIPLIER_MAX limits how far that adjustment can go 
+// RPM_MULTIPLIERs limits how far that adjustment can go 
 // (i.e. can pretend to use a max of 2x the reading or 3x the reading, etc.) 
 
-#define RPM_MULTIPLIER_MAX 2
+#define RPM_MULTIPLIER_UPPER_LIMIT 2
+#define RPM_MULTIPLIER_LOWER_LIMIT 0.25
 
 #define ACCEL_MOUNT_RADIUS_CM 0 // only exists to hold current rpm_multiplier
 

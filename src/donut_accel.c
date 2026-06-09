@@ -136,7 +136,7 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
 
         // they also allows for manipulation of the heading 
         // direction by lying about the current rpm using right_stick_x
-        double adjusted_rpm = RPM_MULTIPLIER_MAX * fabs(accel_offset_cm+1) * rpm;
+        double adjusted_rpm = fmax(RPM_MULTIPLIER_LOWER_LIMIT, fmin(fmax(0, accel_offset_cm+1), RPM_MULTIPLIER_UPPER_LIMIT)) * rpm; 
         return adjusted_rpm + adjusted_rpm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR;
     #else
         return -1;
