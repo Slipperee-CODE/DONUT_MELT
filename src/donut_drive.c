@@ -124,7 +124,6 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     double us_per_rotation = rpm_to_upr(rpm);
     double time_elapsed_this_rotation_us = time_us_64() - bot_state->this_rotations_start_time_us;
 
-    // probably should just make it so that reversing spin direction is another button altogether, not just backwards throttle, oops - Cai
     double led_on_us = fmin(MAX_LED_PERCENT_DURATION, fmax(MIN_LED_PERCENT_DURATION, fabs(left_y_percent))) * us_per_rotation;
 
     double half_rotation_time = us_per_rotation/2;

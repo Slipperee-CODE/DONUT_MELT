@@ -129,12 +129,15 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
         float mag_delta_Pos = vec_magnitude(delta_pos);
         
         // 89445f converts from Gs to RPM using gravity and angular acceleration.
-        double rpm = sqrtf((mag_delta_A / mag_delta_Pos) * 89445.0f); // Gemini is telling me to make everything floats for optimization purposes
+        double rpm = sqrtf((mag_delta_A / mag_delta_Pos) * 89445.0f); // Gemini is telling me to make everything floats for optimization purposes - Teddy H.
 
-        // allows manual adjustment of the perceived rpm with left_stick_x if need be  
-        // if something's wrong check this first
-        // return RPM_MULTIPLIER_MAX * fabs(accel_offset_cm+1) * rpm;
-        return rpm;
+        // the lines below allows manual adjustment of
+        // the perceived rpm with left_stick_x if need be  
+
+        // they also allows for manipulation of the heading 
+        // direction by lying about the current rpm using right_stick_x
+        double adjusted_rpm = RPM_MULTIPLIER_MAX * fabs(accel_offset_cm+1) * rpm;
+        return adjusted_rpm + adjusted_rpm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR;
     #else
         return -1;
     #endif
