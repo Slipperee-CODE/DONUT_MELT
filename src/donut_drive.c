@@ -88,7 +88,7 @@ void handle_all_spin(bot_state_t* bot_state, double left_y_percent, double right
     }
 }
 
-void handle_spin_led(uint64_t led_offset_us, uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us) {
+void handle_spin_led(uint64_t time_elapsed_this_rotation_us, uint64_t us_per_rotation, uint64_t led_on_us) {
     // time_elapsed_this_rotation_us == 0 is "forward" for the sake of spin led purposes
 
     // if facing left side or right side of 0 within led_on_us/2 us
@@ -140,9 +140,12 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     // the heading led triggers at an offset time from the "0" point because of LED_OFFSET_PERCENT 
     // if the robot is spinning in reverse then the offset time needs to change to time_per_rotation - led_offset
     // this makes the led blink at the "end" of a rotation as opposed to the start
+
+    // desmos graph with the math: https://www.desmos.com/calculator/cpiiyqxjgb
+    
     float led_offset_us = LED_OFFSET_PERCENT*us_per_rotation;
     if (left_y_percent < 0) {
-        led_offset_us = us_per_rotation-LED_OFFSET_PERCENT*us_per_rotation;
+        led_offset_us = us_per_rotation-led_offset_us;
     }
     handle_spin_led(fmod(time_elapsed_this_rotation_us+led_offset_us, us_per_rotation), us_per_rotation, led_on_us);
 
