@@ -29,7 +29,7 @@ double get_rpm(double right_x_percent, double accel_offset_cm) {
         // A smaller software RPM increases the calculated us_per_rotation, 
         // causing the LED to trigger later in the physical spin (shifting it left).
         double offset_accel_mount_radius_cm = ACCEL_MOUNT_RADIUS_CM + accel_offset_cm;
-        double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+        double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * HEADING_CONTROL_SENSITIVITY);
 
         double rpm = fabs(raw_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
         rpm = rpm / effective_radius_in_cm;
@@ -60,7 +60,7 @@ double get_fake_rpm(double right_x_percent, double accel_offset_cm) {
         // A smaller software RPM increases the calculated us_per_rotation, 
         // causing the LED to trigger later in the physical spin (shifting it left).
         double offset_accel_mount_radius_cm = ACCEL_MOUNT_RADIUS_CM + accel_offset_cm;
-        double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR);
+        double effective_radius_in_cm = offset_accel_mount_radius_cm + (offset_accel_mount_radius_cm * -right_x_percent * HEADING_CONTROL_SENSITIVITY);
 
         double rpm = fabs(raw_gs - ACCEL_ZERO_G_OFFSET) * 89445.0f;
         rpm = rpm / effective_radius_in_cm;
@@ -137,7 +137,7 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
         // they also allows for manipulation of the heading 
         // direction by lying about the current rpm using right_stick_x
         double adjusted_rpm = fmax(RPM_MULTIPLIER_LOWER_LIMIT, fmin(fmax(0, accel_offset_cm+1), RPM_MULTIPLIER_UPPER_LIMIT)) * rpm; 
-        return adjusted_rpm + adjusted_rpm * -right_x_percent * LEFT_RIGHT_HEADING_CONTROL_DIVISOR;
+        return adjusted_rpm + adjusted_rpm * -right_x_percent * HEADING_CONTROL_SENSITIVITY;
     #else
         return -1;
     #endif

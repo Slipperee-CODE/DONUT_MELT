@@ -25,7 +25,7 @@
 #define ACCEL_MOUNT_RADIUS_CM 2.4 + 0.3559 // 0.3559 is manually measured offset - Cai
 
 #define ACCEL_ZERO_G_OFFSET 2
-#define LEFT_RIGHT_HEADING_CONTROL_DIVISOR 0.1
+#define HEADING_CONTROL_SENSITIVITY 0.1
 
 #define MOTOR_ON_PERCENT_DURATION 0.5 // This might technically be a half of a half - Cai (I still have no idea what this comment means - also Cai)
 #define MIN_TRANSLATION_RPM 400
