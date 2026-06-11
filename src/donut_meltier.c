@@ -13,7 +13,12 @@ static bot_state_t bot_state = {
     .max_rpm = 0,
     .rpm = 0,
     .accel_g_value = 0,
-    .accel_offset_cm = 0
+    
+    #ifdef DONUT_3LB_CONFIG
+        .accel_offset_cm = 1
+    #else 
+        .accel_offset_cm = 0
+    #endif
 };
 
 static pc_state_t throttle_pc_state = {

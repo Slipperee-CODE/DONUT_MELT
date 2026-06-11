@@ -16,19 +16,17 @@
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define USE_3LB_ACCEL_SETUP
-
-// Some notes about RPM_MULTIPLIER_MAX and how it works for the 3lb:
+// Some notes about RPM_MULTIPLIER LIMITS and how they works for the 3lb:
 // left_stick_x "perma" adjusts the rpm say the accelerometer reading is 75% 
 // of what it should be you could bump it up to use 1.25 times what it is reading 
 
-// RPM_MULTIPLIERs limits how far that adjustment can go 
-// (i.e. can pretend to use a max of 2x the reading or 3x the reading, etc.) 
+// RPM_MULTIPLIER LIMITS limit how far that adjustment can go 
+// (i.e. can pretend to use a max of 2x the reading, or a min of .25x the reading, etc.) 
 
 #define RPM_MULTIPLIER_UPPER_LIMIT 2
 #define RPM_MULTIPLIER_LOWER_LIMIT 0.25
 
-#define ACCEL_MOUNT_RADIUS_CM 0 // only exists to hold current rpm_multiplier
+#define ACCEL_MOUNT_RADIUS_CM 0 // this being 0 prevents accel_offset from going negative in 3lb mode
 
 // this value will need to be tuned to a good speed - Cai
 #define HEADING_CONTROL_SENSITIVITY 0.01 // tunes how fast the heading led moves left or right

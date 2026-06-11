@@ -174,9 +174,10 @@ void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_stat
 
     #ifdef CAN_ADJUST_ACCEL_MOUNT_RADIUS
         if (left_x_percent <= -0.25 || left_x_percent >= 0.25) {
-            bot_state->accel_offset_cm = bot_state->accel_offset_cm + ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
+            float delta = ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
+            bot_state->accel_offset_cm += delta;
             if (ACCEL_MOUNT_RADIUS_CM + bot_state->accel_offset_cm <= 0) {
-                bot_state->accel_offset_cm = bot_state->accel_offset_cm - ACCEL_OFFSET_SENSITIVITY*(left_x_percent/fabs(left_x_percent));
+                bot_state->accel_offset_cm -= delta;
             }
         }
     #endif

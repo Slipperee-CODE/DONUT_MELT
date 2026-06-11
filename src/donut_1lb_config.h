@@ -15,7 +15,6 @@
 
 //----------DONUT DRIVE SETTINGS---------
 
-#define USE_1LB_ACCEL_SETUP
 // was 0.5 for working translation test with 1lb on 4/29/26 - Cai
 #define THROTTLE_PC_P 1 
 

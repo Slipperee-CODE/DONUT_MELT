@@ -16,7 +16,7 @@ void accel_init(accelerometer_t* user_accel_1, accelerometer_t* user_accel_2, bo
 // gets rpm
 // lies about rpm depending on what right_x_percent is and what LEFT_RIGHT_HEADING_CONTROL_DIVISOR is to adjust direction
 double get_rpm(double right_x_percent, double accel_offset_cm) {
-    #ifdef USE_1LB_ACCEL_SETUP
+    #ifdef DONUT_1LB_CONFIG
         double raw_gs = accelerometer_get_y(accel_1);
 
         // attempts to store 2 decimal places worth of raw_gs into a uint16_t
@@ -47,7 +47,7 @@ double get_rpm(double right_x_percent, double accel_offset_cm) {
 // }
 
 double get_fake_rpm(double right_x_percent, double accel_offset_cm) {
-    #ifdef USE_1LB_ACCEL_SETUP
+    #ifdef DONUT_1LB_CONFIG
         double raw_gs = 200;
 
         // attempts to store 2 decimal places worth of raw_gs into a uint16_t
@@ -86,11 +86,8 @@ float vec_magnitude(Vector2D v) {
     return sqrtf((v.x * v.x) + (v.y * v.y));
 }
 
-// this function doesn't actually do anything with accel_offset_cm, it's just so the code
-// doesn't error because I use a function pointer to a double get_rpm(double, double) 
-// and the other get_rpm functions follow this pattern - Cai
 double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
-    #ifdef USE_3LB_ACCEL_SETUP
+    #ifdef DONUT_3LB_CONFIG
         // X,Y,Z of all data
         double* Accel1RawData = accelerometer_get_all_axis(accel_1);
         double* Accel2RawData = accelerometer_get_all_axis(accel_2);
@@ -136,8 +133,9 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
 
         // they also allows for manipulation of the heading 
         // direction by lying about the current rpm using right_stick_x
-        double adjusted_rpm = fmax(RPM_MULTIPLIER_LOWER_LIMIT, fmin(fmax(0, accel_offset_cm+1), RPM_MULTIPLIER_UPPER_LIMIT)) * rpm; 
-        return adjusted_rpm + adjusted_rpm * -right_x_percent * HEADING_CONTROL_SENSITIVITY;
+        // accel_offset_cm starts at 1 in 3lb mode
+        double adjusted_rpm = fmax(RPM_MULTIPLIER_LOWER_LIMIT, fmin(fmax(0, accel_offset_cm), RPM_MULTIPLIER_UPPER_LIMIT)) * rpm; 
+        return adjusted_rpm + adjusted_rpm * right_x_percent * HEADING_CONTROL_SENSITIVITY;
     #else
         return -1;
     #endif
