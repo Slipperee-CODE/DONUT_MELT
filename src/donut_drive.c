@@ -138,8 +138,10 @@ void handle_spin(bot_state_t* bot_state, double left_y_percent, double right_y_p
     }
 
     // the heading led triggers at an offset time from the "0" point because of LED_OFFSET_PERCENT 
-    // if the robot is spinning in reverse then the offset time needs to change to time_per_rotation - led_offset
-    // this makes the led blink at the "end" of a rotation as opposed to the start
+    // if the robot is spinning in reverse then the offset time needs to change to us_per_rotation - led_offset_us
+
+    // this makes the led blink at the "end" of a rotation as opposed to the "start" 
+    // The above line assumes that LED_OFFSET_PERCENT < 0.5, (it still works if it is > 0.5 tho because modulo) 
 
     // desmos graph with the math: https://www.desmos.com/calculator/cpiiyqxjgb
     
