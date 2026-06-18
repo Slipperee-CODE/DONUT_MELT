@@ -41,7 +41,6 @@ uint16_t percentThrottleToThrottleCommand(double percent_throttle) {
 }
 
 void handle_idle(bot_state_t* bot_state, double left_y_percent, double right_y_percent, double right_x_percent) {
-    led_repeat_blink(5);
     motor_stop_all();
 }
 
@@ -198,6 +197,12 @@ void drive_update_bot_state(bot_state_t* bot_state, pc_state_t* throttle_pc_stat
     }
 
     if(drive_is_throttle_zero()) {
+        if (donut_get_curr_drive_mode() == DRIVE_MODE_MELTY) {
+            led_repeat_blink(4);
+        } else {
+            led_repeat_blink(5);
+        }
+
         throttle_pc_state->curr_target = 0;
         throttle_pc_state->curr_value = 0;
         handle_idle(bot_state, left_y_percent, right_y_percent, right_x_percent);
