@@ -146,7 +146,7 @@ void when_failsafe_off() {
         #ifdef LIE_ABOUT_RPM
             get_fake_rpm
         #else
-            #ifdef USE_3LB_ACCEL_SETUP
+            #ifdef DONUT_3LB_CONFIG
                 get_rpm_2accel
             #else
                 get_rpm
