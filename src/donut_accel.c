@@ -110,11 +110,11 @@ double get_rpm_2accel(double right_x_percent, double accel_offset_cm) {
 
 
         // Position vectors of the accelerometers (in cm)
-        Accel1Position.x = 1.0 * 1.0/sqrtf(2.0);
-        Accel1Position.y = 1.0 * 1.0/sqrtf(2.0);
+        Accel1Position.x = 1.025 * 1.0/sqrtf(2.0);
+        Accel1Position.y = 1.025 * 1.0/sqrtf(2.0);
 
-        Accel2Position.x = -1.0 * 1.0/sqrtf(2.0);
-        Accel2Position.y = -1.0 * 1.0/sqrtf(2.0);
+        Accel2Position.x = -1.025 * 1.0/sqrtf(2.0);
+        Accel2Position.y = -1.025 * 1.0/sqrtf(2.0);
 
 
         // omega = sqrt [ ||(a1 - a2)|| / ||(r2 - r1)|| ]
