@@ -114,7 +114,12 @@ void when_failsafe_on() {
     bot_state.rpm = 0;
     bot_state.max_rpm = 0;
     bot_state.accel_g_value = 0;
-    
+    #ifdef DONUT_3LB_CONFIG
+        bot_state.accel_offset_cm = 1;
+    #else
+        bot_state.accel_offset_cm = 0;
+    #endif
+
     if (bot_state.is_failsafed == 0 && donut_is_throttle_zero()){
         bot_state.require_zero_throttle = 0;
     }
