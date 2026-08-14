@@ -1,4 +1,6 @@
-pub trait Accel {
+use std::fmt;
+
+pub trait Accel: fmt::Debug {
     fn get_all_gs(&self) -> (f32, f32, f32);
 
     fn get_x_gs(&self) -> f32 {
@@ -29,7 +31,7 @@ impl Accel for MeltyAccel {
     }
 }
 
-pub trait AccelHandler {
+pub trait AccelHandler: fmt::Debug {
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32;
     fn get_raw_rpm(&self) -> f32;
 }

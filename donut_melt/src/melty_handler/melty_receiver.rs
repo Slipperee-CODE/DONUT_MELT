@@ -1,3 +1,5 @@
+use std::fmt;
+
 #[derive(Debug)]
 pub enum Channel {
     RIGHT_X,
@@ -22,10 +24,10 @@ impl Channel {
 #[derive(Debug)]
 pub struct TelemetryPacket(u16, u16, u32, u8);
 
-pub trait Receiver {
+pub trait Receiver: fmt::Debug {
     fn get_all_channels(&self) -> &[u32; 16];
-    fn get_channel(channel: Channel) -> u32;
-    fn send_telemetry(telemetry_packet: TelemetryPacket);
+    fn get_channel(&self, channel: Channel) -> u32;
+    fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
 
 #[derive(Debug)]
@@ -42,11 +44,11 @@ impl Receiver for MeltyReceiver {
         todo!();
     }
 
-    fn get_channel(channel: Channel) -> u32 {
+    fn get_channel(&self, channel: Channel) -> u32 {
         todo!();
     }
 
-    fn send_telemetry(telemetry_packet: TelemetryPacket) {
+    fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {
         todo!();
     }
 }
@@ -64,12 +66,37 @@ impl SwitchState {
     const LOW_VALUE: u32 = 1;
 }
 
-pub trait ReceiverHandler {
+pub trait ReceiverHandler: fmt::Debug {
     const EPSILON: u32;
 
     fn is_close(a: u32, b:u32) -> bool {
-        (a-b).abs() < Self::EPSILON
+        (((a as i64) - (b as i64)).abs() as u32) < Self::EPSILON
     }
+
+    fn get_channel_as_switch(&self, channel: Channel) -> SwitchState;
+
+    fn is_throttle_0(&self) -> bool;
+
+    fn is_kill_switch_on(&self) -> bool;
+
+    fn mode_switch(&self) -> SwitchState;
+
+    fn spin_switch(&self) -> SwitchState;
+}
+
+#[derive(Debug)]
+pub struct MeltyReceiverHandler<R: Receiver> {
+    receiver: R,
+}
+
+impl<R: Receiver> MeltyReceiverHandler<R> {
+    fn new() -> Self { 
+        todo!();
+    }
+}
+
+impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
+    const EPSILON: u32 = 100;
 
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState {
         let switch_value: u32 = self.receiver.get_channel(channel);
@@ -91,25 +118,10 @@ pub trait ReceiverHandler {
     }
 
     fn mode_switch(&self) -> SwitchState {
-        self.get_channel_as_switch(SwitchState::MODE_SWITCH)
+        self.get_channel_as_switch(Channel::MODE_SWITCH)
     }
 
     fn spin_switch(&self) -> SwitchState {
-        self.get_channel_as_switch(SwitchState::SPIN_SWITCH)
+        self.get_channel_as_switch(Channel::SPIN_SWITCH)
     }
-}
-
-pub struct MeltyReceiverHandler<R: Receiver> {
-    receiver: R,
-}
-
-#[derive(Debug)]
-impl<R: Receiver> MeltyReceiverHandler<R> {
-    fn new() -> Self { 
-        todo!();
-    }
-}
-
-impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
-    const EPSILON: u32 = 100;
 }

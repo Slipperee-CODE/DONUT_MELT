@@ -1,4 +1,6 @@
-pub trait LedHandler {
+use std::fmt;
+
+pub trait LedHandler: fmt::Debug {
     fn set_repeats(&mut self, repeats: u8);
 
     fn blink(&mut self);
