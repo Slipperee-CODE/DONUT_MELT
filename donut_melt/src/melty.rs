@@ -134,24 +134,49 @@ impl<A: Accel> AccelHandler for BeetleAccelHandler<A> {
 }
 
 trait LedHandler {
-    fn blink(&self, repeats: u8);
+    fn set_repeats(&mut self, repeats: u8);
+
+    fn blink(&mut self);
 }
 
 struct SingleLedHandler {
     led_pin: u8,
     time_btwn_blinks: f32,
     time_btwn_repeats: f32,
+    repeats: u8,
+    toggles: u16,
 }
 
 impl SingleLedHandler {
-    fn new(led_pin: u8, time_btwn_blinks: f32, time_btwn_repeats: f32) -> Self {
-        Self { led_pin, time_btwn_blinks, time_btwn_repeats }    
+    fn new(led_pin: u8, time_btwn_blinks: f32, time_btwn_repeats: f32, repeats: u8) -> Self {
+        Self { led_pin, time_btwn_blinks, time_btwn_repeats, repeats, toggles: 0 }    
     }
 }
 
 impl LedHandler for SingleLedHandler {
-    fn blink(&self, repeats: u8) {
-        todo!();
+    fn set_repeats(&mut self, repeats: u8) {
+        self.repeats = repeats;
+        self.toggles = 1;
+    }
+
+    // make this function async and wait between blinks
+    // probably run receiver packet-receiving/sending, motor command-sending, and LED blinking all
+    // on a concurrent thread
+    fn blink(&mut self) {
+        loop {
+            if self.toggles > self.repeats as u16 * 2 {
+                self.toggles = 1;
+                // long wait
+            }
+
+            if self.toggles == 1 {
+                // set LED off 
+            } else {
+                // toggle LED state
+            }
+            // toggles += 1
+            // short wait
+        }
     }
 }
 
