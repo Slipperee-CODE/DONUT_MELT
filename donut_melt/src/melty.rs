@@ -160,8 +160,8 @@ impl LedHandler for SingleLedHandler {
     }
 
     // make this function async and wait between blinks
-    // probably run receiver packet-receiving/sending, motor command-sending, and LED blinking all
-    // on a concurrent thread
+    // probably run receiver packet-receiving/sending, motor command-sending, LED blinking, and accel reading all
+    // on a concurrent thread (or maybe split some into main thread)
     fn blink(&mut self) {
         loop {
             if self.toggles > self.repeats as u16 * 2 {
