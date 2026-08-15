@@ -7,21 +7,21 @@ pub enum Mode {
 
 #[derive(Debug)]
 pub struct Controller {
-    mode: Mode,
-    left_x: f32,
-    left_y: f32,
-    right_x: f32,
-    right_y: f32,
+    pub mode: Mode,
+    pub left_x: f32,
+    pub left_y: f32,
+    pub right_x: f32,
+    pub right_y: f32,
 }
 
 #[derive(Debug)]
 pub struct Frame {
-   controller: Controller,
-   duration: u32,
+   pub controller: Controller,
+   pub duration: u32,
 }
 
 #[derive(Debug)]
 pub struct Animation {
-    curr: Frame, 
-    remaining: Option<Box<Animation>>,
+    pub curr: Frame, 
+    pub remaining: Option<Box<Animation>>,
 }

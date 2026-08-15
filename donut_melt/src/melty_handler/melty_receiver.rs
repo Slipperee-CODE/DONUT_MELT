@@ -1,4 +1,8 @@
 use std::fmt;
+use super::melty_control::Mode;
+use super::melty_control::Controller;
+use super::melty_control::Frame;
+use super::melty_control::Animation;
 
 #[derive(Debug)]
 pub enum Channel {
@@ -55,15 +59,9 @@ impl Receiver for MeltyReceiver {
 
 #[derive(Debug)]
 pub enum SwitchState {
-    HIGH,
-    MED,
-    LOW,
-}
-
-impl SwitchState {
-    const HIGH_VALUE: u32 = 3;
-    const MED_VALUE: u32 = 2;
-    const LOW_VALUE: u32 = 1;
+    HIGH = 3,
+    MED = 2,
+    LOW = 1,
 }
 
 pub trait ReceiverHandler: fmt::Debug {
@@ -79,9 +77,13 @@ pub trait ReceiverHandler: fmt::Debug {
 
     fn is_kill_switch_on(&self) -> bool;
 
-    fn mode_switch(&self) -> SwitchState;
+    fn get_mode(&self) -> Mode;
 
     fn spin_switch(&self) -> SwitchState;
+
+    fn get_controls(&self) -> Animation;
+
+    fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
 
 #[derive(Debug)]
@@ -100,9 +102,9 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
 
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState {
         let switch_value: u32 = self.receiver.get_channel(channel);
-        if Self::is_close(switch_value, SwitchState::HIGH_VALUE) {
+        if Self::is_close(switch_value, SwitchState::HIGH as u32) {
             SwitchState::HIGH
-        } else if Self::is_close(switch_value, SwitchState::MED_VALUE) {
+        } else if Self::is_close(switch_value, SwitchState::MED as u32) {
             SwitchState::MED
         } else {
             SwitchState::LOW
@@ -114,14 +116,40 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     }
 
     fn is_kill_switch_on(&self) -> bool {
-        Self::is_close(self.receiver.get_channel(Channel::KILL_SWITCH), SwitchState::HIGH_VALUE)
+        Self::is_close(self.receiver.get_channel(Channel::KILL_SWITCH), SwitchState::HIGH as u32)
     }
 
-    fn mode_switch(&self) -> SwitchState {
-        self.get_channel_as_switch(Channel::MODE_SWITCH)
+    fn get_mode(&self) -> Mode {
+        match self.get_channel_as_switch(Channel::MODE_SWITCH) {
+            SwitchState::HIGH => Mode::MELTY,
+            SwitchState::MED => Mode::FAST_TANK,
+            SwitchState::LOW => Mode::TANK,
+        }
     }
 
     fn spin_switch(&self) -> SwitchState {
         self.get_channel_as_switch(Channel::SPIN_SWITCH)
+    }
+
+    fn get_controls(&self) -> Animation {
+        let denom: f32 = (SwitchState::HIGH as u32 - SwitchState::LOW as u32) as f32; 
+        let normalize = |x: u32| -> f32 {(x - SwitchState::LOW as u32) as f32 / denom};
+        Animation { 
+            curr: Frame { 
+                controller: Controller { 
+                    mode: self.get_mode(),
+                    left_x: normalize(self.receiver.get_channel(Channel::LEFT_X)),
+                    left_y: normalize(self.receiver.get_channel(Channel::LEFT_Y)),
+                    right_x: normalize(self.receiver.get_channel(Channel::RIGHT_X)),
+                    right_y: normalize(self.receiver.get_channel(Channel::RIGHT_Y)),
+                },
+                duration: 0,
+            },
+            remaining: None,
+        }
+    }
+
+    fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {
+        self.receiver.send_telemetry(telemetry_packet)
     }
 }

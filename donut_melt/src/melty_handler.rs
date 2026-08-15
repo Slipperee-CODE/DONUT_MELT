@@ -2,6 +2,8 @@ mod melty_control;
 mod melty_led;
 mod melty_receiver;
 mod melty_accel;
+mod melty_drive;
+mod melty_motor;
 
 use melty_control::Mode;
 use melty_control::Controller;
@@ -26,6 +28,11 @@ use melty_accel::FakeAccelHandler;
 use melty_accel::AntAccelHandler;
 use melty_accel::BeetleAccelHandler;
 
+use melty_motor::PIO;
+use melty_motor::DShot;
+use melty_motor::Motor;
+use melty_motor::MeltyMotor;
+
 #[derive(Debug)]
 struct MeltySettings {
     heading_sensitivity: f32,
@@ -35,8 +42,8 @@ struct MeltySettings {
     min_translation_rpm: f32,
     aggression: f32,
     melty_max_throttle: f32,
-    tank_max_throttle: f32,
-    tank_max_turning_throttle: f32,
+    tank_slowdown: f32,
+    tank_turning_slowdown: f32,
 }
 
 #[derive(Debug)]
@@ -50,15 +57,17 @@ struct MeltyState {
 }
 
 #[derive(Debug)]
-struct MeltyHandler<A: AccelHandler, L: LedHandler, R: ReceiverHandler> {
+struct MeltyHandler<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> {
     accel_handler: A, 
     heading_led_handler: L,
     receiver_handler: R,
+    motor1: M,
+    motor2: M,
     melty_settings: MeltySettings,
     melty_state: MeltyState,
 }
 
-impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler> MeltyHandler<A, L, R> {
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
     fn always(&self) {
 
     }
