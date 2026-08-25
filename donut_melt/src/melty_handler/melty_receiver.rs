@@ -1,8 +1,5 @@
 use std::fmt;
-use super::melty_control::Mode;
-use super::melty_control::Controller;
-use super::melty_control::Frame;
-use super::melty_control::Animation;
+use super::melty_control::{Mode, Controller, Frame, Animation};
 
 #[derive(Debug)]
 pub enum Channel {
