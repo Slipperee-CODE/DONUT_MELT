@@ -32,7 +32,7 @@ struct MeltySettings {
 struct MeltyState {
     is_failsafed: bool,
     require_0_throttle: bool,
-    rotation_start: bool,
+    rotation_start: f32,
     peak_rpm: u32,
     last_controller: Controller,
     last_animation: Animation,

@@ -1,4 +1,5 @@
 use std::fmt;
+use std::default::Default;
 use super::melty_control::{Mode, Controller, Frame, Animation};
 
 #[derive(Debug)]
@@ -68,6 +69,8 @@ pub trait ReceiverHandler: fmt::Debug {
         (((a as i64) - (b as i64)).abs() as u32) < Self::EPSILON
     }
 
+    fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32) {
+
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState;
 
     fn is_throttle_0(&self) -> bool;
@@ -86,16 +89,28 @@ pub trait ReceiverHandler: fmt::Debug {
 #[derive(Debug)]
 pub struct MeltyReceiverHandler<R: Receiver> {
     receiver: R,
+    smoothing_funcs: [fn(f32) -> f32: 4];
 }
 
 impl<R: Receiver> MeltyReceiverHandler<R> {
-    fn new() -> Self { 
-        todo!();
+    pub fn new(receiver: R) -> Self { 
+        Self { 
+            receiver,
+            smoothings_funcs: [linear, linear, linear, linear],
+        }
+    }
+
+    fn linear(input: f32) -> f32 {
+        input
     }
 }
 
 impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     const EPSILON: u32 = 100;
+
+    fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32) {
+        self.smoothings_funcs[channel as usize] = smoothing_func;
+    }
 
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState {
         let switch_value: u32 = self.receiver.get_channel(channel);
