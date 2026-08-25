@@ -5,33 +5,15 @@ mod melty_accel;
 mod melty_drive;
 mod melty_motor;
 
-use melty_control::Mode;
-use melty_control::Controller;
-use melty_control::Frame;
-use melty_control::Animation;
+use melty_control::{ Mode, Controller, Frame, Animation};
 
-use melty_led::LedHandler;
-use melty_led::DoubleLedHandler;
+use melty_led::{ LedHandler, DoubleLedHandler };
 
-use melty_receiver::Channel;
-use melty_receiver::TelemetryPacket;
-use melty_receiver::SwitchState;
-use melty_receiver::Receiver;
-use melty_receiver::MeltyReceiver;
-use melty_receiver::ReceiverHandler;
-use melty_receiver::MeltyReceiverHandler;
+use melty_receiver::{ Channel, TelemetryPacket, SwitchState, Receiver, MeltyReceiver, ReceiverHandler, MeltyReceiverHandler };
 
-use melty_accel::Accel;
-use melty_accel::MeltyAccel;
-use melty_accel::AccelHandler;
-use melty_accel::FakeAccelHandler;
-use melty_accel::AntAccelHandler;
-use melty_accel::BeetleAccelHandler;
+use melty_accel::{ Accel, MeltyAccel, AccelHandler, FakeAccelHandler, AntAccelHandler, BeetleAccelHandler };
 
-use melty_motor::PIO;
-use melty_motor::DShot;
-use melty_motor::Motor;
-use melty_motor::MeltyMotor;
+use melty_motor::{ PIO, DShot, Motor, MeltyMotor };
 
 #[derive(Debug)]
 struct MeltySettings {

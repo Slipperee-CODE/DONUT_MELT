@@ -1,7 +1,4 @@
-use super::melty_control::Mode;
-use super::melty_control::Controller;
-use super::melty_control::Frame;
-use super::melty_control::Animation;
+use super::melty_control::{ Mode, Controller, Frame, Animation };
 
 use super::melty_receiver::ReceiverHandler;
 use super::melty_led::LedHandler;
