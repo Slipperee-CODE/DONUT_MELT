@@ -11,6 +11,9 @@ pub trait Motor: fmt::Debug {
 }
 
 #[derive(Debug)]
+pub struct PIO;
+
+#[derive(Debug)]
 pub enum DShot {
     DShot150,
     DShot300,
@@ -30,29 +33,73 @@ impl DShot {
 }
 
 #[derive(Debug)]
-pub struct PIO;
-
-#[derive(Debug)]
-pub struct MeltyMotor {
+pub struct DShotMotor {
     motor_pin: u8,
     dshot_speed: DShot,
     motor_pio: PIO,
     throttle: f32,
 }
 
-impl MeltyMotor {
+impl DShotMotor {
     fn new(motor_pin: u8, dshot_speed: DShot, motor_pio: PIO) -> Self {
-        MeltyMotor { motor_pin, dshot_speed, motor_pio, throttle: 0.0 } 
+       Self { motor_pin, dshot_speed, motor_pio, throttle: 0.0 } 
     }
 }
 
-impl Motor for MeltyMotor {
+impl Motor for DShotMotor {
     fn set_throttle(&mut self, throttle: f32) {
         self.throttle = throttle;
     }
 
     async fn send_throttle(&self) {
-        // send_throttle to motor
+        // send throttle to motor using DSHOT
         // wait the appropriate amount of time according to DSHOT version
+    }
+}
+
+#[derive(Debug)]
+pub struct PwmMotor {
+    motor_pin: u8,
+    motor_pio: PIO,
+    throttle: f32,
+}
+
+impl PwmMotor {
+    fn new(motor_pin: u8, motor_pio: PIO) -> Self {
+       Self { motor_pin, motor_pio, throttle: 0.0 } 
+    }
+}
+
+impl Motor for PwmMotor {
+    fn set_throttle(&mut self, throttle: f32) {
+        self.throttle = throttle;
+    }
+
+    async fn send_throttle(&self) {
+        // send throttle to motor using PWM
+    }
+}
+
+#[derive(Debug)]
+pub struct DebugMotor {
+    dshot_speed: DShot,
+    throttle: f32,
+}
+
+impl DebugMotor {
+    fn new(dshot_speed: DShot) -> Self { 
+        Self { dshot_speed, throttle: 0.0 }
+    }
+}
+
+impl Motor for DebugMotor {
+    fn set_throttle(&mut self, throttle: f32) {
+        println!("set_throttle called on {throttle}");
+
+        self.throttle = throttle;
+    }
+
+    async fn send_throttle(&self) { 
+        println!("send_throttle called with {self.throttle}");
     }
 }

@@ -31,30 +31,24 @@ impl Accel for MeltyAccel {
     }
 }
 
+#[derive(Debug)]
+pub struct DebugAccel(f32, f32, f32);
+
+impl DebugAccel {
+    fn new(x: f32, y: f32, z: f32) -> Self { 
+        Self(x, y, z)
+    }
+}
+
+impl Accel for DebugAccel {
+    fn get_all_gs(&self) -> (f32, f32, f32) {
+        (self.0, self.1, self.2) 
+    }
+}
+
 pub trait AccelHandler: fmt::Debug {
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32;
     fn get_raw_rpm(&self) -> f32;
-}
-
-#[derive(Debug)]
-pub struct FakeAccelHandler {
-    rpm: f32,
-}
-
-impl FakeAccelHandler {
-    fn new(rpm: f32) -> Self {
-        Self { rpm }
-    }
-}
-
-impl AccelHandler for FakeAccelHandler { 
-    fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
-        (adjustment + 0.5) * self.rpm
-    }
-
-    fn get_raw_rpm(&self) -> f32 {
-        self.rpm
-    }
 }
 
 #[derive(Debug)]
@@ -74,7 +68,6 @@ impl<A: Accel> AntAccelHandler<A> {
 impl<A: Accel> AccelHandler for AntAccelHandler<A> { 
     // assumes adjustment is 0.5 by default
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
-        todo!(); // tune heading_sensitivity so that rpm changes as wanted
         self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity
     }
 
@@ -108,7 +101,6 @@ impl<A: Accel> BeetleAccelHandler<A> {
 impl<A: Accel> AccelHandler for BeetleAccelHandler<A> { 
     // assumes adjustment is 0.5 by default
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
-        todo!(); // tune heading_sensitivity so that rpm changes as wanted
         self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity
     }
 
@@ -140,5 +132,27 @@ impl<A: Accel> AccelHandler for BeetleAccelHandler<A> {
         let rpm = (mag_delta_a / mag_delta_pos) * 89445.0;
 
         rpm * self.rpm_multiplier.clamp(self.lower_rpm_mult_bound, self.upper_rpm_mult_bound)
+    }
+}
+
+#[derive(Debug)]
+pub struct DebugAccelHandler {
+    rpm: f32,
+}
+
+impl DebugAccelHandler {
+    fn new(rpm: u32) {
+        Self { rpm }
+    }
+}
+
+impl AccelHandler for DebugAccelHandler { 
+    // assumes adjustment is 0.5 by default
+    fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
+        self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity
+    }
+
+    fn get_raw_rpm(&self) -> f32 {
+        self.rpm
     }
 }

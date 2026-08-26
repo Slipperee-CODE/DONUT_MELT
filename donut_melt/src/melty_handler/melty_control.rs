@@ -6,12 +6,30 @@ pub enum Mode {
 }
 
 #[derive(Debug)]
+pub enum Direction {
+    NORMAL,
+    REVERSE,
+}
+
+#[derive(Debug)]
 pub struct Controller {
     pub mode: Mode,
+    pub direction: Direction,
     pub left_x: f32,
     pub left_y: f32,
     pub right_x: f32,
     pub right_y: f32,
+}
+
+impl Controller {
+    const DEFAULT: Self {
+        mode: Mode::TANK,
+        direction: Direction::NORMAL,
+        left_x: 0.5,
+        left_y: 0.5,
+        right_x: 0.5,
+        right_y: 0.5,
+    };
 }
 
 #[derive(Debug)]
@@ -20,6 +38,14 @@ pub struct Frame {
    pub duration: u32,
 }
 
+impl Frame {
+    const DEFAULT: Self {
+        controller: Controller::DEFAULT,
+        duration: 0,
+    };
+}
+
+
 #[derive(Debug)]
 pub struct Animation {
     pub curr: Frame, 
@@ -27,6 +53,11 @@ pub struct Animation {
 }
 
 impl Animation {
+    const DEFAULT: Self {
+        curr: Frame::DEFAULT,
+        remaining: None,
+    };
+
     pub fn new(curr: Frame, remaining: Option<Box<Animation>>) -> Self {
         Self { 
             curr,
