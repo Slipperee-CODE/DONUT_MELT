@@ -96,7 +96,7 @@ pub struct DoubleLedHandler {
 }
 
 impl DoubleLedHandler {
-    fn new(led1_pin: u8, led2_pin: u8) -> Self {
+    pub fn new(led1_pin: u8, led2_pin: u8) -> Self {
         Self { 
             led1_handler: SingleLedHandler::new(led_pin: led1_pin),
             led2_handler: SingleLedHandler::new(led_pin: led2_pin), 

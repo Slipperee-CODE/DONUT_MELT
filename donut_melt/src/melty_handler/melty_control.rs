@@ -22,7 +22,7 @@ pub struct Controller {
 }
 
 impl Controller {
-    const DEFAULT: Self {
+    pub const DEFAULT: Self = Self {
         mode: Mode::TANK,
         direction: Direction::NORMAL,
         left_x: 0.5,
@@ -39,7 +39,7 @@ pub struct Frame {
 }
 
 impl Frame {
-    const DEFAULT: Self {
+    const DEFAULT: Self = Self {
         controller: Controller::DEFAULT,
         duration: 0,
     };
@@ -53,7 +53,7 @@ pub struct Animation {
 }
 
 impl Animation {
-    const DEFAULT: Self {
+    pub const DEFAULT: Self = Self {
         curr: Frame::DEFAULT,
         remaining: None,
     };
@@ -66,16 +66,17 @@ impl Animation {
     }
 
     // might able to use some kind of a reduce func to shorten this func in the future
+    // also can rewrite this recursively because it would make handling Options easier
     pub fn from_vec(v: Vec<Frame>) -> Animation {
         let v = v.into_iter();
 
         let mut a: Box<Animation> = Box::new(Self { 
-            v.next(),
-            None,
+            curr: v.next(),
+            remaining: None,
         });
         
         for i in 1..v.len() {
-            a.remainining = Some(Box::new(Self { v.next(), None }))
+            a.remainining = Some(Box::new(Self { curr: v.next(), remaining: None }));
             Some(a) = a.remaining; 
         }
         *a

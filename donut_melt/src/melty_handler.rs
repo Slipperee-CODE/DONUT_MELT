@@ -13,7 +13,7 @@ use melty_receiver::{ Channel, TelemetryPacket, SwitchState, Receiver, MeltyRece
 
 use melty_accel::{ Accel, MeltyAccel, AccelHandler, DebugAccelHandler, AntAccelHandler, BeetleAccelHandler };
 
-use melty_motor::{ PIO, DShot, Motor, DShotMotor };
+use melty_motor::{ PIO, DShot, Motor, DShotMotor, DebugMotor };
 
 #[derive(Debug)]
 struct MeltySettings {
@@ -34,7 +34,7 @@ impl MeltySettings {
         heading_led_offset: 0.2,
         min_led_duration: 0.25,
         max_led_duration: 0.75,
-        min_translation_rpm: 100,
+        min_translation_rpm: 100.0,
         aggression: 0.5,
         melty_max_throttle: 0.75,
         tank_slowdown: 0.05,
@@ -46,7 +46,7 @@ impl MeltySettings {
         heading_led_offset: 0.2,
         min_led_duration: 0.25,
         max_led_duration: 0.75,
-        min_translation_rpm: 100,
+        min_translation_rpm: 100.0,
         aggression: 0.5,
         melty_max_throttle: 0.75,
         tank_slowdown: 0.05,
@@ -68,7 +68,7 @@ impl MeltyState {
     const DEFAULT: Self = Self {
         is_failsafed: true,
         require_0_throttle: true,
-        rotation_start: 0,
+        rotation_start: 0.0,
         peak_rpm: 0,
         last_controller: Controller::DEFAULT, 
         last_animation: Animation::DEFAULT,
@@ -107,7 +107,7 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
         MeltyState::DEFAULT,
     };
 
-    const DEBUG = Self {
+    const DEBUG: Self = Self {
         accel_handler: DebugAccelHandler::new(200),
         heading_led_handler: DebugLedHandler::new(),
         receiver_handler: MeltyReceiverHandler::new(DebugReceiver::new()),
@@ -134,8 +134,8 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     fn when_failsafe_on(&self) {
         //stop all motors
 
-        if (self.melty_state.is_failsafed == 0 && self.receiver_handler.is_throttle_0() {
-            self.melty_state.require_0_throttle = 0;
+        if !self.melty_state.is_failsafed && self.receiver_handler.is_throttle_0() {
+            self.melty_state.require_0_throttle = false;
         }
 
         //slow blink

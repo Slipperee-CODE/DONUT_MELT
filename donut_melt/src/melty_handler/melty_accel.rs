@@ -20,7 +20,7 @@ pub trait Accel: fmt::Debug {
 pub struct MeltyAccel;
 
 impl MeltyAccel {
-    fn new() -> Self { 
+    pub fn new() -> Self { 
         todo!();
     }
 }
@@ -60,7 +60,7 @@ pub struct AntAccelHandler<A: Accel> {
 }
 
 impl<A: Accel> AntAccelHandler<A> {
-    fn new(accel: A, accel_0_offset: f32, radius: f32, radius_offset: f32) -> Self {
+    pub fn new(accel: A, accel_0_offset: f32, radius: f32, radius_offset: f32) -> Self {
         Self {accel, accel_0_offset, radius, radius_offset }
     }
 }
@@ -141,7 +141,7 @@ pub struct DebugAccelHandler {
 }
 
 impl DebugAccelHandler {
-    fn new(rpm: u32) {
+    pub fn new(rpm: u32) {
         Self { rpm }
     }
 }

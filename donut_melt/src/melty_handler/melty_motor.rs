@@ -41,7 +41,7 @@ pub struct DShotMotor {
 }
 
 impl DShotMotor {
-    fn new(motor_pin: u8, dshot_speed: DShot, motor_pio: PIO) -> Self {
+    pub fn new(motor_pin: u8, dshot_speed: DShot, motor_pio: PIO) -> Self {
        Self { motor_pin, dshot_speed, motor_pio, throttle: 0.0 } 
     }
 }
@@ -87,7 +87,7 @@ pub struct DebugMotor {
 }
 
 impl DebugMotor {
-    fn new(dshot_speed: DShot) -> Self { 
+    pub fn new(dshot_speed: DShot) -> Self { 
         Self { dshot_speed, throttle: 0.0 }
     }
 }
