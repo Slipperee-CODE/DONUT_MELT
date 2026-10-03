@@ -13,15 +13,15 @@ pub enum Controller {
 }
 
 impl Controller {
-    const SLOW_BLINK: f32 = 1; // in secs
+    const SLOW_BLINK: f32 = 1.0; // in secs
     const NORMAL_BLINK: f32 = 0.5; // in secs
     const FAST_BLINK: f32 = 0.1; // in secs
-    const SINGLE_SLOW: Controller = Single { time_btwn_blinks: SLOW_BLINK };
-    const SINGLE_NORMAL: Controller = Single { time_btwn_blinks: NORMAL_BLINK };
-    const SINGLE_FAST: Controller = Single { time_btwn_blinks: FAST_BLINK };
-    const BURST_2: Controller = Burst { time_btwn_blinks: NORMAL_BLINK, blinks_per_burst: 2, time_btwn_bursts: SLOW_BLINK};
-    const BURST_3: Controller = Burst { time_btwn_blinks: NORMAL_BLINK, blinks_per_burst: 3, time_btwn_bursts: SLOW_BLINK};
-    const BURST_4: Controller = Burst { time_btwn_blinks: NORMAL_BLINK, blinks_per_burst: 4, time_btwn_bursts: SLOW_BLINK};
+    const SINGLE_SLOW: Controller = Controller::Single { time_btwn_blinks: Self::SLOW_BLINK };
+    const SINGLE_NORMAL: Controller = Controller::Single { time_btwn_blinks: Self::NORMAL_BLINK };
+    const SINGLE_FAST: Controller = Controller::Single { time_btwn_blinks: Self::FAST_BLINK };
+    const BURST_2: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 2, time_btwn_bursts: Self::SLOW_BLINK};
+    const BURST_3: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 3, time_btwn_bursts: Self::SLOW_BLINK};
+    const BURST_4: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 4, time_btwn_bursts: Self::SLOW_BLINK};
 }
 
 pub trait LedHandler: fmt::Debug {
@@ -32,14 +32,14 @@ pub trait LedHandler: fmt::Debug {
 #[derive(Debug)]
 pub struct SingleLedHandler {
     led_pin: u8,
-    last_controller: f32,
+    last_controller: Controller,
     last_toggle: f32,
-    toggles: u16,
+    toggles: u32,
 }
 
 impl SingleLedHandler {
     fn new(led_pin: u8) -> Self {
-        Self { led_pin, last_controller: Controller::SINGLE_NORMAL, last_toggle: 0, toggles: 0 }    
+        Self { led_pin, last_controller: Controller::SINGLE_NORMAL, last_toggle: 0.0, toggles: 0 }    
     }
 }
 
@@ -48,10 +48,13 @@ impl LedHandler for SingleLedHandler {
         // set led state
     }
 
+    // TODO: Rewrite this logic to account for the fact that we should be taking
+    // some sort of reference to controller here rather than owning the value
     fn blink(&mut self, controller: Controller) {
         // let now = current time; 
         // let time_since_last_toggle = now - self.last_toggle;
         
+        // TODO: Implement the appropriate equality trait between led controllers
         if controller != self.last_controller {
             // self.set_state(false)
             // self.last_toggle = now;
@@ -59,15 +62,16 @@ impl LedHandler for SingleLedHandler {
         }
 
         match &controller {
-            Single {ref time_btwn_blinks} => {
+            Controller::Single {ref time_btwn_blinks} => {
+                // TODO: this should fix itself when you uncomment time_since_last_toggle above
                 if time_since_last_toggle > time_btwn_blinks { 
                     // self.set_state(self.toggles % 2 != 0); 
                     // self.last_toggle = now; 
                     // self.toggles = (self.toggles + 1) % 2;
                 } 
             },
-            Burst {ref time_btwn_blinks, ref blinks_per_burst, ref time_btwn_bursts} => {
-                if toggles < blinks_per_burst*2 {
+            Controller::Burst {ref time_btwn_blinks, ref blinks_per_burst, ref time_btwn_bursts} => {
+                if self.toggles < blinks_per_burst*2 {
                     if time_since_last_toggle > time_btwn_blinks {
                         // self.set_state(self.toggles % 2 != 0); 
                         // self.last_toggle = now;
@@ -98,8 +102,8 @@ pub struct DoubleLedHandler {
 impl DoubleLedHandler {
     pub fn new(led1_pin: u8, led2_pin: u8) -> Self {
         Self { 
-            led1_handler: SingleLedHandler::new(led_pin: led1_pin),
-            led2_handler: SingleLedHandler::new(led_pin: led2_pin), 
+            led1_handler: SingleLedHandler::new(led1_pin),
+            led2_handler: SingleLedHandler::new(led2_pin), 
         }    
     }
 }
@@ -112,6 +116,8 @@ impl LedHandler for DoubleLedHandler {
     
     fn blink(&mut self, controller: Controller) {
         self.led1_handler.blink(controller);
+
+        // TODO: .blink should ideally just take some sort of reference to a controller
         self.led2_handler.blink(controller);
     }
 }
@@ -120,7 +126,7 @@ impl LedHandler for DoubleLedHandler {
 pub struct DebugLedHandler;
 
 impl DebugLedHandler {
-    fn new() {
+    pub fn new() {
         todo!()
     }
 }
@@ -131,6 +137,6 @@ impl LedHandler for DebugLedHandler {
     }
 
     fn blink(&mut self, controller: Controller) {
-        println!("blink called on {controller}"); 
+        println!("blink called on {:#?}", controller); 
     }
 }

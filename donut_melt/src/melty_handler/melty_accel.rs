@@ -141,7 +141,7 @@ pub struct DebugAccelHandler {
 }
 
 impl DebugAccelHandler {
-    pub fn new(rpm: u32) {
+    pub fn new(rpm: f32) -> Self {
         Self { rpm }
     }
 }

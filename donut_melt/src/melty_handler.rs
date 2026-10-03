@@ -7,9 +7,9 @@ mod melty_motor;
 
 use melty_control::{ Mode, Controller, Frame, Animation };
 
-use melty_led::{ LedHandler, DoubleLedHandler };
+use melty_led::{ LedHandler, DoubleLedHandler, DebugLedHandler };
 
-use melty_receiver::{ Channel, TelemetryPacket, SwitchState, Receiver, MeltyReceiver, ReceiverHandler, MeltyReceiverHandler };
+use melty_receiver::{ Channel, TelemetryPacket, SwitchState, Receiver, UartReceiver, DebugReceiver, ReceiverHandler, MeltyReceiverHandler };
 
 use melty_accel::{ Accel, MeltyAccel, AccelHandler, DebugAccelHandler, AntAccelHandler, BeetleAccelHandler };
 
@@ -76,7 +76,7 @@ impl MeltyState {
 }
 
 #[derive(Debug)]
-struct MeltyHandler<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> {
+struct MeltyHandler<A, L, R, M> {
     accel_handler: A, 
     heading_led_handler: L,
     receiver_handler: R,
@@ -88,34 +88,37 @@ struct MeltyHandler<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor
 
 impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
     const ANT: Self = Self {
-        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0, 0, 0),
+        // TODO: Need to use trait objects somewhere to fix all these errors
+        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
         motor1: DShotMotor::new(0, DShot::DShot600, PIO),
         motor2: DShotMotor::new(0, DShot::DShot600, PIO),
-        MeltySettings::ANT,
-        MeltyState::DEFAULT,
+        melty_settings: MeltySettings::ANT,
+        melty_state: MeltyState::DEFAULT,
     };
     
     const BEETLE: Self = Self {
-        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0, 0, 0),
+        // TODO: Need to use trait objects somewhere to fix all these errors
+        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
         motor1: DShotMotor::new(0, DShot::DShot600, PIO),
         motor2: DShotMotor::new(0, DShot::DShot600, PIO),
-        MeltySettings::BEETLE,
-        MeltyState::DEFAULT,
+        melty_settings: MeltySettings::BEETLE,
+        melty_state: MeltyState::DEFAULT,
     };
 
     const DEBUG: Self = Self {
-        accel_handler: DebugAccelHandler::new(200),
+        // TODO: Need to use trait objects somewhere to fix all these errors
+        accel_handler: DebugAccelHandler::new(200.0),
         heading_led_handler: DebugLedHandler::new(),
         receiver_handler: MeltyReceiverHandler::new(DebugReceiver::new()),
-        motor1: DebugMotor::new(),
-        motor2: DebugMotor::new(),
-        MeltySettings::ANT,
-        MeltyState::DEFAULT,
-    }
+        motor1: DebugMotor::new(DShot::DShot600),
+        motor2: DebugMotor::new(DShot::DShot600),
+        melty_settings: MeltySettings::ANT,
+        melty_state: MeltyState::DEFAULT,
+    };
 }
 
 impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
@@ -131,7 +134,7 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
 
     }
 
-    fn when_failsafe_on(&self) {
+    fn when_failsafe_on(&mut self) {
         //stop all motors
 
         if !self.melty_state.is_failsafed && self.receiver_handler.is_throttle_0() {
@@ -149,7 +152,7 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
         println!("{:#?}", self);
     }
      
-    pub fn handle(&self) {
+    pub fn handle(&mut self) {
         loop {
             if self.melty_state.is_failsafed || self.melty_state.require_0_throttle || self.receiver_handler.is_kill_switch_on() {
                 self.when_failsafe_on();

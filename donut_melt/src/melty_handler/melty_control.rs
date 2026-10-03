@@ -65,7 +65,7 @@ impl Animation {
         }
     }
 
-    // might able to use some kind of a reduce func to shorten this func in the future
+    // TODO: might able to use some kind of a reduce func to shorten this func in the future
     // also can rewrite this recursively because it would make handling Options easier
     pub fn from_vec(v: Vec<Frame>) -> Animation {
         let v = v.into_iter();
@@ -76,7 +76,7 @@ impl Animation {
         });
         
         for i in 1..v.len() {
-            a.remainining = Some(Box::new(Self { curr: v.next(), remaining: None }));
+            a.remaining = Some(Box::new(Self { curr: v.next(), remaining: None }));
             Some(a) = a.remaining; 
         }
         *a

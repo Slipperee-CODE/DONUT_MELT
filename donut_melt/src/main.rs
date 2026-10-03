@@ -16,3 +16,17 @@ fn main() {
     // - Implement PwmMotor fully
     // - Implement PwmReceiver fully
 
+    // MORE TODO 
+    // Use sinusoidal translation for melty movement logic
+
+    // - Make sure it's possible to adjust accelerometer offsets/offset the overall rpm 
+    //   reading permanently by some varying factor during a match
+    //  - make sure that permanent reading adjustments are lower bound and upper bound limited
+    //  - might need to add a set_rpm_offset_factor to the Accel/AccelHandler Trait
+    //
+    // - Create routines for accelerometer data denoising
+    //  - Create one where robot calibrates sitting still
+    //  - Create one where robot calibrates by spinning up to various known 
+    //    rpms and reading the accelerometer (the robot should be able to 
+    //    use this information to get more accurate readings when around those rpms)
+}

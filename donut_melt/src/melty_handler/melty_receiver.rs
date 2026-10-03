@@ -20,7 +20,7 @@ impl Channel {
     const THROTTLE: Channel = Channel::LEFT_Y;
     const KILL_SWITCH: Channel = Channel::SWITCH_E;
     const MODE_SWITCH: Channel = Channel::SWITCH_C;
-    const SPIN_SWITCH: Channel = Channel::SWITCH_B;
+    const DIRECTION_SWITCH: Channel = Channel::SWITCH_B;
 }
 
 #[derive(Debug)]
@@ -29,7 +29,9 @@ pub struct TelemetryPacket(u16, u16, u32, u8);
 pub trait Receiver: fmt::Debug {
     fn get_all_channels(&self) -> &[u32; 16];
     fn get_channel(&self, channel: Channel) -> u32 {
-        self.get_all_channels()[channel as u32]
+        // TODO: I just want to make the channel into a number 
+        // based on the order they are defined in the enum :sob:
+        self.get_all_channels()[channel as u32] 
     }
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
@@ -38,7 +40,7 @@ pub trait Receiver: fmt::Debug {
 pub struct UartReceiver;
 
 impl UartReceiver {
-    fn new() -> Self { 
+    pub fn new() -> Self { 
         todo!();
     }
 }
@@ -57,7 +59,7 @@ impl Receiver for UartReceiver {
 pub struct PwmReceiver;
 
 impl PwmReceiver {
-    fn new() -> Self { 
+    pub fn new() -> Self { 
         todo!();
     }
 }
@@ -76,18 +78,18 @@ impl Receiver for PwmReceiver {
 pub struct DebugReceiver;
 
 impl DebugReceiver {
-    fn new() -> Self { 
+    pub fn new() -> Self { 
         todo!();
     }
 }
 
 impl Receiver for DebugReceiver {
     fn get_all_channels(&self) -> &[u32; 16] {
-        [0; 16] 
+        &[0; 16] 
     }
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {
-        println("send_telemetry called on {telemetry_packet}");
+        println!("send_telemetry called on {:#?}", telemetry_packet);
     }
 }
 
@@ -106,7 +108,7 @@ pub trait ReceiverHandler: fmt::Debug {
         (((a as i64) - (b as i64)).abs() as u32) < Self::EPSILON
     }
 
-    fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32) {
+    fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32);
 
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState;
 
@@ -126,14 +128,14 @@ pub trait ReceiverHandler: fmt::Debug {
 #[derive(Debug)]
 pub struct MeltyReceiverHandler<R: Receiver> {
     receiver: R,
-    smoothing_funcs: [fn(f32) -> f32: 4];
+    smoothing_funcs: [fn(f32) -> f32; 4],
 }
 
 impl<R: Receiver> MeltyReceiverHandler<R> {
     pub fn new(receiver: R) -> Self { 
         Self { 
             receiver,
-            smoothings_funcs: [linear, linear, linear, linear],
+            smoothing_funcs: [Self::linear, Self::linear, Self::linear, Self::linear],
         }
     }
 
@@ -146,7 +148,7 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     const EPSILON: u32 = 100;
 
     fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32) {
-        self.smoothings_funcs[channel as usize] = smoothing_func;
+        self.smoothing_funcs[channel as usize] = smoothing_func;
     }
 
     fn get_channel_as_switch(&self, channel: Channel) -> SwitchState {

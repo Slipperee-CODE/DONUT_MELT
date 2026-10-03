@@ -100,6 +100,6 @@ impl Motor for DebugMotor {
     }
 
     async fn send_throttle(&self) { 
-        println!("send_throttle called with {self.throttle}");
+        println!("send_throttle called with {}", self.throttle);
     }
 }
