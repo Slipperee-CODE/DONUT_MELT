@@ -7,7 +7,7 @@ mod melty_motor;
 
 use melty_control::{ Mode, Controller, Frame, Animation };
 
-use melty_led::{ LedHandler, DoubleLedHandler, DebugLedHandler };
+use melty_led::{ LedHandler, Controller as LedController, DoubleLedHandler, DebugLedHandler };
 
 use melty_receiver::{ Channel, TelemetryPacket, SwitchState, Receiver, UartReceiver, DebugReceiver, ReceiverHandler, MeltyReceiverHandler };
 
@@ -60,8 +60,9 @@ struct MeltyState {
     require_0_throttle: bool,
     rotation_start: f32,
     peak_rpm: u32,
-    last_controller: Controller, // tracked for debugging purposes
-    last_animation: Animation, // tracked for debugging purposes
+    frame_start: f32,
+    curr_controller: Option<Controller>, // tracked for debugging purposes
+    curr_animation: Option<Animation>,
 }
 
 impl MeltyState {
@@ -70,8 +71,9 @@ impl MeltyState {
         require_0_throttle: true,
         rotation_start: 0.0,
         peak_rpm: 0,
-        last_controller: Controller::DEFAULT, 
-        last_animation: Animation::DEFAULT,
+        frame_start: 0.0,
+        curr_controller: None, 
+        curr_animation: None,
     };
 }
 
@@ -136,35 +138,47 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
         // feed watchdog
     }
 
-    fn when_failsafe_off(&self) {
+    fn when_failsafe_off(&mut self) {
+        // TODO: check if curr_animation is None, if so fill it with get_controls()
+        // - maybe use a custom ReceiverHandler/Receiver + AccelHandler/Accel 
+        //   to do the data logging for accel gs at diff rpm values 
+        // otherwise let the animation play out until it is None
+        // if we fill curr_animation, set self.frame_start = curr_time otherwise don't touch it
+        // get_controls (so the ReceiverHandler should handle replacing normal controls with a macro animation)
+        // give this self.drive call a reference to the first frame of curr_animation so it knows what to do
+        
+        // TODO: set curr_controller to be the controller of the frame you pass to drive
         self.drive();
+
+        // TODO: if self.frame_start - now > duration of frame move to next frame of animation (change curr_animation)
     }
 
     fn when_failsafe_on(&mut self) {
-        //stop all motors
+        self.motor1.stop();
+        self.motor2.stop();
 
         if !self.melty_state.is_failsafed && self.receiver_handler.is_throttle_0() {
             self.melty_state.require_0_throttle = false;
         }
 
-        //slow blink
+        self.heading_led_handler.blink(LedController::SINGLE_NORMAL);
     }
 
-    fn when_flashing_motors(&self) {
-        // do nothing!
+    fn when_flashing_motors(&mut self) {
+        self.heading_led_handler.blink(LedController::BURST_2);
     }
     
     pub fn debug(&self) {
         println!("{:#?}", self);
     }
-     
+
     pub fn handle(&mut self, is_flashing_motors: bool) {
         // TODO: make this function call start 2 separate threads for receiver receiving and rest of code
-        
+
         if is_flashing_motors {
             loop {
-                    self.when_flashing_motors();
-                }
+                self.when_flashing_motors();
+            }
         }
 
         loop {

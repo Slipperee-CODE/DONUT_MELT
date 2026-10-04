@@ -13,15 +13,15 @@ pub enum Controller {
 }
 
 impl Controller {
-    const SLOW_BLINK: f32 = 1.0; // in secs
-    const NORMAL_BLINK: f32 = 0.5; // in secs
-    const FAST_BLINK: f32 = 0.1; // in secs
-    const SINGLE_SLOW: Controller = Controller::Single { time_btwn_blinks: Self::SLOW_BLINK };
-    const SINGLE_NORMAL: Controller = Controller::Single { time_btwn_blinks: Self::NORMAL_BLINK };
-    const SINGLE_FAST: Controller = Controller::Single { time_btwn_blinks: Self::FAST_BLINK };
-    const BURST_2: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 2, time_btwn_bursts: Self::SLOW_BLINK};
-    const BURST_3: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 3, time_btwn_bursts: Self::SLOW_BLINK};
-    const BURST_4: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 4, time_btwn_bursts: Self::SLOW_BLINK};
+    pub const SLOW_BLINK: f32 = 1.0; // in secs
+    pub const NORMAL_BLINK: f32 = 0.5; // in secs
+    pub const FAST_BLINK: f32 = 0.1; // in secs
+    pub const SINGLE_SLOW: Controller = Controller::Single { time_btwn_blinks: Self::SLOW_BLINK };
+    pub const SINGLE_NORMAL: Controller = Controller::Single { time_btwn_blinks: Self::NORMAL_BLINK };
+    pub const SINGLE_FAST: Controller = Controller::Single { time_btwn_blinks: Self::FAST_BLINK };
+    pub const BURST_2: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 2, time_btwn_bursts: Self::SLOW_BLINK};
+    pub const BURST_3: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 3, time_btwn_bursts: Self::SLOW_BLINK};
+    pub const BURST_4: Controller = Controller::Burst { time_btwn_blinks: Self::NORMAL_BLINK, blinks_per_burst: 4, time_btwn_bursts: Self::SLOW_BLINK};
 }
 
 pub trait LedHandler: fmt::Debug {
