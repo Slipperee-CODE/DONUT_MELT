@@ -1,5 +1,5 @@
-use std::{fmt, time::Instant};
-use super::melty_control::{Mode, Direction, Controller, Duration, Frame, Animation};
+use std::fmt;
+use super::melty_control::{Mode, Direction, Controller, Frame, Animation};
 
 #[derive(Debug)]
 pub enum Channel {
@@ -219,7 +219,7 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     }
 
     fn get_macros(&self) -> Option<Animation> {
-        Some(Box::new([Frame(|| println!("1"), Duration::Instant), Frame(|| println!("2"), Duration::Prolonged(1.0))].into_iter()))
+        Some(Box::new([Frame(|| println!("1"), 0.0), Frame(|| println!("2"), 1.0)].into_iter()))
     }
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {

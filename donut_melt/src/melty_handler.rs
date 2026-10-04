@@ -143,23 +143,26 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
 
     fn when_failsafe_off(&mut self) {
-        if self.melty_state.curr_duration >= now - self.melty_state.frame_start && let Some(curr_anim) = self.melty_state.curr_anim {
-            let next_frame = curr_anim.next();
-
-            match next_frame {
-                Some(Frame(func, duration)) => {
-                    self.melty_state.curr_func = func;
-                    self.melty_state.curr_duration = duration;
-                    self.melty_state.frame_start = now;
+        match (self.melty_state.curr_duration >= now - self.melty_state.frame_start, self.melty_state.curr_anim) {
+            (true, Some(anim)) => {
+                let next_frame = anim.next();
+                match next_frame {
+                    Some(Frame(func, duration)) => {
+                        self.melty_state.curr_func = func;
+                        self.melty_state.curr_duration = duration;
+                        self.melty_state.frame_start = now;
+                    }
+                    None => {
+                        self.melty_state.curr_anim = self.receiver_handler.get_macros();
+                    }
                 }
-                None => {
-                    self.melty_state.curr_anim = self.receiver_handler.get_macros();
-                }
-            }
-
-            (self.melty_state.curr_func)();
-        } else {
-            self.drive(self.receiver_handler.get_controls());
+            },
+            (false, _) => {
+                (self.melty_state.curr_func)();
+            },
+            (_, None) => {
+                self.drive(self.receiver_handler.get_controls());
+            },
         }
     }
 
