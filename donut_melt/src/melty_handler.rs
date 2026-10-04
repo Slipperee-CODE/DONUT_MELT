@@ -141,7 +141,9 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     fn when_failsafe_off(&mut self) {
         // TODO: check if curr_animation is None, if so fill it with get_controls()
         // - maybe use a custom ReceiverHandler/Receiver + AccelHandler/Accel 
-        //   to do the data logging for accel gs at diff rpm values 
+        //   to do the data logging for accel gs at diff rpm values/play the sequence of accelerating angular velocity
+        // - ReceiverHandler implementations need to be more robust such that they includes animation sequences and give them when
+        //   get_controls is called
         // otherwise let the animation play out until it is None
         // if we fill curr_animation, set self.frame_start = curr_time otherwise don't touch it
         // get_controls (so the ReceiverHandler should handle replacing normal controls with a macro animation)
