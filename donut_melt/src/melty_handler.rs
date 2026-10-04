@@ -88,7 +88,7 @@ struct MeltyHandler<A, L, R, M> {
 
 impl MeltyHandler<AntAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
     const ANT: Self = Self {
-        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0),
+        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
         motor1: DShotMotor::new(0, DShot::DShot600, PIO),

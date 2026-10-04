@@ -56,7 +56,10 @@ impl Accel for DebugAccel {
 }
 
 pub trait AccelHandler: fmt::Debug {
+    const EPSILON: f32;
+
     fn setup(&self);
+    fn shift_rpm_multiplier(&mut self, shift_reference_value: f32);
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32;
     fn get_raw_rpm(&self) -> f32;
 }
@@ -66,19 +69,27 @@ pub struct AntAccelHandler<A: Accel> {
     accel: A,
     accel_0_offset: f32, // in gs
     radius: f32, // in cm
-    radius_offset: f32, // in cm
+    rpm_multiplier: f32,
+    upper_rpm_mult_bound: f32,
+    lower_rpm_mult_bound: f32,
 }
 
 impl<A: Accel> AntAccelHandler<A> {
-    pub const fn new(accel: A, accel_0_offset: f32, radius: f32, radius_offset: f32) -> Self {
-        Self {accel, accel_0_offset, radius, radius_offset }
+    pub const fn new(accel: A, accel_0_offset: f32, radius: f32, rpm_multiplier: f32, upper_rpm_mult_bound: f32, lower_rpm_mult_bound: f32) -> Self {
+        Self {accel, accel_0_offset, radius, rpm_multiplier, upper_rpm_mult_bound, lower_rpm_mult_bound }
     }
 }
 
 impl<A: Accel> AccelHandler for AntAccelHandler<A> { 
+    const EPSILON: f32 = 0.1;
+
     fn setup(&self) {
         // do any necessary setup here
         self.accel.setup();
+    }
+
+    fn shift_rpm_multiplier(&mut self, shift_reference_value: f32) {
+        self.rpm_multiplier = (self.rpm_multiplier + shift_reference_value.signum()*Self::EPSILON).clamp(self.lower_rpm_mult_bound, self.upper_rpm_mult_bound);
     }
 
     // assumes adjustment is 0.5 by default
@@ -88,9 +99,9 @@ impl<A: Accel> AccelHandler for AntAccelHandler<A> {
 
     fn get_raw_rpm(&self) -> f32 {
         let mut rpm: f32 = (self.accel.get_x_gs() - self.accel_0_offset).abs() * 89445.0;
-        rpm = rpm / (self.radius + self.radius_offset);
+        rpm = rpm / self.radius;
         rpm = rpm.sqrt();
-        rpm
+        rpm * self.rpm_multiplier
     }
 }
 
@@ -114,10 +125,16 @@ impl<A: Accel> BeetleAccelHandler<A> {
 }
 
 impl<A: Accel> AccelHandler for BeetleAccelHandler<A> { 
+    const EPSILON: f32 = 0.1;
+
     fn setup(&self) {
         // do any necessary setup here
         self.accel1.setup();
         self.accel2.setup();
+    }
+
+    fn shift_rpm_multiplier(&mut self, shift_reference_value: f32) {
+        self.rpm_multiplier = (self.rpm_multiplier + shift_reference_value.signum()*Self::EPSILON).clamp(self.lower_rpm_mult_bound, self.upper_rpm_mult_bound);
     }
 
     // assumes adjustment is 0.5 by default
@@ -152,7 +169,7 @@ impl<A: Accel> AccelHandler for BeetleAccelHandler<A> {
         
         let rpm = (mag_delta_a / mag_delta_pos) * 89445.0;
 
-        rpm * self.rpm_multiplier.clamp(self.lower_rpm_mult_bound, self.upper_rpm_mult_bound)
+        rpm * self.rpm_multiplier
     }
 }
 

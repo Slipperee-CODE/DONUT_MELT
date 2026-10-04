@@ -24,9 +24,10 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
             
             match curr_frame {
                 Frame { controller: Controller { mode: Mode::MELTY, direction, left_x, ref mut left_y, right_x, right_y }, duration } => {
+                    self.accel_handler.shift_rpm_multiplier(right_x);
+
                     // TODO: left_y needs to be reassigned to 1 so we go full power if our
                     // rpm is below min_translation_rpm
-
                     if self.accel_handler.get_raw_rpm() < self.melty_settings.min_translation_rpm {
                         left_y: f32 = 1.0;
                     } 

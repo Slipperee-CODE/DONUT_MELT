@@ -19,6 +19,7 @@ fn main() {
     // MORE TODO 
     // - setup should never take any parameters so that melty_handler logic can be generic
     // - structs which represent different systems of the robot should be initialized with their setup params 
+    // - Create some test Animations for the robot to play through
 
     // Use sinusoidal translation for melty movement logic
 
@@ -32,4 +33,5 @@ fn main() {
     //  - Create one where robot calibrates by spinning up to various known 
     //    rpms and reading the accelerometer (the robot should be able to 
     //    use this information to get more accurate readings when around those rpms)
+    //  - use the Animation system to make the robot reach different states??
 }
