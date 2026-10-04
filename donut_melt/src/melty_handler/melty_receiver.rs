@@ -1,5 +1,5 @@
-use std::fmt;
-use super::melty_control::{Mode, Direction, Controller, Frame, Animation};
+use std::{fmt, time::Instant};
+use super::melty_control::{Mode, Direction, Controller, Duration, Frame, Animation};
 
 #[derive(Debug)]
 pub enum Channel {
@@ -132,7 +132,9 @@ pub trait ReceiverHandler: fmt::Debug {
 
     fn get_direction(&self) -> Direction;
 
-    fn get_controls(&self) -> Animation;
+    fn get_controls(&self) -> Controller;
+
+    fn get_macros(&self) -> Option<Animation>;
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
@@ -202,24 +204,22 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
         }
     }
 
-    fn get_controls(&self) -> Animation {
+    fn get_controls(&self) -> Controller {
         let denom: f32 = (SwitchState::HIGH as u32 - SwitchState::LOW as u32) as f32; 
         let normalize = |x: u32| -> f32 {(x - SwitchState::LOW as u32) as f32 / denom};
         let smooth = |i: usize, x: f32| -> f32 { self.smoothing_funcs[i](x) };
-        Animation { 
-            curr: Frame { 
-                controller: Controller { 
-                    mode: self.get_mode(),
-                    direction: self.get_direction(),
-                    left_x: smooth(0,normalize(self.receiver.get_channel(Channel::LEFT_X))),
-                    left_y: smooth(1,normalize(self.receiver.get_channel(Channel::LEFT_Y))),
-                    right_x: smooth(2, normalize(self.receiver.get_channel(Channel::RIGHT_X))),
-                    right_y: smooth(3, normalize(self.receiver.get_channel(Channel::RIGHT_Y))),
-                },
-                duration: 0,
-            },
-            remaining: None,
+        Controller { 
+            mode: self.get_mode(),
+            direction: self.get_direction(),
+            left_x: smooth(0,normalize(self.receiver.get_channel(Channel::LEFT_X))),
+            left_y: smooth(1,normalize(self.receiver.get_channel(Channel::LEFT_Y))),
+            right_x: smooth(2, normalize(self.receiver.get_channel(Channel::RIGHT_X))),
+            right_y: smooth(3, normalize(self.receiver.get_channel(Channel::RIGHT_Y))),
         }
+    }
+
+    fn get_macros(&self) -> Option<Animation> {
+        Some(Box::new([Frame(|| println!("1"), Duration::Instant), Frame(|| println!("2"), Duration::Prolonged(1.0))].into_iter()))
     }
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {
