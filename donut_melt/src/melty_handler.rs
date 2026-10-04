@@ -151,15 +151,21 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
 
     fn when_flashing_motors(&self) {
-
+        // do nothing!
     }
     
     pub fn debug(&self) {
         println!("{:#?}", self);
     }
      
-    pub fn handle(&mut self) {
+    pub fn handle(&mut self, is_flashing_motors: bool) {
         // TODO: make this function call start 2 separate threads for receiver receiving and rest of code
+        
+        if is_flashing_motors {
+            loop {
+                    self.when_flashing_motors();
+                }
+        }
 
         loop {
             if self.melty_state.is_failsafed || self.melty_state.require_0_throttle || self.receiver_handler.is_kill_switch_on() {
