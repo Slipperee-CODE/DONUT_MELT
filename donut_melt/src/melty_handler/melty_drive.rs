@@ -9,7 +9,7 @@ use super::melty_motor::Motor;
 use super::MeltyHandler;
 
 impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
-    async fn drive(&mut self, mut controls: Animation) {
+    pub async fn drive(&mut self, mut controls: Animation) {
         loop {
             let Animation { curr: curr_frame, remaining: next_animation } = controls;
             

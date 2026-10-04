@@ -1,6 +1,7 @@
 use std::fmt;
 
 pub trait Motor: fmt::Debug {
+    fn setup(&self);
     fn set_throttle(&mut self, throttle: f32); 
 
     async fn send_throttle(&self);
@@ -41,12 +42,16 @@ pub struct DShotMotor {
 }
 
 impl DShotMotor {
-    pub fn new(motor_pin: u8, dshot_speed: DShot, motor_pio: PIO) -> Self {
+    pub const fn new(motor_pin: u8, dshot_speed: DShot, motor_pio: PIO) -> Self {
        Self { motor_pin, dshot_speed, motor_pio, throttle: 0.0 } 
     }
 }
 
 impl Motor for DShotMotor {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn set_throttle(&mut self, throttle: f32) {
         self.throttle = throttle;
     }
@@ -71,6 +76,10 @@ impl PwmMotor {
 }
 
 impl Motor for PwmMotor {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn set_throttle(&mut self, throttle: f32) {
         self.throttle = throttle;
     }
@@ -87,12 +96,16 @@ pub struct DebugMotor {
 }
 
 impl DebugMotor {
-    pub fn new(dshot_speed: DShot) -> Self { 
+    pub const fn new(dshot_speed: DShot) -> Self { 
         Self { dshot_speed, throttle: 0.0 }
     }
 }
 
 impl Motor for DebugMotor {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn set_throttle(&mut self, throttle: f32) {
         println!("set_throttle called on {throttle}");
 

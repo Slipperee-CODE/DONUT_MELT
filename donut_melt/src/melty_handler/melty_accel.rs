@@ -1,6 +1,7 @@
 use std::fmt;
 
 pub trait Accel: fmt::Debug {
+    fn setup(&self);
     fn get_all_gs(&self) -> (f32, f32, f32);
 
     fn get_x_gs(&self) -> f32 {
@@ -20,12 +21,16 @@ pub trait Accel: fmt::Debug {
 pub struct MeltyAccel;
 
 impl MeltyAccel {
-    pub fn new() -> Self { 
+    pub const fn new() -> Self { 
         todo!();
     }
 }
 
 impl Accel for MeltyAccel {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn get_all_gs(&self) -> (f32, f32, f32) {
         todo!();
     }
@@ -41,12 +46,17 @@ impl DebugAccel {
 }
 
 impl Accel for DebugAccel {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn get_all_gs(&self) -> (f32, f32, f32) {
         (self.0, self.1, self.2) 
     }
 }
 
 pub trait AccelHandler: fmt::Debug {
+    fn setup(&self);
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32;
     fn get_raw_rpm(&self) -> f32;
 }
@@ -60,12 +70,17 @@ pub struct AntAccelHandler<A: Accel> {
 }
 
 impl<A: Accel> AntAccelHandler<A> {
-    pub fn new(accel: A, accel_0_offset: f32, radius: f32, radius_offset: f32) -> Self {
+    pub const fn new(accel: A, accel_0_offset: f32, radius: f32, radius_offset: f32) -> Self {
         Self {accel, accel_0_offset, radius, radius_offset }
     }
 }
 
 impl<A: Accel> AccelHandler for AntAccelHandler<A> { 
+    fn setup(&self) {
+        // do any necessary setup here
+        self.accel.setup();
+    }
+
     // assumes adjustment is 0.5 by default
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
         self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity
@@ -93,12 +108,18 @@ pub struct BeetleAccelHandler<A: Accel> {
 }
 
 impl<A: Accel> BeetleAccelHandler<A> {
-    fn new(accel1: A, accel2: A, accel1_0_offset: (f32, f32), accel2_0_offset: (f32, f32), accel1_pos: (f32, f32), accel2_pos: (f32, f32), rpm_multiplier: f32, upper_rpm_mult_bound: f32, lower_rpm_mult_bound: f32) -> Self {
+    pub const fn new(accel1: A, accel2: A, accel1_0_offset: (f32, f32), accel2_0_offset: (f32, f32), accel1_pos: (f32, f32), accel2_pos: (f32, f32), rpm_multiplier: f32, upper_rpm_mult_bound: f32, lower_rpm_mult_bound: f32) -> Self {
        Self {accel1, accel2, accel1_0_offset, accel2_0_offset, accel1_pos, accel2_pos, rpm_multiplier, upper_rpm_mult_bound, lower_rpm_mult_bound }
     }
 }
 
 impl<A: Accel> AccelHandler for BeetleAccelHandler<A> { 
+    fn setup(&self) {
+        // do any necessary setup here
+        self.accel1.setup();
+        self.accel2.setup();
+    }
+
     // assumes adjustment is 0.5 by default
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
         self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity
@@ -141,12 +162,16 @@ pub struct DebugAccelHandler {
 }
 
 impl DebugAccelHandler {
-    pub fn new(rpm: f32) -> Self {
+    pub const fn new(rpm: f32) -> Self {
         Self { rpm }
     }
 }
 
 impl AccelHandler for DebugAccelHandler { 
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     // assumes adjustment is 0.5 by default
     fn get_adj_rpm(&self, adjustment: f32, heading_sensitivity: f32) -> f32 {
         self.get_raw_rpm() * (adjustment + 0.5) * heading_sensitivity

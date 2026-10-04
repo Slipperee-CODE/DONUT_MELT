@@ -1,5 +1,4 @@
 use std::fmt;
-use std::default::Default;
 use super::melty_control::{Mode, Direction, Controller, Frame, Animation};
 
 #[derive(Debug)]
@@ -27,11 +26,10 @@ impl Channel {
 pub struct TelemetryPacket(u16, u16, u32, u8);
 
 pub trait Receiver: fmt::Debug {
+    fn setup(&self);
     fn get_all_channels(&self) -> &[u32; 16];
     fn get_channel(&self, channel: Channel) -> u32 {
-        // TODO: I just want to make the channel into a number 
-        // based on the order they are defined in the enum :sob:
-        self.get_all_channels()[channel as u32] 
+        self.get_all_channels()[channel as usize] 
     }
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
@@ -40,12 +38,16 @@ pub trait Receiver: fmt::Debug {
 pub struct UartReceiver;
 
 impl UartReceiver {
-    pub fn new() -> Self { 
+    pub const fn new() -> Self { 
         todo!();
     }
 }
 
 impl Receiver for UartReceiver {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn get_all_channels(&self) -> &[u32; 16] {
         todo!();
     }
@@ -65,6 +67,10 @@ impl PwmReceiver {
 }
 
 impl Receiver for PwmReceiver {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn get_all_channels(&self) -> &[u32; 16] {
         todo!();
     }
@@ -78,12 +84,16 @@ impl Receiver for PwmReceiver {
 pub struct DebugReceiver;
 
 impl DebugReceiver {
-    pub fn new() -> Self { 
+    pub const fn new() -> Self { 
         todo!();
     }
 }
 
 impl Receiver for DebugReceiver {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn get_all_channels(&self) -> &[u32; 16] {
         &[0; 16] 
     }
@@ -103,6 +113,8 @@ pub enum SwitchState {
 
 pub trait ReceiverHandler: fmt::Debug {
     const EPSILON: u32;
+
+    fn setup(&self);
 
     fn is_close(a: u32, b:u32) -> bool {
         (((a as i64) - (b as i64)).abs() as u32) < Self::EPSILON
@@ -132,7 +144,7 @@ pub struct MeltyReceiverHandler<R: Receiver> {
 }
 
 impl<R: Receiver> MeltyReceiverHandler<R> {
-    pub fn new(receiver: R) -> Self { 
+    pub const fn new(receiver: R) -> Self { 
         Self { 
             receiver,
             smoothing_funcs: [Self::linear, Self::linear, Self::linear, Self::linear],
@@ -146,6 +158,10 @@ impl<R: Receiver> MeltyReceiverHandler<R> {
 
 impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     const EPSILON: u32 = 100;
+
+    fn setup(&self) {
+        // do any necessary setup here
+    }
 
     fn set_smoothing_func(&mut self, channel: Channel, smoothing_func: fn(f32) -> f32) {
         self.smoothing_funcs[channel as usize] = smoothing_func;
@@ -189,15 +205,16 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
     fn get_controls(&self) -> Animation {
         let denom: f32 = (SwitchState::HIGH as u32 - SwitchState::LOW as u32) as f32; 
         let normalize = |x: u32| -> f32 {(x - SwitchState::LOW as u32) as f32 / denom};
+        let smooth = |i: usize, x: f32| -> f32 { self.smoothing_funcs[i](x) };
         Animation { 
             curr: Frame { 
                 controller: Controller { 
                     mode: self.get_mode(),
                     direction: self.get_direction(),
-                    left_x: normalize(self.receiver.get_channel(Channel::LEFT_X)),
-                    left_y: normalize(self.receiver.get_channel(Channel::LEFT_Y)),
-                    right_x: normalize(self.receiver.get_channel(Channel::RIGHT_X)),
-                    right_y: normalize(self.receiver.get_channel(Channel::RIGHT_Y)),
+                    left_x: smooth(0,normalize(self.receiver.get_channel(Channel::LEFT_X))),
+                    left_y: smooth(1,normalize(self.receiver.get_channel(Channel::LEFT_Y))),
+                    right_x: smooth(2, normalize(self.receiver.get_channel(Channel::RIGHT_X))),
+                    right_y: smooth(3, normalize(self.receiver.get_channel(Channel::RIGHT_Y))),
                 },
                 duration: 0,
             },

@@ -86,9 +86,8 @@ struct MeltyHandler<A, L, R, M> {
     melty_state: MeltyState,
 }
 
-impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
+impl MeltyHandler<AntAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
     const ANT: Self = Self {
-        // TODO: Need to use trait objects somewhere to fix all these errors
         accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
@@ -97,10 +96,11 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
         melty_settings: MeltySettings::ANT,
         melty_state: MeltyState::DEFAULT,
     };
-    
+}
+
+impl MeltyHandler<BeetleAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
     const BEETLE: Self = Self {
-        // TODO: Need to use trait objects somewhere to fix all these errors
-        accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0),
+        accel_handler: BeetleAccelHandler::new(MeltyAccel::new(), MeltyAccel::new(), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
         motor1: DShotMotor::new(0, DShot::DShot600, PIO),
@@ -108,9 +108,11 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
         melty_settings: MeltySettings::BEETLE,
         melty_state: MeltyState::DEFAULT,
     };
+}
 
+
+impl MeltyHandler<DebugAccelHandler, DebugLedHandler, MeltyReceiverHandler<DebugReceiver>, DebugMotor> {
     const DEBUG: Self = Self {
-        // TODO: Need to use trait objects somewhere to fix all these errors
         accel_handler: DebugAccelHandler::new(200.0),
         heading_led_handler: DebugLedHandler::new(),
         receiver_handler: MeltyReceiverHandler::new(DebugReceiver::new()),
@@ -123,7 +125,11 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
 
 impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
     fn setup(&mut self) {
-
+        self.accel_handler.setup();
+        self.heading_led_handler.setup();
+        self.receiver_handler.setup();
+        self.motor1.setup();
+        self.motor2.setup();
     }
 
     fn always(&self) {
@@ -131,7 +137,7 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
 
     fn when_failsafe_off(&self) {
-
+        self.drive();
     }
 
     fn when_failsafe_on(&mut self) {
@@ -153,6 +159,8 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
      
     pub fn handle(&mut self) {
+        // TODO: make this function call start 2 separate threads for receiver receiving and rest of code
+
         loop {
             if self.melty_state.is_failsafed || self.melty_state.require_0_throttle || self.receiver_handler.is_kill_switch_on() {
                 self.when_failsafe_on();

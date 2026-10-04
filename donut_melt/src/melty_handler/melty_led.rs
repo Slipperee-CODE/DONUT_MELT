@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum Controller {
     Single {
         time_btwn_blinks: f32, // in secs
@@ -25,6 +25,7 @@ impl Controller {
 }
 
 pub trait LedHandler: fmt::Debug {
+    fn setup(&self);
     fn set_state(&mut self, state: bool);
     fn blink(&mut self, controller: Controller);
 }
@@ -38,18 +39,20 @@ pub struct SingleLedHandler {
 }
 
 impl SingleLedHandler {
-    fn new(led_pin: u8) -> Self {
+    pub const fn new(led_pin: u8) -> Self {
         Self { led_pin, last_controller: Controller::SINGLE_NORMAL, last_toggle: 0.0, toggles: 0 }    
     }
 }
 
 impl LedHandler for SingleLedHandler {
+    fn setup(&self) {
+
+    }
+
     fn set_state(&mut self, state: bool) {
         // set led state
     }
 
-    // TODO: Rewrite this logic to account for the fact that we should be taking
-    // some sort of reference to controller here rather than owning the value
     fn blink(&mut self, controller: Controller) {
         // let now = current time; 
         // let time_since_last_toggle = now - self.last_toggle;
@@ -100,7 +103,7 @@ pub struct DoubleLedHandler {
 }
 
 impl DoubleLedHandler {
-    pub fn new(led1_pin: u8, led2_pin: u8) -> Self {
+    pub const fn new(led1_pin: u8, led2_pin: u8) -> Self {
         Self { 
             led1_handler: SingleLedHandler::new(led1_pin),
             led2_handler: SingleLedHandler::new(led2_pin), 
@@ -109,15 +112,18 @@ impl DoubleLedHandler {
 }
 
 impl LedHandler for DoubleLedHandler {
+    fn setup(&self) {
+        self.led1_handler.setup();
+        self.led2_handler.setup();
+    }
+
     fn set_state(&mut self, state: bool) {
         self.led1_handler.set_state(state);
         self.led2_handler.set_state(state);
     }
     
     fn blink(&mut self, controller: Controller) {
-        self.led1_handler.blink(controller);
-
-        // TODO: .blink should ideally just take some sort of reference to a controller
+        self.led1_handler.blink(controller.clone());
         self.led2_handler.blink(controller);
     }
 }
@@ -126,12 +132,16 @@ impl LedHandler for DoubleLedHandler {
 pub struct DebugLedHandler;
 
 impl DebugLedHandler {
-    pub fn new() {
+    pub const fn new() -> Self {
         todo!()
     }
 }
 
 impl LedHandler for DebugLedHandler {
+    fn setup(&self) {
+        // do any necessary setup here
+    }
+
     fn set_state(&mut self, state: bool) { 
         println!("set_state called on {state}");
     }

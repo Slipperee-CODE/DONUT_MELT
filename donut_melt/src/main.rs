@@ -17,6 +17,9 @@ fn main() {
     // - Implement PwmReceiver fully
 
     // MORE TODO 
+    // - setup should never take any parameters so that melty_handler logic can be generic
+    // - structs which represent different systems of the robot should be initialized with their setup params 
+
     // Use sinusoidal translation for melty movement logic
 
     // - Make sure it's possible to adjust accelerometer offsets/offset the overall rpm 
