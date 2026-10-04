@@ -153,7 +153,7 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
                         self.melty_state.frame_start = now;
                     }
                     None => {
-                        self.melty_state.curr_anim = self.receiver_handler.get_macros();
+                        self.melty_state.curr_anim = self.receiver_handler.get_animations();
                     }
                 }
             },
