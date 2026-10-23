@@ -50,6 +50,25 @@ struct FirstSetOfImportantVariables;
 #[derive(Debug)]
 struct SecondSetOfImportantVariables;
 
+fn construct_step(secs_remaining: f32, time_of_last_call: f32, vars: FirstSetOfImportantVariables, step: fn(FirstSetOfImportantVariables) -> FirstSetOfImportantVariables) -> Handler {
+    Handler::KeepHandling {
+        secs_remaining,
+        time_of_last_call,
+        f: Box::new(|secs_remaining: f32, time_of_last_call: f32, state: &State, settings: &Settings| -> (State, Handler) {
+            let now: f32 = 0.0;
+            match secs_remaining > 0.0 {
+                true => {
+                    let vars = step(vars);
+                    (state.clone(), construct_step(secs_remaining - (now - time_of_last_call), now, vars, step))
+                },
+                false => (state.clone(), construct_step2(3.0, now, SecondSetOfImportantVariables)),
+            }
+        }),
+    }
+}
+
+
+
 fn do_step_1(vars: FirstSetOfImportantVariables) -> FirstSetOfImportantVariables {
     // do stuff here
     vars
