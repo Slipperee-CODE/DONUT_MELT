@@ -134,7 +134,7 @@ pub trait ReceiverHandler: fmt::Debug {
 
     fn get_controls(&self) -> Controller;
 
-    fn get_macros(&self) -> Option<Animation>;
+    fn get_animations(&self) -> Option<Animation>;
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }
@@ -218,7 +218,7 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
         }
     }
 
-    fn get_macros(&self) -> Option<Animation> {
+    fn get_animations(&self) -> Option<Animation> {
         Some(Box::new([Frame(|| println!("1"), 0.0), Frame(|| println!("2"), 1.0)].into_iter()))
     }
 
