@@ -15,7 +15,7 @@ use melty_accel::{ Accel, MeltyAccel, AccelHandler, DebugAccelHandler, AntAccelH
 
 use melty_motor::{ PIO, DShot, Motor, DShotMotor, DebugMotor };
 
-use crate::melty_handler::melty_control::Duration::Instant;
+
 
 #[derive(Debug)]
 struct MeltySettings {
