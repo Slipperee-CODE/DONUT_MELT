@@ -1,4 +1,5 @@
-use super::LedHandler;
+use super::super::{MeltyHandler, Animatable, AccelHandler, LedHandler, ReceiverHandler, Motor};
+
 use super::Controller;
 
 #[derive(Debug)]
@@ -67,6 +68,12 @@ impl LedHandler for SingleLedHandler {
     }
 }
 
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for SingleLedHandler {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
+    }
+}
+
 #[derive(Debug)]
 pub struct DoubleLedHandler {
     led1_handler: SingleLedHandler,
@@ -99,6 +106,12 @@ impl LedHandler for DoubleLedHandler {
     }
 }
 
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for DoubleLedHandler {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
+    }
+}
+
 #[derive(Debug)]
 pub struct DebugLedHandler;
 
@@ -119,5 +132,11 @@ impl LedHandler for DebugLedHandler {
 
     fn blink(&mut self, controller: Controller) {
         println!("blink called on {:#?}", controller); 
+    }
+}
+
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for DebugLedHandler {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
     }
 }

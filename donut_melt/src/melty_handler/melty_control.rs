@@ -20,8 +20,3 @@ pub struct Controller {
     pub right_x: f32,
     pub right_y: f32,
 }
-
-#[derive(Debug)]
-pub struct Frame(pub fn() -> (), pub f32);
-
-pub type Animation = Box<dyn Iterator<Item = Frame>>;

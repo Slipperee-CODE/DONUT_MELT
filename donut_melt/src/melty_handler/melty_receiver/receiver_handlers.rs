@@ -1,8 +1,10 @@
-use super::{Receiver, ReceiverHandler};
-use super::{Channel, TelemetryPacket, SwitchState, Mode, Direction, Controller, Frame, Animation};
+use super::super::{MeltyHandler, Animatable, AccelHandler, LedHandler, ReceiverHandler, Motor};
+
+use super::Receiver;
+use super::{Channel, TelemetryPacket, SwitchState, Mode, Direction, Controller};
 
 #[derive(Debug)]
-pub struct MeltyReceiverHandler<R: Receiver> {
+pub struct MeltyReceiverHandler<R> {
     receiver: R,
     smoothing_funcs: [fn(f32) -> f32; 4],
 }
@@ -80,11 +82,14 @@ impl<R: Receiver> ReceiverHandler for MeltyReceiverHandler<R> {
         }
     }
 
-    fn get_animations(&self) -> Option<Animation> {
-        Some(Box::new([Frame(|| println!("1"), 0.0), Frame(|| println!("2"), 1.0)].into_iter()))
-    }
-
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket) {
         self.receiver.send_telemetry(telemetry_packet)
+    }
+
+}
+
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for MeltyReceiverHandler<R> {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
     }
 }

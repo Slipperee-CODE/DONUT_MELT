@@ -29,7 +29,7 @@ struct Settings;
 
 struct State {
     curr_controls: Controller,
-    animations_to_call: Vec<Box<dyn FnMut(Handler) -> (bool, Handler)>>,
+    animations_to_call: Vec<Box<dyn FnMut(&mut Handler) -> bool>>,
 }
 
 struct Handler {
@@ -38,7 +38,7 @@ struct Handler {
 }
 
 impl Handler {
-    fn when_failsafe_off(mut self) {
+    fn when_failsafe_off(&mut self) {
         // self.melty_state.animations_to_call.extend(accel_handler.gather_animations())
         // self.melty_state.animations_to_call.extend(heading_led_handler.gather_animations())
         // self.melty_state.animations_to_call.extend(receiver_handler.queue_animations()) // receiver should queue drive animationtion, drive animationtion should always disappear after 1 use
@@ -48,11 +48,7 @@ impl Handler {
         let curr_animations = mem::take(&mut self.melty_state.animations_to_call);
 
         for mut animation in curr_animations {
-            let (keep_animation, new_handler) = animation(self);
-            
-            self = new_handler;
-
-            if keep_animation {
+            if animation(self) {
                 self.melty_state.animations_to_call.push(animation)
             }
         }

@@ -1,11 +1,12 @@
 mod receivers;
 pub use receivers::{UartReceiver, PwmReceiver, DebugReceiver};
 
-mod receiver_handler;
-pub use receiver_handler::{MeltyReceiverHandler};
+mod receiver_handlers;
+pub use receiver_handlers::{MeltyReceiverHandler};
 
 use std::fmt;
-use super::melty_control::{Mode, Direction, Controller, Frame, Animation};
+
+use super::melty_control::{Mode, Direction, Controller};
 
 #[derive(Debug)]
 pub enum Channel {
@@ -70,8 +71,6 @@ pub trait ReceiverHandler: fmt::Debug {
     fn get_direction(&self) -> Direction;
 
     fn get_controls(&self) -> Controller;
-
-    fn get_animations(&self) -> Option<Animation>;
 
     fn send_telemetry(&self, telemetry_packet: TelemetryPacket);
 }

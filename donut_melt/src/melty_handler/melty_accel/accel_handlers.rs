@@ -1,7 +1,9 @@
-use super::{Accel, AccelHandler};
+use super::super::{MeltyHandler, Animatable, AccelHandler, LedHandler, ReceiverHandler, Motor};
+
+use super::Accel;
 
 #[derive(Debug)]
-pub struct AntAccelHandler<A: Accel> {
+pub struct AntAccelHandler<A> {
     accel: A,
     accel_0_offset: f32, // in gs
     radius: f32, // in cm
@@ -41,8 +43,14 @@ impl<A: Accel> AccelHandler for AntAccelHandler<A> {
     }
 }
 
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for AntAccelHandler<R> {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
+    }
+}
+
 #[derive(Debug)]
-pub struct BeetleAccelHandler<A: Accel> {
+pub struct BeetleAccelHandler<A> {
     accel1: A,
     accel2: A,
     accel1_0_offset: (f32, f32),
@@ -109,6 +117,12 @@ impl<A: Accel> AccelHandler for BeetleAccelHandler<A> {
     }
 }
 
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for BeetleAccelHandler<R> {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
+    }
+}
+
 #[derive(Debug)]
 pub struct DebugAccelHandler {
     rpm: f32,
@@ -132,5 +146,11 @@ impl AccelHandler for DebugAccelHandler {
 
     fn get_raw_rpm(&self) -> f32 {
         self.rpm
+    }
+}
+
+impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for DebugAccelHandler {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
+        vec![]
     }
 }

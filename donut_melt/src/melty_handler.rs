@@ -5,7 +5,7 @@ mod melty_accel;
 mod melty_drive;
 mod melty_motor;
 
-use melty_control::{ Mode, Controller, Frame, Animation };
+use melty_control::{ Mode, Controller };
 
 use melty_led::{ LedHandler, Controller as LedController, DoubleLedHandler, DebugLedHandler };
 
@@ -15,7 +15,11 @@ use melty_accel::{ Accel, MeltyAccel, AccelHandler, DebugAccelHandler, AntAccelH
 
 use melty_motor::{ PIO, DShot, Motor, DShotMotor, DebugMotor };
 
+use std::mem;
 
+trait Animatable<A, L, R, M> {
+    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>>;
+}
 
 #[derive(Debug)]
 struct MeltySettings {
@@ -57,27 +61,23 @@ impl MeltySettings {
 }
 
 #[derive(Debug)]
-struct MeltyState {
+struct MeltyState<A, L, R, M> {
     is_failsafed: bool,
     require_0_throttle: bool,
     rotation_start: f32,
     peak_rpm: u32,
-    frame_start: f32,
-    curr_func: fn() -> (),
-    curr_duration: f32,
-    curr_anim: Option<Animation>,
+    curr_controls: Option<Controller>,
+    curr_animations: Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>>,
 }
 
-impl MeltyState {
+impl<A, L, R, M> MeltyState<A, L, R, M> {
     const DEFAULT: Self = Self {
         is_failsafed: true,
         require_0_throttle: true,
         rotation_start: 0.0,
         peak_rpm: 0,
-        frame_start: 0.0,
-        curr_func: || {},
-        curr_duration: 0.0,
-        curr_anim: None,
+        curr_controls: None,
+        curr_animations: vec![],
     };
 }
 
@@ -89,7 +89,7 @@ struct MeltyHandler<A, L, R, M> {
     motor1: M,
     motor2: M,
     melty_settings: MeltySettings,
-    melty_state: MeltyState,
+    melty_state: MeltyState<A, L, R, M>,
 }
 
 impl MeltyHandler<AntAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
@@ -116,7 +116,6 @@ impl MeltyHandler<BeetleAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceive
     };
 }
 
-
 impl MeltyHandler<DebugAccelHandler, DebugLedHandler, MeltyReceiverHandler<DebugReceiver>, DebugMotor> {
     const DEBUG: Self = Self {
         accel_handler: DebugAccelHandler::new(200.0),
@@ -129,7 +128,16 @@ impl MeltyHandler<DebugAccelHandler, DebugLedHandler, MeltyReceiverHandler<Debug
     };
 }
 
-impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<A, L, R, M> {
+impl<A, L, R, M, AN, A_AN, L_AN, R_AN, M_AN> MeltyHandler<A, L, R, M> 
+where 
+    A: AccelHandler, 
+    L: LedHandler, 
+    R: ReceiverHandler,
+    M: Motor,
+    AN: Animatable<A, L, R, M>,
+    A_AN: A + AN,
+
+{
     fn setup(&mut self) {
         self.accel_handler.setup();
         self.heading_led_handler.setup();
@@ -143,26 +151,19 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
 
     fn when_failsafe_off(&mut self) {
-        match (self.melty_state.curr_duration >= now - self.melty_state.frame_start, self.melty_state.curr_anim) {
-            (true, Some(anim)) => {
-                let next_frame = anim.next();
-                match next_frame {
-                    Some(Frame(func, duration)) => {
-                        self.melty_state.curr_func = func;
-                        self.melty_state.curr_duration = duration;
-                        self.melty_state.frame_start = now;
-                    }
-                    None => {
-                        self.melty_state.curr_anim = self.receiver_handler.get_animations();
-                    }
-                }
-            },
-            (false, _) => {
-                (self.melty_state.curr_func)();
-            },
-            (_, None) => {
-                self.drive(self.receiver_handler.get_controls());
-            },
+        self.melty_state.curr_animations.extend(self.accel_handler.gather_animations());
+        self.melty_state.curr_animations.extend(self.heading_led_handler.gather_animations());
+        // receiver should queue drive animation, drive animation should always disappear after 1 use
+        self.melty_state.curr_animations.extend(self.receiver_handler.gather_animations());
+
+        self.melty_state.curr_controls = Some(self.receiver_handler.get_controls());
+
+        let curr_animations = mem::take(&mut self.melty_state.curr_animations);
+
+        for mut animation in curr_animations {
+            if animation(self) {
+                self.melty_state.curr_animations.push(animation)
+            }
         }
     }
 
@@ -186,8 +187,6 @@ impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> MeltyHandler<
     }
 
     pub fn handle(&mut self, is_flashing_motors: bool) {
-        // TODO: make this function call start 2 separate threads for receiver receiving and rest of code
-
         if is_flashing_motors {
             loop {
                 self.when_flashing_motors();
