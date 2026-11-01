@@ -135,8 +135,14 @@ impl DebugAccelHandler {
 }
 
 impl AccelHandler for DebugAccelHandler { 
+    const EPSILON: f32 = 0.1;
+
     fn setup(&self) {
         // do any necessary setup here
+    }
+
+    fn shift_rpm_multiplier(&mut self, shift_reference_value: f32) {
+        // do nothing
     }
 
     // assumes adjustment is 0.5 by default

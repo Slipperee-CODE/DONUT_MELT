@@ -15,6 +15,8 @@ use melty_accel::{ Accel, MeltyAccel, AccelHandler, DebugAccelHandler, AntAccelH
 
 use melty_motor::{ PIO, DShot, Motor, DShotMotor, DebugMotor };
 
+use melty_drive::{DriveHandler, MeltyDriveHandler};
+
 use std::mem;
 
 trait Animatable<A, L, R, M> {
@@ -60,13 +62,14 @@ impl MeltySettings {
     };
 }
 
-#[derive(Debug)]
+// #[derive(Debug)]
 struct MeltyState<A, L, R, M> {
     is_failsafed: bool,
     require_0_throttle: bool,
     rotation_start: f32,
     peak_rpm: u32,
     curr_controls: Option<Controller>,
+    // TODO: curr_animations can't be printed because it's a list of functions, need to impl Debug manually for MeltyState 
     curr_animations: Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>>,
 }
 
@@ -81,69 +84,62 @@ impl<A, L, R, M> MeltyState<A, L, R, M> {
     };
 }
 
-#[derive(Debug)]
+// #[derive(Debug)]
 struct MeltyHandler<A, L, R, M> {
     accel_handler: A, 
     heading_led_handler: L,
     receiver_handler: R,
-    motor1: M,
-    motor2: M,
+    drive_handler: M,
     melty_settings: MeltySettings,
     melty_state: MeltyState<A, L, R, M>,
 }
 
-impl MeltyHandler<AntAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
+impl MeltyHandler<AntAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, MeltyDriveHandler<DShotMotor>> {
     const ANT: Self = Self {
         accel_handler: AntAccelHandler::new(MeltyAccel::new(), 0.0, 0.0, 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
-        motor1: DShotMotor::new(0, DShot::DShot600, PIO),
-        motor2: DShotMotor::new(0, DShot::DShot600, PIO),
+        drive_handler: MeltyDriveHandler::new(DShotMotor::new(0, DShot::DShot600, PIO), DShotMotor::new(0, DShot::DShot600, PIO)),
         melty_settings: MeltySettings::ANT,
         melty_state: MeltyState::DEFAULT,
     };
 }
 
-impl MeltyHandler<BeetleAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, DShotMotor> {
+impl MeltyHandler<BeetleAccelHandler<MeltyAccel>, DoubleLedHandler, MeltyReceiverHandler<UartReceiver>, MeltyDriveHandler<DShotMotor>> {
     const BEETLE: Self = Self {
         accel_handler: BeetleAccelHandler::new(MeltyAccel::new(), MeltyAccel::new(), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), (0.0, 0.0), 0.0, 0.0, 0.0),
         heading_led_handler: DoubleLedHandler::new(0, 0),
         receiver_handler: MeltyReceiverHandler::new(UartReceiver::new()),
-        motor1: DShotMotor::new(0, DShot::DShot600, PIO),
-        motor2: DShotMotor::new(0, DShot::DShot600, PIO),
+        drive_handler: MeltyDriveHandler::new(DShotMotor::new(0, DShot::DShot600, PIO), DShotMotor::new(0, DShot::DShot600, PIO)),
         melty_settings: MeltySettings::BEETLE,
         melty_state: MeltyState::DEFAULT,
     };
 }
 
-impl MeltyHandler<DebugAccelHandler, DebugLedHandler, MeltyReceiverHandler<DebugReceiver>, DebugMotor> {
+impl MeltyHandler<DebugAccelHandler, DebugLedHandler, MeltyReceiverHandler<DebugReceiver>, MeltyDriveHandler<DebugMotor>> {
     const DEBUG: Self = Self {
         accel_handler: DebugAccelHandler::new(200.0),
         heading_led_handler: DebugLedHandler::new(),
         receiver_handler: MeltyReceiverHandler::new(DebugReceiver::new()),
-        motor1: DebugMotor::new(DShot::DShot600),
-        motor2: DebugMotor::new(DShot::DShot600),
+        drive_handler: MeltyDriveHandler::new(DebugMotor::new(DShot::DShot600), DebugMotor::new(DShot::DShot600)),
         melty_settings: MeltySettings::ANT,
         melty_state: MeltyState::DEFAULT,
     };
 }
 
-impl<A, L, R, M, AN, A_AN, L_AN, R_AN, M_AN> MeltyHandler<A, L, R, M> 
+// I don't think this is supposed to work, how can a type be generically over itself???
+impl<A, L, R, M> MeltyHandler<A, L, R, M> 
 where 
-    A: AccelHandler, 
-    L: LedHandler, 
-    R: ReceiverHandler,
-    M: Motor,
-    AN: Animatable<A, L, R, M>,
-    A_AN: A + AN,
-
+    A: AccelHandler + Animatable<A, L, R, M>, 
+    L: LedHandler + Animatable<A, L, R, M>, 
+    R: ReceiverHandler + Animatable<A, L, R, M>,
+    M: DriveHandler + Animatable<A, L, R, M>,
 {
     fn setup(&mut self) {
         self.accel_handler.setup();
         self.heading_led_handler.setup();
         self.receiver_handler.setup();
-        self.motor1.setup();
-        self.motor2.setup();
+        self.drive_handler.setup();
     }
 
     fn always(&self) {
@@ -153,8 +149,8 @@ where
     fn when_failsafe_off(&mut self) {
         self.melty_state.curr_animations.extend(self.accel_handler.gather_animations());
         self.melty_state.curr_animations.extend(self.heading_led_handler.gather_animations());
-        // receiver should queue drive animation, drive animation should always disappear after 1 use
         self.melty_state.curr_animations.extend(self.receiver_handler.gather_animations());
+        self.melty_state.curr_animations.extend(self.drive_handler.gather_animations());
 
         self.melty_state.curr_controls = Some(self.receiver_handler.get_controls());
 
@@ -168,8 +164,7 @@ where
     }
 
     fn when_failsafe_on(&mut self) {
-        self.motor1.stop();
-        self.motor2.stop();
+        self.drive_handler.stop_all();
 
         if !self.melty_state.is_failsafed && self.receiver_handler.is_throttle_0() {
             self.melty_state.require_0_throttle = false;
@@ -182,9 +177,9 @@ where
         self.heading_led_handler.blink(LedController::BURST_2);
     }
     
-    pub fn debug(&self) {
-        println!("{:#?}", self);
-    }
+    // pub fn debug(&self) {
+    //     println!("{:#?}", self);
+    // }
 
     pub fn handle(&mut self, is_flashing_motors: bool) {
         if is_flashing_motors {

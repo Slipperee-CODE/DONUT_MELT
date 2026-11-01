@@ -1,21 +1,26 @@
+mod drive_handlers;
+
 use super::melty_control::{ Mode, Direction, Controller};
 use super::Animatable;
 use super::melty_receiver::ReceiverHandler;
 use super::melty_led::{LedHandler, Controller as LedController};
 use super::melty_accel::AccelHandler;
+pub use drive_handlers::MeltyDriveHandler;
 
 use super::melty_motor::Motor;
+use std::fmt;
 
 use super::MeltyHandler;
 
-struct DriveHandler<M> {
-    motor1: M,
-    motor2: M,
-}
+pub trait DriveHandler: fmt::Debug{
+    fn setup(&self);
 
-impl<M: Motor> DriveHandler<M> {
-    fn melty(&self, left_x: f32, left_y: f32, right_x: f32, right_y: f32) {
-         
+    fn melty(&self, left_x: f32, left_y: f32, right_x: f32, right_y: f32);
+
+    fn tank(&mut self, left_y: f32, right_y: f32);
+
+    fn stop_all(&mut self) {
+        self.tank(0.0, 0.0);
     }
 
     fn one_stick_tank(&mut self, right_x: f32, right_y: f32) {
@@ -25,63 +30,5 @@ impl<M: Motor> DriveHandler<M> {
         }
         // this negative sign might need to be moved to the second "right_y"
         self.tank(-right_y, right_y);
-    }
-
-    fn tank(&mut self, left_y: f32, right_y: f32) {
-        self.motor1.set_throttle(left_y);
-        self.motor2.set_throttle(right_y);
-    }
-}
-
-impl<A: AccelHandler, L: LedHandler, R: ReceiverHandler, M: Motor> Animatable<A, L, R, M> for DriveHandler<M> {
-    fn gather_animations(&mut self) -> Vec<Box<dyn FnMut(&mut MeltyHandler<A, L, R, M>) -> bool>> {
-        let drive = |melty_handler: &mut MeltyHandler<A, L, R, M>| {
-            match controls {
-                Controller { mode: Mode::MELTY, direction, left_x, left_y, right_x, right_y } => {
-                    self.accel_handler.shift_rpm_multiplier(right_x);
-
-                    // TODO: left_y needs to be reassigned to 1 so we go full power if our
-                    // rpm is below min_translation_rpm
-                    if self.accel_handler.get_raw_rpm() < self.melty_settings.min_translation_rpm {
-                        left_y: f32 = 1.0;
-                    } 
-
-                    // TODO: need to handle melty heading led here
-
-                    match direction {
-                        Direction::NORMAL => {
-                            self.melty(left_x, left_y, right_x, right_y);
-                        },
-                        Direction::REVERSE => {
-                            self.melty(left_x, -left_y, right_x, right_y);
-                        },
-                    }
-                },
-                Controller { mode: Mode::TANK, direction, left_x, left_y, right_x, right_y} => {
-                    match direction {
-                        Direction::NORMAL => {
-                            self.one_stick_tank(right_x*self.melty_settings.tank_slowdown, right_y*self.melty_settings.tank_turning_slowdown);
-                        },
-                        Direction::REVERSE => {
-                            self.one_stick_tank(-right_x*self.melty_settings.tank_slowdown, -right_y*self.melty_settings.tank_turning_slowdown);
-                        },
-                    }
-
-                    self.heading_led_handler.blink(LedController::BURST_3);
-                },
-                Controller { mode: Mode::FAST_TANK, direction, left_x, left_y, right_x, right_y } => {
-                    match direction {
-                        Direction::NORMAL => {
-                            self.tank(left_y, right_y);
-                        },
-                        Direction::REVERSE => {
-                            self.tank(-left_y, -right_y);
-                        },
-                    }
-
-                    self.heading_led_handler.blink(LedController::BURST_4);
-                },
-            }
-        }
     }
 }
