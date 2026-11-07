@@ -11,4 +11,5 @@ fn test_feature() {
 }
 
 // put non-integration tests (i.e. single module tests of the debug structs for a trait)
-// in their respective melty files (e.g. melty_led, melty_accel, etc.)
+// in their respective melty files (e.g. melty_led, melty_accel, etc.) that way they can be 
+// used as reference for how a trait is used in practice
