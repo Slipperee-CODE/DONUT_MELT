@@ -9,3 +9,6 @@ use donut_melt::MeltyHandler;
 fn test_feature() {
     assert_eq!(your_function(), true);
 }
+
+// put non-integration tests (i.e. single module tests of the debug structs for a trait)
+// in their respective melty files (e.g. melty_led, melty_accel, etc.)
