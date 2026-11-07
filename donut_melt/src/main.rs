@@ -1,4 +1,4 @@
-mod melty_handler;
+use donut_melt::melty_handler;
 mod testing;
 mod testing2;
 

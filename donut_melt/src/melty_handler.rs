@@ -85,7 +85,7 @@ impl<A, L, R, M> MeltyState<A, L, R, M> {
 }
 
 // #[derive(Debug)]
-struct MeltyHandler<A, L, R, M> {
+pub struct MeltyHandler<A, L, R, M> {
     accel_handler: A, 
     heading_led_handler: L,
     receiver_handler: R,
